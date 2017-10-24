@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-24 14:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:37
+msgid "LinkedIn"
+msgstr ""
+
+#: models.py:38
+msgid "Wechat"
+msgstr ""
+
+#: models.py:39
+msgid "Facebook"
+msgstr ""
+
+#: models.py:40 models.py:95
+msgid "Github"
+msgstr ""
+
+#: models.py:41
+msgid "Personal Site"
+msgstr ""
+
+#: models.py:43
+msgid "Description"
+msgstr ""
+
+#: models.py:60
+msgid "Job Position"
+msgstr ""
+
+#: models.py:61
+msgid "Company"
+msgstr ""
+
+#: models.py:62
+msgid "Location"
+msgstr ""
+
+#: models.py:63
+msgid "Start Date"
+msgstr ""
+
+#: models.py:64
+msgid "End Date"
+msgstr ""
+
+#: models.py:65
+msgid "Your highlight contribution"
+msgstr ""
+
+#: models.py:67
+msgid "Keywords"
+msgstr ""
+
+#: models.py:68
+msgid "The words that might search for when looking "
+msgstr ""
+
+#: models.py:80
+msgid "Is this experience public?"
+msgstr ""
+
+#: models.py:92
+msgid "Title"
+msgstr ""
+
+#: models.py:93
+msgid "Download Link"
+msgstr ""
+
+#: models.py:94
+msgid "Live Link"
+msgstr ""
+
+#: models.py:96
+msgid "Summary"
+msgstr ""
+
+#: models.py:98
+msgid "Project Image"
+msgstr ""
+
+#: models.py:99
+msgid "A 300x300 image for the project"
+msgstr ""
+
+#: models.py:101
+msgid "Is this experience public ?"
+msgstr ""

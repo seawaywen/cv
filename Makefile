@@ -78,3 +78,14 @@ clean: clean-static-assets
 	rm -f collectstatic.deps.mk
 # The files created by compilemessages
 	rm -rf src/*/locale
+
+makemessages:
+	@echo "Gathering translations for django's apps."
+	@for app in `ls $(SRC_DIR) | egrep -v '(tools)'`; do \
+		mkdir -p "$(SRC_DIR)/$$app/locale"; \
+		cd "$(SRC_DIR)/$$app"; \
+		$(DJANGO_MANAGE) makemessages -l en -l zh_CN|| exit; \
+		cd -; \
+		mkdir -p "po/$$app"; \
+		cp "$(SRC_DIR)/$$app/locale/en/LC_MESSAGES/django.po" "po/$$app/$$app.pot"; \
+	done
