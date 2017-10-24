@@ -68,3 +68,4 @@ static_src/.npm
 static_src/junit/
 
 db.sqlite3
+yarn.lock

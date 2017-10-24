@@ -1,0 +1,11 @@
+{
+  "name": "cv.memodir",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kelvin Li",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^2.5.2",
+    "vue-cli": "^2.8.2"
+  }
+}
