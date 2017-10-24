@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'resume',
 ]
 
 MIDDLEWARE = [
@@ -57,15 +59,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'AUTOCOMMIT': True,
+        'ATOMIC_REQUESTS': False,
+        'CONN_MAX_AGE': 600,
+        'NAME': 'memodir',
+        #'TIME_ZONE': 'UTC',
+        'PORT': '',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'TEST': {
+            'NAME': None,
+            'MIRROR': None,
+            'CHARSET': None,
+            'COLLATION': None,
+        },
+        'PASSWORD': '',
+        'OPTIONS': {},
+    },
 }
 
 
