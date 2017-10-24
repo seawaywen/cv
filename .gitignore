@@ -6,34 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# virtualenv
+env
+
 # Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
 wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+branches/*
 
 # Unit test / coverage reports
 htmlcov/
@@ -44,58 +22,47 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-.hypothesis/
 
 # Translations
 *.mo
 *.pot
 
 # Django stuff:
+logs/*
 *.log
 local_settings.py
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
 
 # Sphinx documentation
 docs/_build/
 
-# PyBuilder
-target/
+# For django_jenkins and 'make analyze'
+reports/*
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# For Ctag in vim
+tags
 
-# pyenv
-.python-version
+staticfiles
+lib/versioninfo.py
 
 # celery beat schedule file
-celerybeat-schedule
+django_project/celerybeat-schedule
+django_project/celerybeat.pid
 
-# SageMath parsed files
-*.sage.py
+# Automatically generated asset dependencies
+collectstatic.deps.mk
+static-assets.deps.mk
+npm-deps-installed
+static_src/dist/*
 
-# dotenv
-.env
+# karma coverage
+static_src/coverage/
 
-# virtualenv
-.venv
-venv/
-ENV/
+# nodejs dependencies
+static_src/node_modules
+static_src/npm-debug.log
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# npm cache folder
+static_src/.npm
 
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
+# junit test results
+static_src/junit/
