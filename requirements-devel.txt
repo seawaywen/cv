@@ -1,0 +1,9 @@
+-r requirements.txt
+
+coverage==4.4.1
+flake8==3.5.0
+pep8==1.7.0
+pyflakes==1.6.0
+responses==0.8.1
+testtools==2.3.0
+
