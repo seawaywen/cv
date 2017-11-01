@@ -21,7 +21,6 @@ $(ENV):
 
 install-wheels: ARGS=-r requirements.txt
 install-wheels: $(ENV)
-	#$(PIP) install --find-links=$(WHEELS_DIR) --no-index $(ARGS)
 	$(PIP) install $(ARGS)
 
 install-wheels-dev: $(ENV) install-wheels 
@@ -42,7 +41,7 @@ collectstatic.deps.mk collectstatic:
 # statements.
 collectstatic.deps.mk: src/tools/linkstatic.py
 
-ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS), clean)
 # Don't fail if the dependency file doesn't exist, running the collection
 # will create it.
 -include collectstatic.deps.mk
@@ -79,13 +78,24 @@ clean: clean-static-assets
 # The files created by compilemessages
 	rm -rf src/*/locale
 
+
 makemessages:
 	@echo "Gathering translations for django's apps."
-	@for app in `ls $(SRC_DIR) | egrep -v '(tools)'`; do \
+	@for app in `ls $(SRC_DIR) | egrep -v '(test|tools)'`; do \
 		mkdir -p "$(SRC_DIR)/$$app/locale"; \
 		cd "$(SRC_DIR)/$$app"; \
-		$(DJANGO_MANAGE) makemessages -l en -l zh_CN|| exit; \
+		$(DJANGO_MANAGE) makemessages -l en -l zh_Hans || exit; \
 		cd -; \
-		mkdir -p "po/$$app"; \
-		cp "$(SRC_DIR)/$$app/locale/en/LC_MESSAGES/django.po" "po/$$app/$$app.pot"; \
 	done
+
+compilemessages:
+	@echo "Compiling translations for django apps."
+	@for app in `ls $(SRC_DIR) | egrep -v '(test|tools)'`; do \
+        cd "$(SRC_DIR)/$$app"; \
+        $(DJANGO_MANAGE) compilemessages --verbosity 3; \
+		cd -; \
+    done
+
+
+.PHONY: collectstatic makemessages compilemessages
+
