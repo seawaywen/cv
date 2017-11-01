@@ -10,6 +10,7 @@ from django.utils.translation import get_language, ugettext_lazy as _
 logger = logging.getLogger(__name__)
 models.options.DEFAULT_NAMES += ('translation', 'multilingual')
 
+
 class MultilingualModel(models.Model):
 
     _name_regex = re.compile(r'_translated$')
@@ -20,7 +21,7 @@ class MultilingualModel(models.Model):
     def __getattr__(self, attr):
         name = self._name_regex.sub('', attr)
         if name not in self._meta.multilingual:
-            return super(MultilingualModel, self).__getattribute__(attr)
+            return super().__getattribute__(attr)
 
         lang = get_language()
         try:
@@ -34,11 +35,16 @@ class MultilingualModel(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
-    linkedin = models.CharField(max_length=255, blank=True, verbose_name=_('LinkedIn'))
-    wechat = models.CharField(max_length=255, blank=True, verbose_name=_('Wechat'))
-    facebook = models.CharField(max_length=255, blank=True, verbose_name=_('Facebook'))
-    github = models.CharField(max_length=255, blank=True, verbose_name=_('Github'))
-    personal_site = models.CharField(max_length=255, blank=True, verbose_name=_('Personal Site'))
+    linkedin = models.CharField(max_length=255, blank=True,
+                                verbose_name=_('LinkedIn'))
+    wechat = models.CharField(max_length=255, blank=True,
+                              verbose_name=_('Wechat'))
+    facebook = models.CharField(max_length=255, blank=True,
+                                verbose_name=_('Facebook'))
+    github = models.CharField(max_length=255, blank=True,
+                              verbose_name=_('Github'))
+    personal_site = models.CharField(max_length=255, blank=True,
+                                     verbose_name=_('Personal Site'))
 
     description = models.TextField(blank=True, verbose_name=_('Description'))
 
@@ -55,14 +61,15 @@ class UserProfile(models.Model):
 class WorkExperienceTranslation(models.Model):
     work_experience = models.ForeignKey(
         'resume.WorkExperience', related_name='translations')
-    language = models.CharField(
-        max_length=5, choices=settings.LANGUAGES, db_index=True)
+    language = models.CharField(max_length=5, verbose_name=_('Language'),
+                                choices=settings.LANGUAGES, db_index=True)
     position = models.CharField(max_length=255, verbose_name=_('Job Position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
     date_start = models.DateTimeField(verbose_name=_('Start Date'))
     date_end = models.DateTimeField(verbose_name=_('End Date'))
-    contribution = models.TextField(blank=True, verbose_name=_('Your highlight contribution'))
+    contribution = models.TextField(blank=True,
+                                    verbose_name=_('Your highlight contribution'))
     keywords = models.TextField(
         blank=True, default='', verbose_name=_('Keywords'),
         help_text=_("The words that might search for when looking "))
@@ -90,15 +97,17 @@ class WorkExperience(MultilingualModel):
 
 class Project(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('Title'))
-    download_link= models.CharField(max_length=255, verbose_name=_('Download Link'))
+    download_link = models.CharField(max_length=255,
+                                     verbose_name=_('Download Link'))
     live_link = models.CharField(max_length=255, verbose_name=_('Live Link'))
     github = models.CharField(max_length=255, verbose_name=_('Github'))
     description = models.TextField(blank=True, verbose_name=_('Summary'))
-    cover_image = models.ImageField(upload_to='users/%Y/%m',
-        blank=True, null=True, verbose_name=_('Project Image'),
+    cover_image = models.ImageField(
+        upload_to='users/%Y/%m', blank=True, null=True,
+        verbose_name=_('Project Image'),
         help_text=_('A 300x300 image for the project'))
     is_public = models.BooleanField(
-        _('Is this experience public ?'), default=False)
+        _('Is this experience public?'), default=False)
 
     user = models.ForeignKey(UserProfile)
 
