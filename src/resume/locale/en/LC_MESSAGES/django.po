@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-01 10:57+0000\n"
+"POT-Creation-Date: 2017-11-01 20:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,4 +103,8 @@ msgstr ""
 
 #: models.py:108
 msgid "A 300x300 image for the project"
+msgstr ""
+
+#: templates/resume/index.html:10
+msgid "Welcome to the MemoDir site"
 msgstr ""

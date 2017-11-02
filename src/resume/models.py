@@ -61,7 +61,7 @@ class UserProfile(models.Model):
 class WorkExperienceTranslation(models.Model):
     work_experience = models.ForeignKey(
         'resume.WorkExperience', related_name='translations')
-    language = models.CharField(max_length=5, verbose_name=_('Language'),
+    language = models.CharField(max_length=30, verbose_name=_('Language'),
                                 choices=settings.LANGUAGES, db_index=True)
     position = models.CharField(max_length=255, verbose_name=_('Job Position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
