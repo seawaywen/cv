@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.contrib import admin
@@ -10,14 +10,14 @@ from django.utils.translation import ugettext_lazy as _
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    url(r'^i18n/', include('django.conf.urls.i18n')),
+    path('admin/', admin.site.urls),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 urlpatterns += ([
-    url(r'^$', RedirectView.as_view(url='main/'), name='home'),
-    url(r'^main/', include('resume.urls')),
+    path('', RedirectView.as_view(url='main/'), name='home'),
+    path('main/', include('resume.urls')),
 
 ])
 

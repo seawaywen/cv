@@ -11,14 +11,17 @@ from resume.models import (
 class UserProfileAdmin(admin.ModelAdmin):
     pass
 
+
 class WorkExperienceTranslationInline(admin.StackedInline):
     model = WorkExperienceTranslation
     extra = 1
+
 
 class WorkExperienceAdmin(admin.ModelAdmin):
     inlines = [
         WorkExperienceTranslationInline
     ]
+
 
 class ProjectAdmin(admin.ModelAdmin):
     pass

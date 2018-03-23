@@ -33,8 +33,7 @@ class MultilingualModel(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     linkedin = models.CharField(max_length=255, blank=True,
                                 verbose_name=_('LinkedIn'))
     wechat = models.CharField(max_length=255, blank=True,
@@ -45,7 +44,6 @@ class UserProfile(models.Model):
                               verbose_name=_('Github'))
     personal_site = models.CharField(max_length=255, blank=True,
                                      verbose_name=_('Personal Site'))
-
     description = models.TextField(blank=True, verbose_name=_('Description'))
 
     class Meta:
@@ -60,29 +58,33 @@ class UserProfile(models.Model):
 
 class WorkExperienceTranslation(models.Model):
     work_experience = models.ForeignKey(
-        'resume.WorkExperience', related_name='translations')
+        'resume.WorkExperience',
+        on_delete=models.CASCADE,
+        related_name='translations')
     language = models.CharField(max_length=30, verbose_name=_('Language'),
                                 choices=settings.LANGUAGES, db_index=True)
     position = models.CharField(max_length=255, verbose_name=_('Job Position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
     date_start = models.DateTimeField(verbose_name=_('Start Date'))
-    date_end = models.DateTimeField(verbose_name=_('End Date'))
-    contribution = models.TextField(blank=True,
-                                    verbose_name=_('Your highlight contribution'))
+    date_end = models.DateTimeField(
+        null=True, blank=True, verbose_name=_('End Date'))
+    contribution = models.TextField(
+        blank=True, verbose_name=_('Your highlight contribution'))
     keywords = models.TextField(
         blank=True, default='', verbose_name=_('Keywords'),
-        help_text=_("The words that might search for when looking "))
+        help_text=_('The words that might search for when looking'))
 
     class Meta:
         ordering = ('language',)
 
     def __unicode__(self):
-        return '{0}@{1} - {1}'.format(self.position, self.company, self.language)
+        return '{0}@{1} - {1}'.format(
+            self.position, self.company, self.language)
 
 
 class WorkExperience(MultilingualModel):
-    user = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     is_public = models.BooleanField(
         _('Is this experience public?'), default=False)
 
@@ -109,7 +111,7 @@ class Project(models.Model):
     is_public = models.BooleanField(
         _('Is this experience public?'), default=False)
 
-    user = models.ForeignKey(UserProfile)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'resume'

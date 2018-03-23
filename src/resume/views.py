@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import render # noqa 
+from django.http import HttpResponse # noqa 
+from django.utils.translation import ugettext_lazy as _  # noqa 
 
 from .models import WorkExperience
 
 
 def home(request):
     _work_experience = WorkExperience.objects.first()
-    work_experience_trans_list = _work_experience.translations.all()
+    work_experience_trans_list = [] 
+    if _work_experience:
+        work_experience_trans_list = _work_experience.translations.all()
 
     keys_list = ['language', 'company', 'position', 'location',
                  'date_start', 'date_end',
