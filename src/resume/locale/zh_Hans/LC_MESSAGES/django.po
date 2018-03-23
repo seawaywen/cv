@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-01 20:36+0000\n"
+"POT-Creation-Date: 2018-03-23 06:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: models.py:39
+#: models.py:38
 msgid "LinkedIn"
 msgstr ""
 
-#: models.py:41
+#: models.py:40
 msgid "Wechat"
 msgstr "微信"
 
-#: models.py:43
+#: models.py:42
 msgid "Facebook"
 msgstr ""
 
-#: models.py:45 models.py:103
+#: models.py:44 models.py:105
 msgid "Github"
 msgstr ""
 
-#: models.py:47
+#: models.py:46
 msgid "Personal Site"
 msgstr "个人网站"
 
-#: models.py:49
+#: models.py:47
 msgid "Description"
 msgstr "描述"
 
@@ -62,47 +62,47 @@ msgstr "位置"
 msgid "Start Date"
 msgstr "开始时间"
 
-#: models.py:70
+#: models.py:71
 msgid "End Date"
 msgstr "结束时间"
 
-#: models.py:72
+#: models.py:73
 msgid "Your highlight contribution"
 msgstr "亮点贡献"
 
-#: models.py:74
+#: models.py:75
 msgid "Keywords"
 msgstr "关键词"
 
-#: models.py:75
-msgid "The words that might search for when looking "
+#: models.py:76
+msgid "The words that might search for when looking"
 msgstr ""
 
-#: models.py:87 models.py:110
+#: models.py:89 models.py:112
 msgid "Is this experience public?"
 msgstr "是否公开此经验"
 
-#: models.py:99
+#: models.py:101
 msgid "Title"
 msgstr "标题"
 
-#: models.py:101
+#: models.py:103
 msgid "Download Link"
 msgstr "下载链接"
 
-#: models.py:102
+#: models.py:104
 msgid "Live Link"
 msgstr "在线展示链接"
 
-#: models.py:104
+#: models.py:106
 msgid "Summary"
 msgstr "摘要"
 
-#: models.py:107
+#: models.py:109
 msgid "Project Image"
 msgstr "项目图片"
 
-#: models.py:108
+#: models.py:110
 msgid "A 300x300 image for the project"
 msgstr "一副300x300的项目图片"
 

@@ -96,6 +96,7 @@ compilemessages:
 		cd -; \
     done
 
+lint:
+	@$(FLAKE8) --exclude='migrations' --filename='*.py' src/
 
 .PHONY: collectstatic makemessages compilemessages
-
