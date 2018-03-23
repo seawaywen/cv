@@ -1,5 +1,5 @@
-django==1.11.6
+django==2.0.3
 requests==2.18.4
-talisker==0.9.5
-psycopg2==2.7.3
-Pillow==4.3.0
+talisker==0.9.6
+psycopg2==2.7.4
+Pillow==5.0.0
