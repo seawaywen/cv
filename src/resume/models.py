@@ -25,8 +25,7 @@ class MultilingualModel(models.Model):
 
         lang = get_language()
         try:
-            translation = self._meta.translation.objects.get(
-                model=self, language=lang)
+            translation = self._meta.translation.objects.get(language=lang)
             return getattr(translation, name)
         except self._meta.translation.DoesNotExist:
             return self.__dict__[name]
@@ -50,10 +49,14 @@ class UserProfile(models.Model):
         app_label = 'resume'
 
     def __unicode__(self):
-        msg = self.user.full_name()
-        if not msg:
-            msg = self.user.username
+        full_name = self.user.get_full_name()
+        if not full_name:
+            full_name = self.user.username
+        msg = _("{}'s profile").format(full_name)
         return msg
+    
+    def __str__(self):
+        return self.__unicode__()
 
 
 class WorkExperienceTranslation(models.Model):
@@ -79,8 +82,11 @@ class WorkExperienceTranslation(models.Model):
         ordering = ('language',)
 
     def __unicode__(self):
-        return '{0}@{1} - {1}'.format(
-            self.position, self.company, self.language)
+        return '{0}@{1} - {2}'.format(
+            self.position, self.company, self.location)
+    
+    def __str__(self):
+        return self.__unicode__()
 
 
 class WorkExperience(MultilingualModel):
@@ -94,8 +100,13 @@ class WorkExperience(MultilingualModel):
         translation = WorkExperienceTranslation
 
     def __unicode__(self):
-        return '%s@%s in %s' % (self.position, self.company, self.location)
+        try:
+            return '%s@%s in %s' % (self.position, self.company, self.location)
+        except:
+            return self.user.user.username
 
+    def __str__(self):
+        return self.__unicode__()
 
 class Project(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('Title'))
@@ -118,3 +129,6 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def __str__(self):
+        return self.__unicode__()

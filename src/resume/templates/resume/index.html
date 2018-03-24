@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Memodir</title>
 </head>
 <body>
     {% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
@@ -23,14 +23,24 @@
     </select>
     <input type="submit" value="Go" />
 </form>
-    <hr>
 
-    {% for we1_fields in work_experience_list %}
-        {% for field_name, field_value in we1_fields.items  %}
-            {{ field_name }}: {{ field_value }} <br>
-        {% endfor %}
-        <hr>
+<hr>
+<h2>{% blocktrans %}Experience{% endblocktrans %}</h2>
+{% for we1_fields in work_experience_list %}
+    {% for field_name, field_value in we1_fields.items %}
+        {{ field_name }}: {{ field_value }} <br>
     {% endfor %}
+    <hr>
+{% endfor %}
+
+<hr>
+<h2>{% blocktrans %}Projects{% endblocktrans %}</h2>
+{% for proj_fields in project_list %}
+    {% for field_name, field_value in proj_fields.items %}
+        {{ field_name }}: {{ field_value }} <br>
+    {% endfor %}
+    <hr>
+{% endfor %}
 
 
 </body>
