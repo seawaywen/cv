@@ -40,7 +40,6 @@ def home(request):
         for _key, _value in include_list.items():
             _fields[_value] = getattr(project, _key)
         project_list.append(_fields)
-    #print(project_list)
 
     context = {
         'work_experience_list': work_experience_list,

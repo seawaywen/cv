@@ -99,4 +99,48 @@ compilemessages:
 lint:
 	@$(FLAKE8) --exclude='migrations' --filename='*.py' src/
 
-.PHONY: collectstatic makemessages compilemessages
+
+PG_NAME = $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['NAME'])")
+PG_HOST = $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['HOST'])")
+PG_USER= $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['USER'])")
+PG_DB_NAME = memodir_pg
+PG_DATA_DIR = $(HOME)/docker_pg_data
+PG_VAR_RUN_DIR = $(HOME)/docker_pg_var_run
+PG_SOCKET = $(PG_VAR_RUN_DIR)/.s.PGSQL.5432
+
+$(PG_DATA_DIR):
+	# If the socket didn't exist, db server should be stopped.
+	rm -rf $(PG_DATA_DIR)
+	mkdir -p $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
+	docker run -d --name $(PG_DB_NAME) -p 5432:5432 -v $(PG_DATA_DIR):/var/lib/postgresql/data -v $(PG_VAR_RUN_DIR):/var/run/postgresql postgres
+	@echo 'starting docker...(waiting for 15 secs)'
+	sleep 15 
+	createdb --host=$(PG_HOST) --username=$(PG_USER) $(PG_NAME)
+	$(DJANGO_MANAGE) migrate
+
+drop-db:
+	@echo 'drop db ...'
+	dropdb --host=$(PG_HOST) --username=$(PG_USER) $(PG_NAME)
+
+createsuperuser:
+	$(DJANGO_MANAGE) createsuperuser --email=kelvin@memodir.com --username=kelvin
+
+setup-db: $(PG_DATA_DIR)
+
+start-db: 
+	@echo 'starting db...(waiting for 10 secs)'
+	docker start $(PG_DB_NAME)
+	sleep 10 
+	$(DJANGO_MANAGE) migrate
+
+stop-db: $(PG_SOCKET)
+	@echo 'stop db...'
+	docker stop $(PG_DB_NAME)
+
+destroy-db: stop-db
+	@echo 'destroy db...'
+	docker rm $(PG_DB_NAME)
+	rm -rf $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
+
+
+.PHONY: collectstatic makemessages compilemessages setup-db
