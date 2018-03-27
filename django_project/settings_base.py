@@ -1,9 +1,28 @@
 import os
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_var(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        raise ImproperlyConfigured('Must set env variable:{}'.format(var_name))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SRC_DIR = os.path.join(BASE_DIR, 'src')
+_HOST_DIR = os.path.join(BASE_DIR, os.path.pardir, os.path.pardir)
+HOST_DIR = os.path.abspath(os.getenv('MEMODIR_HOST_DIR', _HOST_DIR))
+_LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir)) + '-logs'
+LOG_DIR = os.path.abspath(os.getenv('MEMODIR_LOG_DIR', _LOG_DIR))
+
+
+print('BASE_DIR:{}'.format(BASE_DIR))
+print('SRC_DIR:{}'.format(SRC_DIR))
+print('HOST_DIR:{}'.format(HOST_DIR))
+print('LOG_DIR:{}'.format(_LOG_DIR))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -16,6 +35,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Application definition
 
@@ -26,7 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
+    'crispy_forms',
+    
     'resume',
 ]
 
@@ -134,3 +157,19 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+MEDIA_ROOT = os.path.join(HOST_DIR, 'www', 'media')
+MEDIA_URL = '/media/'
+
+
+RESERVED_PROFILE_NAMESPACE_LIST = (
+    'memodir-test-namespace'
+)
+
+IMAGE_UPLOAD_TO = 'images/%Y/%m'
+PROFILE_PHOTO_UPLOAD_TO = 'profile_photo/%Y/%m'
+THUMBNAIL_UPLOAD_TO = 'thumbnails/%Y/%m'
+THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m' 
+
+
+
