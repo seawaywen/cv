@@ -1,12 +1,22 @@
+# -*- coding: utf-8 -*-
+
+import logging
+
 from django.shortcuts import render # noqa 
+from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect # noqa 
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _  # noqa 
 from django.utils import translation
 from django.views.generic.base import View
+from django.views.generic.edit import UpdateView
+from django.views.generic import DetailView
 
-from resume.models import WorkExperience, Project
-from resume.forms import ProjectForm
+from resume.models import WorkExperience, Project, UserProfile
+from resume.forms import ProjectForm, ProfileForm
+
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -71,7 +81,7 @@ class ProjectView(View):
     
         context = {
             'project_list': project_list,
-            'form': ProjectForm()
+            'form': self.form_class()
         }
         return render(request, self.template_name, context)
 
@@ -86,3 +96,14 @@ class ProjectView(View):
                 'form': ProjectForm()
             }
             return render(request, self.template_name, context)
+
+class ProfileUpdateView(UpdateView):
+    model = UserProfile
+    form_class = ProfileForm
+    template_name = 'resume/profile_edit.html'
+
+class ProfileDetailView(DetailView):
+    model = UserProfile
+    template_name = 'resume/profile_detail.html'
+    context_object_name = 'profile_obj'
+

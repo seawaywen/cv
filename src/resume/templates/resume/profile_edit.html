@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memodir</title>
+</head>
+<body>
+    {% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
+
+<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}" />
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
+    <select name="language">
+        {% for language in languages %}
+            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+            </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go" />
+</form>
+<hr>
+<h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
+
+
+{% crispy form form.helper %}
+
+
+</body>
+</html>
+
+

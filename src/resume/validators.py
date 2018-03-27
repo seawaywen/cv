@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import logging 
 import re
 
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+
+
+logger = logging.getLogger(__name__)
+
 
 namespace_regex = re.compile(r'[a-z0-9]+[a-z0-9-]*[a-z0-9]+$')
 
@@ -21,4 +26,5 @@ def validate_namespace(namespace_value):
             _('You cannot use this reserved namespace.'))
 
     RegexValidator(regex=namespace_regex, 
-                   message=LOWERCASE_NUMBERS_HYPHENS_HELP, code='invalid')
+                   message=LOWERCASE_NUMBERS_HYPHENS_HELP, 
+                   code='invalid')(namespace_value)

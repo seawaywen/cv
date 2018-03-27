@@ -7,13 +7,16 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import get_language, ugettext_lazy as _
+from django.urls import reverse_lazy
 
 from resume.countries import country_dict, country_list
 from resume.validators import validate_namespace
 from resume.utils import create_thumbnail, convert_to_png_uploaded_file, generate_uuid
 
 
+
 logger = logging.getLogger(__name__)
+
 models.options.DEFAULT_NAMES += ('translation', 'multilingual')
 
 
@@ -41,9 +44,9 @@ class MultilingualModel(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('U', 'Unknown')
+        ('M', _('Male')),
+        ('F', _('Female')),
+        ('U', _('Unknown'))
     )
     gender = models.CharField(max_length=1, verbose_name=_('Gender'),
                               choices=GENDER_CHOICES)
@@ -125,9 +128,6 @@ class UserProfile(models.Model):
         self.photo_crop.save(
             thumbnail_file_name, thumbnail_upload_handler, save=False)
         
-    # remove the un-related file periodically 
-    # move the thumbnail generation task into celery 
-        
     def save(self, *args, **kwargs): 
         if self._check_upload_file_exist('photo'):
             self._convert_to_png_photo()
@@ -135,6 +135,10 @@ class UserProfile(models.Model):
         else:
             self.photo_upload_name = ''
         super().save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        return reverse_lazy('profile-edit', kwargs={'pk': self.pk})
+    
 
 
 class WorkExperienceTranslation(models.Model):
