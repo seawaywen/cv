@@ -1,15 +1,12 @@
+{% extends "base.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Memodir</title>
-</head>
-<body>
-    {% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
+{% block header_container %}
+{% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
+{% endblock header_container %}
 
+{% block content_container %}
 <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
     <input name="next" type="hidden" value="{{ redirect_to }}" />
     {% get_current_language as LANGUAGE_CODE %}
@@ -29,6 +26,8 @@
 
 {{ profile_obj.user.username }}
 {{ profile_obj.description}}
+
+{% endblock content_container %}
 
 </body>
 </html>

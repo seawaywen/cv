@@ -150,8 +150,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = [
-    #("dist", os.path.join(BASE_DIR, "static_src/dist/")),
+STATICFILES_DIRS = [ 
+    ('dist', os.path.join(BASE_DIR, 'static_src', 'dist')),
 ]
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -160,6 +160,24 @@ STATICFILES_FINDERS = [
 
 MEDIA_ROOT = os.path.join(HOST_DIR, 'www', 'media')
 MEDIA_URL = '/media/'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': False,
+        'DIRS': (
+            os.path.join(BASE_DIR, "static_src/dist/templates"),
+            os.path.join(BASE_DIR, 'static', 'templates'),
+        ),
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',  
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages']
+        }
+    },
+]
 
 
 RESERVED_PROFILE_NAMESPACE_LIST = (
