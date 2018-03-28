@@ -69,3 +69,6 @@ static_src/junit/
 
 db.sqlite3
 yarn.lock
+
+
+*.DS_Store
