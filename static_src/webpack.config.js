@@ -2,14 +2,18 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  entry: __dirname + '/src/js/main.js',
+  entry: {
+    main: __dirname + '/src/js/main.js',
+    profile: __dirname + '/src/js/profile.js',
+  },
   output: {
     //filename: 'bundle.js',
-    filename: "bundle-[hash].js",
+    filename: "[name]-bundle-[hash].js",
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/static/dist',
+    publicPath: '/static/dist/',
   },
   
   devtool: 'eval-source-map',
@@ -53,10 +57,6 @@ module.exports = {
   plugins: [
     new webpack.BannerPlugin('memodir.com copyright reserverd@2018'),
     
-    new HtmlWebpackPlugin({
-      template: __dirname + "/src/templates/base.tmpl.html",
-      filename: 'templates/base.html',
-    }),
     
     new webpack.HotModuleReplacementPlugin(),
     
@@ -64,7 +64,9 @@ module.exports = {
       root: __dirname,
       verbose: true,
       dry: false
-    })
+    }),
+    
+    new BundleTracker({filename: './webpack-stats.json'}),
 
   ],
 };

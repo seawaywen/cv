@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'crispy_forms',
+    'webpack_loader',
     
     'resume',
 ]
@@ -164,9 +165,9 @@ MEDIA_URL = '/media/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'DIRS': (
-            os.path.join(BASE_DIR, "static_src/dist/templates"),
+            #os.path.join(BASE_DIR, "static_src/dist/templates"),
             os.path.join(BASE_DIR, 'static', 'templates'),
         ),
         'OPTIONS': {
@@ -179,6 +180,12 @@ TEMPLATES = [
     },
 ]
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': '',
+        'STATS_FILE': os.path.join(BASE_DIR, 'static_src/webpack-stats.json'),
+    }
+}
 
 RESERVED_PROFILE_NAMESPACE_LIST = (
     'memodir-test-namespace'

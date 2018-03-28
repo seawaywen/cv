@@ -7,3 +7,4 @@ pyflakes==1.6.0
 responses==0.8.1
 testtools==2.3.0
 
+django-webpack-loader==0.6.0

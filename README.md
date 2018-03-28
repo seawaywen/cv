@@ -30,3 +30,11 @@ $ make destroy-db
 ### create a super user
 $ make createsuperuser
 
+
+# FrontEnd
+Use the webpack to buuild the asset
+
+$ yarn run build
+
+if you need the build automatically with the file changes 
+$ yarn run watch

@@ -1,35 +1,17 @@
 {% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
 {% load i18n %}
-{% load crispy_forms_tags %}
 
 {% block header_container %}
 {% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
 {% endblock header_container %}
 
 {% block content_container %}
-<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
-    <input name="next" type="hidden" value="{{ redirect_to }}" />
-    {% get_current_language as LANGUAGE_CODE %}
-    {% get_available_languages as LANGUAGES %}
-    {% get_language_info_list for LANGUAGES as languages %}
-    <select name="language">
-        {% for language in languages %}
-            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                {{ language.name_local }} ({{ language.code }})
-            </option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Go" />
-</form>
-<hr>
 <h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
 
 {{ profile_obj.user.username }}
 {{ profile_obj.description}}
 
+{% render_bundle 'profile' %}
+
 {% endblock content_container %}
-
-</body>
-</html>
-
-
