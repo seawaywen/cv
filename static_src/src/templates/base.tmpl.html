@@ -1,0 +1,53 @@
+{% spaceless %}
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+{% endspaceless %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <meta name="author" content="memodir.com" />
+    {% block core_css %}
+    
+    {% endblock %}
+    {% block page_css %}{% endblock %}
+    
+    <link rel="shortcut icon" href="{% static 'dist/img/favicon.ico' %}">
+  </head>
+  <body>
+    {% get_current_language as LANGUAGE_CODE %}
+
+    {% block navigation_container %}
+    {% endblock navigation_container %}
+
+    {% block header_container %}
+    {% endblock header_container %}
+    
+    <div id="content" class="clearfix content-area">
+    {% block content_container %}
+    <div id="messages">
+      {% block messages %}
+      {% if messages %}
+        {% for message in messages %}
+        <p class="message{% if message.tags %} {{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+      {% endblock messages %}
+    </div>
+    {% endblock content_container %}
+    </div>
+    
+    {% block footer_container %}
+    {% endblock footer_container %}
+    
+    {% block core_js %}
+    {% endblock core_js %}
+    
+    {% block page_js %}
+    {% endblock page_js %}
+    
+    
+  </body>
+</html>
+
