@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch",
-    "server": "webpack-dev-server --open"
-  },
+    "dev": "webpack-dev-server" 
+    },
+  
   "dependencies": {
     "bootstrap": "^4.0.0",
     "jquery": "^3.3.1",
