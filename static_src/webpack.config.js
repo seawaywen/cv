@@ -10,7 +10,7 @@ var buildEntryPoint = function(entryPoint){
     'webpack-dev-server/client?http://localhost:8080/',
     entryPoint
   ]
-}
+};
 
 module.exports = {
   entry: {
@@ -21,8 +21,8 @@ module.exports = {
     filename: '[name]-bundle.js',
     //filename: "[name]-bundle-[hash].js",
     path: path.resolve(__dirname, 'dist'),
-    hotUpdateChunkFilename: 'hot-update.js',
-    hotUpdateMainFilename: 'hot-update.json',
+    //hotUpdateChunkFilename: 'hot-update.js',
+    //hotUpdateMainFilename: 'hot-update.json',
     //publicPath: '/static/dist/',
     publicPath: 'http://localhost:8080/static/dist/' //!!! point to the dev server
   },
@@ -90,17 +90,17 @@ module.exports = {
           'file-loader'
         ]
       }
- 
-
     ]
   },
   
   plugins: [
+    /*
     new CleanWebpackPlugin('dist/*.*', {
       root: __dirname,
       verbose: true,
       dry: false
     }),
+    */
     
     new webpack.BannerPlugin('memodir.com copyright reserverd@2018'),
     /* 
