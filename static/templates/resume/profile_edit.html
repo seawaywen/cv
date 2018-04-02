@@ -3,6 +3,10 @@
 {% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
 
+{% block page_css %}
+{% render_bundle 'profile' 'css' %}
+{% endblock %}
+
 {% block header_container %}
 {% endblock header_container %}
 
@@ -11,7 +15,10 @@
 
 {% crispy form form.helper %}
 
-{% render_bundle 'main' %}
-
 {% endblock content_container %}
 
+
+
+{% block page_js %}
+{% render_bundle 'profile' 'js' %}
+{% endblock page_js %}

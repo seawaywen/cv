@@ -2,8 +2,12 @@
 {% load render_bundle from webpack_loader %}
 {% load i18n %}
 
+{% block page_css %}
+{% render_bundle 'main' 'css' %}
+{% endblock %}
+
 {% block header_container %}
-{% blocktrans %}Welcome to the MemoDir site{% endblocktrans %}
+{% blocktrans %}Welcome to the MemoDir site.......{% endblocktrans %}
 {% endblock header_container %}
 
 {% block content_container %}
@@ -12,7 +16,11 @@
 {{ profile_obj.user.username }}
 {{ profile_obj.description}}
 
-
-{% render_bundle 'main' %}
+<div class='errormsg'>Invalid username and password</div>
+<div class='successmsg style-msg'>Account created successfully</div>
 
 {% endblock content_container %}
+
+{% block page_js %}
+{% render_bundle 'main' 'js' %}
+{% endblock page_js %}
