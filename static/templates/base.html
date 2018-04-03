@@ -44,7 +44,9 @@
               <ul>
                 <li>                <a href="#"><div>Home</div></a></li>
                 <li class="current"><a href="#"><div>Memory</div></a></li>
+                <li class="current"><a href="#"><div>记忆块</div></a></li>
                 <li class="mega-menu"><a href="#"><div>Blog</div></a></li>
+                <li class="mega-menu"><a href="#"><div>博客</div></a></li>
               </ul> <!-- primary menu list end-->
               
               <div id="top-search">
@@ -54,8 +56,6 @@
                   </form>
               </div><!-- #top-search end -->
               
-              {% comment %} 
-              {% endcomment %}
               <div id="switch-language" style='float:right;'>
                 <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                     <input name="next" type="hidden" value="{{ redirect_to }}" />
