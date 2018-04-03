@@ -1,24 +1,33 @@
 const webpack = require('webpack');
 const path = require('path');
-//const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 
 const settings = require('./settings');
+const utils = require('./utils');
+
+const isProduction = process.env.NODE_ENV === 'production';
+const sourceMapEnabled = isProduction ? settings.prod.sourceMap
+  : settings.dev.sourceMap;
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
 
   entry: {
     main: './src/js/main.js',
-    profile: './src/js/profile.js',
+    profile: './src/js/profile.js'
   },
 
   output: {
-    filename: process.env.NODE_ENV === 'production'
+    filename: isProduction
       ? settings.prod.filename : settings.dev.filename,
     path: path.resolve(__dirname, '../dist'),
-    publicPath: process.env.NODE_ENV === 'production'
+    publicPath: isProduction
       ? settings.prod.publicPath : settings.dev.publicPath
   },
 
@@ -30,65 +39,116 @@ module.exports = {
           loader: "babel-loader"
         },
         exclude: /node_modules/
-      }, {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          }, {
-            loader: "css-loader",
-            options: {
-              modules: true,
-              localIdentName: '[name]_[local]_[hash:base64:6]'
-            }
-          }]
-      }, {
-        test: /\.less$/,
-        use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: "css-loader"
-            }, {
-              loader: "less-loader",
-              options: {
-                sourceMap: true,
-                precision: 8,
-                data: "$ENV: " + "PRODUCTION" + ";"
-              }
-          }
-        ]
-      }, {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader'
-        ]
+        test: /\.css$/,
+        use:
+          ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  sourceMap: sourceMapEnabled
+                }
+              },
+              {
+                loader: "postcss-loader",
+                options: {
+                  sourceMap: 'inline'
+                }
+              }
+            ]
+          }))
+      },
+      {
+        test: /\.less$/,
+        use:
+          ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  sourceMap: sourceMapEnabled
+                }
+              }, {
+                loader: "postcss-loader",
+                options: {
+                  sourceMap: 'inline'
+                }
+              }, {
+                loader: "less-loader",
+                options: {
+                  sourceMap: sourceMapEnabled,
+                  precision: 8,
+                  data: "$ENV: " + "PRODUCTION" + ";"
+                }
+              }
+            ]
+          }))
+      },
+      {
+        test: /\.(png|svg|gif|jpe?g)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: utils.cssLoaders({
+            sourceMap: isProduction,
+            extract: isProduction
+          }),
+          cssSourceMap: sourceMapEnabled,
+          transformToRequire: {
+            video: 'src',
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
+          }
+        }
       }
     ]
   },
-  
+
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      '@': resolve('src'),
+      '__STATIC__': resolve('static')
+    }
+  },
+
   plugins: [
 
-    new webpack.BannerPlugin('memodir.com copyright reserves@2018'),
+    new webpack.BannerPlugin('memodir.com Copyright reserves@2018'),
 
     new BundleTracker({filename: './webpack-stats.json'}) ,
 
-    /*new ExtractTextPlugin({
-        allChunks: true
-    }) */
-
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      //filename: '[name]-[hash:6].css',
-      filename: '[name].css',
-      chunkFilename: "[id].css"
+    new ExtractTextPlugin({
+      filename: isProduction
+        ? settings.prod.cssFilename : settings.dev.cssFilename
     })
-  ],
+  ]
 };
-

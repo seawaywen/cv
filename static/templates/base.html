@@ -10,20 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
     <title>{% block title %}{{ title }}{% endblock %}</title>
-    
-    {% block page_css %}{% endblock %}
-    
+
     {% block core_css %}
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:300,400,500,600,700|Crete+Round:400i" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{% static 'css/dark.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/swiper.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/font-icons.css' %}" type="text/css" /> 
     <link rel="stylesheet" href="{% static 'css/animate.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css" />
     <link rel="stylesheet" href="{%static 'css/responsive.css' %}" type="text/css" />
     {% endblock %}
-    
+
+    {% block page_css %}{% endblock %}
     <link rel="shortcut icon" href="{% static 'dist/img/favicon.ico' %}">
   </head>
   
@@ -58,6 +55,7 @@
               </div><!-- #top-search end -->
               
               {% comment %} 
+              {% endcomment %}
               <div id="switch-language" style='float:right;'>
                 <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                     <input name="next" type="hidden" value="{{ redirect_to }}" />
@@ -71,8 +69,7 @@
                     <input type="submit" value="Go" />
                 </form>
               </div><!-- #top-search end -->
-              {% endcomment %} 
-    
+
               <div id="top-cart">
                   <a href="#" id="top-cart-trigger"><i class="icon-shopping-cart"></i></a>
                   <div class="top-cart-content">
@@ -211,10 +208,8 @@
 
           {% block content_container %}
           {% endblock content_container %}
+        
           </div>
-        
-        
-          
         </div>
       </section><!-- #content end -->
   

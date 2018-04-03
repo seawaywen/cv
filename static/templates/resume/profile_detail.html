@@ -18,9 +18,14 @@
 
 <div class='errormsg'>Invalid username and password</div>
 <div class='successmsg style-msg'>Account created successfully</div>
-
+  <h4>
+    这里是中文显示的系统字体
+  </h4>
+<h4 class="font-kai">
+这里是中文显示的楷体
+</h4>
 {% endblock content_container %}
 
 {% block page_js %}
-{% render_bundle 'main' 'js' %}
+  {% render_bundle 'main' 'js' %}
 {% endblock page_js %}
