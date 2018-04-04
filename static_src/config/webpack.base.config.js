@@ -19,7 +19,7 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
 
   entry: {
-    main: './src/js/main.js',
+    portfolio: './src/js/portfolio.js',
     profile: './src/js/profile.js'
   },
 
@@ -33,12 +33,14 @@ module.exports = {
 
   module: {
     rules: [
+      /*
       {
         enforce: 'pre',
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         exclude: /node_modules/
       },
+      */
       {
         test: /(\.js)$/,
         loader: "babel-loader",

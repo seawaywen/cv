@@ -1,17 +1,23 @@
 <template>
-  <div id="app">
+  <div id="greeting">
     <p>Hello, {{ greeting }} </p>
   </div>
 </template>
 
 <script>
-  export default {
-  name: 'app'
+export default {
+  //name: 'app',
+  props: {
+    greeting: {
+      type: String,
+      default: 'no-one'
+    }
+  }
 }
 </script>
 
 <style>
-#app {
+#greeting {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block page_css %}
-{% render_bundle 'main' 'css' %}
+{% render_bundle 'portfolio' 'css' %}
 {% endblock %}
 
 {% block header_container %}
@@ -46,10 +46,9 @@
 </div>
 
 
-
-  <div id="app"></div>
+<div id="portfolio"></div>
 {% endblock content_container %}
 
 {% block page_js %}
-  {% render_bundle 'main' 'js' %}
+  {% render_bundle 'portfolio' 'js' %}
 {% endblock page_js %}
