@@ -34,11 +34,32 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(\.jsx|\.js)$/,
-        use: {
-          loader: "babel-loader"
-        },
+        enforce: 'pre',
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /(\.js)$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: utils.cssLoaders({
+            sourceMap: isProduction,
+            extract: isProduction
+          }),
+          cssSourceMap: sourceMapEnabled,
+          transformToRequire: {
+            video: 'src',
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
+          }
+        }
       },
       {
         test: /\.css$/,
@@ -110,23 +131,6 @@ module.exports = {
         options: {
           limit: 10000,
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
-        }
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: utils.cssLoaders({
-            sourceMap: isProduction,
-            extract: isProduction
-          }),
-          cssSourceMap: sourceMapEnabled,
-          transformToRequire: {
-            video: 'src',
-            source: 'src',
-            img: 'src',
-            image: 'xlink:href'
-          }
         }
       }
     ]

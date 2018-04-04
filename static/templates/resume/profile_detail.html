@@ -15,15 +15,38 @@
 
 {{ profile_obj.user.username }}
 {{ profile_obj.description}}
+  <div class="style-msg errormsg">
+    <div class="sb-msg"><i class="icon-remove"></i>
+      <strong>Oh snap!</strong> Change a few things up and try submitting again.</div>
+  </div>
 
 <div class='errormsg'>Invalid username and password</div>
+
 <div class='successmsg style-msg'>Account created successfully</div>
-  <h4>
-    这里是中文显示的系统字体
-  </h4>
-<h4 class="font-kai">
-这里是中文显示的楷体
+
+<h4>
+  这里是中文显示的系统字体
 </h4>
+
+<h4 class="font-kai"> 这里是中文显示的楷体 </h4>
+
+<div class="style-msg2" style="background-color: #EFEFEF;">
+  <div class="msgtitle">
+    <i class="icon-pencil2"></i>
+    本次会议需要解决的问题:
+  </div>
+  <div class="sb-msg">
+    <ul>
+      <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi, adipisci.</li>
+      <li>Placeat, et hic pariatur fugiat autem earum facere necessitatibus fuga.</li>
+      <li>Aliquid, esse, perspiciatis iure rerum laudantium iste minima quas facere!</li>
+      <li>Nam, ab, reiciendis magnam et odio inventore sapiente dolore vel.</li>
+    </ul>
+  </div>
+</div>
+
+
+
   <div id="app"></div>
 {% endblock content_container %}
 
