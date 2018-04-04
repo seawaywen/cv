@@ -2,11 +2,11 @@
   <div class="style-msg2" :class="classObject" :style="styleObject">
     <div class="msgtitle">
       <i class="icon-pencil2"></i>
-      {{ title }}
+      {{ messageData.title }}
     </div>
     <div class="sb-msg">
       <ul>
-        <li v-for="(item, index) in contentList">
+        <li v-for="(item, index) in messageData.contentList">
           {{ item }}
         </li>
       </ul>
@@ -18,6 +18,10 @@
 export default {
   name: 'message-box',
   props: {
+    messageData: {
+      type: Object
+    }
+    /*
     theme: {
       type: String,
       //'grey','black', 'red', 'green'
@@ -31,6 +35,7 @@ export default {
       type: Array,
       default: []
     }
+    */
   },
   computed: {
     classObject () {
@@ -40,7 +45,7 @@ export default {
         'black': 'style-msg-light',
         'grey': ''
       };
-      return classMapping[this.theme]
+      return classMapping[this.messageData.theme]
     },
     styleObject () {
       let styleMapping = {
@@ -49,7 +54,7 @@ export default {
         'black': 'background-color: #444;',
         'grey': 'background-color: #EEE;'
       };
-      return styleMapping[this.theme]
+      return styleMapping[this.messageData.theme]
     }
   }
 }

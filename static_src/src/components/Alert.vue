@@ -26,6 +26,7 @@ export default {
         'black': 'style-msg-light',
         'grey': ''
       };
+      //we should consider the abnormal key case here
       return classMapping[this.alertData.theme]
     },
     styleObject () {
