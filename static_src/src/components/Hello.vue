@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  //name: 'app',
+  name: 'hello',
   props: {
     greeting: {
       type: String,

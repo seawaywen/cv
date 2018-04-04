@@ -1,5 +1,5 @@
 <template>
-  <div class="style-msg2" v-bind:class="classObject" v-bind:style="styleObject">
+  <div class="style-msg2" :class="classObject" :style="styleObject">
     <div class="msgtitle">
       <i class="icon-pencil2"></i>
       {{ title }}
@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  name: 'message-box',
   props: {
     theme: {
       type: String,
@@ -27,7 +28,7 @@ export default {
       default: 'Topic'
     },
     contentList: {
-      type: Object,
+      type: Array,
       default: []
     }
   },
