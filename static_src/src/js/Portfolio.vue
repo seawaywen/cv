@@ -30,7 +30,7 @@ export default {
       greeting: 'kelvin-li',
 
       messageData: {
-        theme: 'green', //'black', 'red', 'green'
+        theme: 'black', //'black', 'red', 'green'
         title: '本次会议需要解决的问题',
         contentList: [
           '操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是属性，',
@@ -46,21 +46,31 @@ export default {
         isRemovable: true,
         iconClass: 'icon-info-sign' //'icon-remove', 'icon-info-sign', 'icon-warning-sign', 'icon-question-sign'
       },
-      tabData: [
-        {
-          title: 'name1',
-          content: 'my name is Kelvin',
-          icon: 'icon-home',
-          id: 'tab-25'
+      tabData: {
+        type: 'horizontal', //'vertical' or 'horizontal'
+        contentList: [
+          {
+            title: '',
+            content: 'v- 前缀作为一种视觉提示，用来识别模板中 Vue 特定的特性。当你在使用 Vue.js 为现有标签添加动态行为 (dynamic behavior) 时，v- 前缀很有帮助，然而，对于一些频繁用到的指令来说，就会感到使用繁琐。同时，在构建由 Vue.js 管理所有模板的单页面应用程序 (SPA - single page application) 时，v- 前缀也变得没那么重要了。因此，Vue.js 为 v-bind 和 v-on 这两个最常用的指令，提供了特定简写：',
+            icon: 'icon-home2',
+            id: 'tab-24'
 
-        },
-        {
-          title: 'name2',
-          content: 'my name is Trinity',
-          icon: '',
-          id: 'tab-26'
-        },
-      ]
+          },
+          {
+            title: 'name1',
+            content: 'my name is Kelvin',
+            icon: '',
+            id: 'tab-25'
+
+          },
+          {
+            title: 'name2',
+            content: 'my name is Trinity',
+            icon: '',
+            id: 'tab-26'
+          }
+        ]
+      }
     }
   }
 }

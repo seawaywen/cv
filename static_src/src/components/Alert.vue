@@ -17,7 +17,6 @@ export default {
   },
   computed: {
     classObject () {
-      console.log(this.alertData);
       let classMapping = {
         'info': 'infomsg',
         'alert': 'alertmsg',

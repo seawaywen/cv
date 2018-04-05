@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect # noqa
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _  # noqa 
 from django.utils import translation
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic import DetailView
 
@@ -97,13 +97,18 @@ class ProjectView(View):
             }
             return render(request, self.template_name, context)
 
+
 class ProfileUpdateView(UpdateView):
     model = UserProfile
     form_class = ProfileForm
     template_name = 'resume/profile_edit.html'
+
 
 class ProfileDetailView(DetailView):
     model = UserProfile
     template_name = 'resume/profile_detail.html'
     context_object_name = 'profile_obj'
 
+
+class SignInView(TemplateView):
+    template_name = 'resume/login.html'
