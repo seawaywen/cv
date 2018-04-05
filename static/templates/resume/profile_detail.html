@@ -1,28 +1,24 @@
 {% extends "base.html" %}
-{% load render_bundle from webpack_loader %}
 {% load i18n %}
+{% load render_bundle from webpack_loader %}
 
 {% block page_css %}
 {% render_bundle 'portfolio' 'css' %}
 {% endblock %}
 
-{% block header_container %}
-{% blocktrans %}Welcome to the MemoDir site.......{% endblocktrans %}
-{% endblock header_container %}
+{% block slider %}{% endblock slider %}
 
-{% block content_container %}
-
-{{ profile_obj.user.username }}
-{{ profile_obj.description}}
-
+{% block sub_content %}
 <div id="portfolio"></div>
 
-<h4> 这里是中文显示的系统字体 </h4>
+{% endblock sub_content %}
 
-<h4 class="font-kai"> 这里是中文显示的楷体 </h4>
+{% block footer-info %}
+  <h4> 这里是中文显示的系统字体 </h4>
+  <h4 class="font-kai"> 这里是中文显示的楷体</h4>
+  <h4> if this is English, here is how it looks like</h4>
+{% endblock footer-info %}
 
-
-{% endblock content_container %}
 
 {% block page_js %}
   {% render_bundle 'portfolio' 'js' %}

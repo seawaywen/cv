@@ -111,4 +111,4 @@ class ProfileDetailView(DetailView):
 
 
 class SignInView(TemplateView):
-    template_name = 'resume/login.html'
+    template_name = 'resume/signin.html'
