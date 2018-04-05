@@ -5,7 +5,12 @@
 
     <message-box :messageData='messageData' />
 
+    <div class='divider' />
     <alert :alertData='alertData' />
+
+    <div class="line"></div>
+
+    <tab :tabData='tabData' />
 
   </div>
 </template>
@@ -14,10 +19,11 @@
 import Hello from '../components/Hello.vue'
 import MessageBox from '../components/MessageBox.vue'
 import Alert from '../components/Alert.vue'
+import Tab from '../components/Tab.vue'
 
 export default {
   components: {
-    Hello, MessageBox, Alert
+    Hello, MessageBox, Alert, Tab
   },
   data () {
     return {
@@ -39,7 +45,22 @@ export default {
         content: 'Element, a Vue 2.0 based component library for developers, designers and product managers',
         isRemovable: true,
         iconClass: 'icon-info-sign' //'icon-remove', 'icon-info-sign', 'icon-warning-sign', 'icon-question-sign'
-      }
+      },
+      tabData: [
+        {
+          title: 'name1',
+          content: 'my name is Kelvin',
+          icon: 'icon-home',
+          id: 'tab-25'
+
+        },
+        {
+          title: 'name2',
+          content: 'my name is Trinity',
+          icon: '',
+          id: 'tab-26'
+        },
+      ]
     }
   }
 }

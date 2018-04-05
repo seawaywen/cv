@@ -4,7 +4,7 @@
       <i :class="alertData.iconClass"></i><strong>{{ alertData.title }}</strong>
       {{ alertData.content }}
     </div>
-		<button v-if="alertData.isRemovable" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<button v-if="alertData.isRemovable" type="button" class="close" data-dismiss="alert" aria-hidden="true" >&times;</button>
   </div>
 </template>
 
