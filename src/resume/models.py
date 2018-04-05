@@ -39,17 +39,17 @@ class MultilingualModel(models.Model):
         except self._meta.translation.DoesNotExist:
             return self.__dict__[name]
 
-        
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
     GENDER_CHOICES = (
         ('M', _('Male')),
         ('F', _('Female')),
         ('U', _('Unknown'))
     )
     gender = models.CharField(max_length=1, verbose_name=_('Gender'),
-                              choices=GENDER_CHOICES)
+                              choices=GENDER_CHOICES, default='U')
     birthday = models.DateField(
         null=True, blank=True, verbose_name=_(u'Birthday'))
     
@@ -60,7 +60,8 @@ class UserProfile(models.Model):
     photo_crop = models.ImageField(
         upload_to=settings.THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO, 
         blank=True, null=True)
-    photo_upload_name = models.CharField(max_length=256, blank=True, null=True,
+    photo_upload_name = models.CharField(
+        max_length=256, blank=True, null=True,
         verbose_name=_('Original photo name'))
     
     phone_number = models.CharField(max_length=32, blank=True, 
@@ -69,7 +70,8 @@ class UserProfile(models.Model):
                                choices=country_list, null=True)
     city = models.CharField(max_length=80, verbose_name=_('City'), blank=True,
                             null=True)
-    namespace = models.CharField(max_length=256, blank=True, null=True,
+    namespace = models.CharField(
+        max_length=256, blank=True, null=True,
         unique=True, validators=[validate_namespace],
         verbose_name=_('namespace'),
         help_text=_('Required before creating any related operation.\n'

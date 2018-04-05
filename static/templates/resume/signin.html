@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% load render_bundle from webpack_loader %}
+{% load crispy_forms_tags %}
 
 {% block page_css %}
   {% render_bundle 'portfolio' 'css' %}
@@ -15,68 +16,73 @@
 
 {% block content %}
   <section id="content">
-    <div class="content-wrap nopadding">
 
-      <div class="section nopadding nomargin"
-           style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: url({% static 'images/parallax/home/1.jpg' %}) center center no-repeat; background-size: cover;"></div>
+    <div class="section nopadding nomargin"
+         style="width: 100%; height: 100%; position: absolute; left: 0; top: 0;
+             background: url({% static 'images/parallax/home/6.jpg' %}) center center no-repeat;
+             background-size: cover;"></div>
 
-      <div class="section nobg full-screen nopadding nomargin">
-        <div class="container-fluid vertical-middle divcenter clearfix">
+    <div class="nobg full-screen clearfix">
+      <div class="accordion accordion-lg divcenter " style="margin-top:30px;">
 
-          <div class="center">
-            <a href="index.html"><img src="{% static 'images/logo-dark.png' %}"
-                                      alt="Logo"></a>
-          </div>
+        <div class="card divcenter noradius noborder"
+             style="max-width: 700px; background-color: rgba(255,255,255,0.93);">
+          <div class="card-body" style="padding: 20px 40px 0 20px">
+            <div class="acctitle">
+              <i class="acc-closed icon-lock3"></i>
+              <i class="acc-open icon-unlock"></i>SignIn
+            </div>
+            <div class="acc_content clearfix">
 
-          <div class="card divcenter noradius noborder"
-               style="max-width: 400px; background-color: rgba(255,255,255,0.93);">
-            <div class="card-body" style="padding: 40px;">
-              <form id="login-form" name="login-form" class="nobottommargin"
-                    action="#" method="post">
-                <h3>Login to your Account</h3>
+               <form id="signin-form" name="signin-form" class="nobottommargin"
+                     action="{% url 'signin' %}method="post">
 
-                <div class="col_full">
-                  <label for="login-form-username">Username:</label>
-                  <input type="text" id="login-form-username"
-                         name="login-form-username" value=""
-                         class="form-control not-dark"/>
-                </div>
-
-                <div class="col_full">
-                  <label for="login-form-password">Password:</label>
-                  <input type="password" id="login-form-password"
-                         name="login-form-password" value=""
-                         class="form-control not-dark"/>
-                </div>
+                {% crispy sign_in_form sign_in_form.helper %}
 
                 <div class="col_full nobottommargin">
-                  <button class="button button-3d button-black nomargin"
+                  <button class="button button-3d button-green nomargin"
                           id="login-form-submit" name="login-form-submit"
-                          value="login">Login
+                          value="signIn">SignIn
                   </button>
                   <a href="#" class="fright">Forgot Password?</a>
                 </div>
               </form>
 
-              <div class="line line-sm"></div>
-
-              <div class="center">
-                <h4 style="margin-bottom: 15px;">or Login with:</h4>
-                <a href="#"
-                   class="button button-rounded si-facebook si-colored">Facebook</a>
-                <span class="d-none d-md-block">or</span>
-                <a href="#" class="button button-rounded si-twitter si-colored">Twitter</a>
-              </div>
+              <div class="center"></div>
             </div>
           </div>
+        </div>
 
-          <div class="center dark">
-            <small>Copyrights &copy; All Rights Reserved by Canvas Inc.</small>
+        <div class="card divcenter noradius noborder"
+             style="max-width: 700px; background-color: rgba(255,255,255,0.93);">
+          <div class="card-body" style="padding: 0 40px 20px 20px">
+            <div class="acctitle">
+              <i class="acc-closed icon-user4"></i>
+              <i class="acc-open icon-ok-sign"></i>SignUp a New account
+            </div>
+            <div class="acc_content clearfix">
+
+
+              <form id="signup-form" name="signup-form"
+                    class="nobottommargin" action="{% url 'signup' %}" method="post">
+
+                {% crispy sign_up_form sign_up_form.helper %}
+
+                <div class="col_full nobottommargin">
+                  <button class="button button-3d button-green nomargin"
+                          id="register-form-submit"
+                          name="register-form-submit"
+                          value="register">SignUp Now
+                  </button>
+                </div>
+              </form>
+
+              <div class="center"></div>
+            </div>
           </div>
 
         </div>
       </div>
-
     </div>
   </section>
 {% endblock content %}

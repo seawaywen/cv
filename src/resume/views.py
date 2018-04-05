@@ -2,19 +2,20 @@
 
 import logging
 
-from django.shortcuts import render # noqa 
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render # noqa
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect # noqa 
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _  # noqa 
 from django.utils import translation
 from django.views.generic.base import View, TemplateView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import DetailView
 
 from resume.models import WorkExperience, Project, UserProfile
-from resume.forms import ProjectForm, ProfileForm
-
+from resume.forms import ProjectForm, ProfileForm, SignInForm, SignUpForm
 
 logger = logging.getLogger(__name__)
 
@@ -110,5 +111,28 @@ class ProfileDetailView(DetailView):
     context_object_name = 'profile_obj'
 
 
-class SignInView(TemplateView):
+class SignInOrUpView(TemplateView):
     template_name = 'resume/signin.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs.update({
+            'sign_in_form': SignInForm(),
+            'sign_up_form': SignUpForm(),
+        })
+        return kwargs
+
+
+class SignInView(LoginView):
+    template_name = 'resume/signin.html'
+    form_class = SignInForm
+
+
+class SignUpView(CreateView):
+    model = User
+    form_class = SignUpForm
+    template_name = 'resume/signin.html'
+
+
+
+
+

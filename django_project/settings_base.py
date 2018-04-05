@@ -54,6 +54,17 @@ INSTALLED_APPS = [
     'resume',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'resume.authentication.EmailAuthBackend',
+)
+
+
+LOGIN_URL = "signin"
+LOGOUT_URL = "signout"
+LOGIN_REDIRECT_URL = 'profile/1'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -182,7 +193,7 @@ TEMPLATES = [
         }
     },
 ]
-
+#AUTH_USER_MODEL = "resume.UserProfile"
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '',
