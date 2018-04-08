@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-24 13:14+0000\n"
+"POT-Creation-Date: 2018-04-08 06:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,114 +18,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: admin.py:36
+#: admin.py:38
 msgid "User Info"
 msgstr "用户信息"
 
-#: admin.py:40 models.py:69 views.py:16
+#: admin.py:42 models.py:153 views.py:30
 msgid "Job Position"
 msgstr "职位"
 
-#: admin.py:44 models.py:71 views.py:16
+#: admin.py:46 models.py:155 views.py:30
 msgid "Location"
 msgstr "位置"
 
-#: models.py:37
-msgid "LinkedIn"
+#: forms.py:66
+#, python-format
+msgid ""
+"Please enter a correct %(username)s and password. Note that both fields may "
+"be case-sensitive."
+msgstr "请输入正确的用户名%(username)s和密码。注意区分大小写"
+
+#: forms.py:68
+msgid "This account is inactive."
+msgstr "该账户处于停用状态"
+
+#: forms.py:136
+msgid "Re-enter password"
+msgstr "再输一遍密码"
+
+#: forms.py:147
+msgid "Email"
+msgstr "邮箱"
+
+#: forms.py:174
+msgid "SignUp Now"
+msgstr "现在注册"
+
+#: forms.py:184
+msgid "The username already exists."
+msgstr "用户名已经存在"
+
+#: forms.py:195
+msgid "A user with this email already exists."
+msgstr "使用该邮箱的用户已经存在了"
+
+#: forms.py:210
+msgid "The two password fields didn't match."
+msgstr "两次密码输入不同"
+
+#: models.py:47
+msgid "Male"
+msgstr "男"
+
+#: models.py:48
+msgid "Female"
+msgstr "女"
+
+#: models.py:49
+msgid "Unknown"
+msgstr "未知"
+
+#: models.py:51
+msgid "Gender"
+msgstr "性别"
+
+#: models.py:54
+msgid "Birthday"
+msgstr "生日"
+
+#: models.py:58
+msgid "A 256x256 image for your profile."
 msgstr ""
 
-#: models.py:39
+#: models.py:65
+msgid "Original photo name"
+msgstr "原始图片名称"
+
+#: models.py:68
+msgid "Phone"
+msgstr "手机"
+
+#: models.py:69
+msgid "Country/Region"
+msgstr "国家/地区"
+
+#: models.py:71
+msgid "City"
+msgstr "城市"
+
+#: models.py:76
+msgid "namespace"
+msgstr "命名空间"
+
+#: models.py:77
+msgid ""
+"Required before creating any related operation.\n"
+"Lower-case letters, numbers, dots or hyphens allowed only."
+msgstr ""
+
+#: models.py:82
+msgid "LinkedIn"
+msgstr "领英"
+
+#: models.py:84
 msgid "Wechat"
 msgstr "微信"
 
-#: models.py:41
+#: models.py:86
 msgid "Facebook"
-msgstr ""
+msgstr "脸书"
 
-#: models.py:43 models.py:113 views.py:34
+#: models.py:88 models.py:200 views.py:48 views.py:73
 msgid "Github"
 msgstr ""
 
-#: models.py:45
+#: models.py:90
 msgid "Personal Site"
 msgstr "个人网站"
 
-#: models.py:46 views.py:35
+#: models.py:91 views.py:49 views.py:74
 msgid "Description"
 msgstr "描述"
 
-#: models.py:55
+#: models.py:101
 msgid "{}'s profile"
 msgstr "{} 的介绍"
 
-#: models.py:67 views.py:15
+#: models.py:151 views.py:29
 msgid "Language"
 msgstr "语言"
 
-#: models.py:70 views.py:15
+#: models.py:154 views.py:29
 msgid "Company"
 msgstr "就职公司"
 
-#: models.py:72 views.py:17
+#: models.py:156 views.py:31
 msgid "Start Date"
 msgstr "开始时间"
 
-#: models.py:74 views.py:17
+#: models.py:158 views.py:31
 msgid "End Date"
 msgstr "结束时间"
 
-#: models.py:76
+#: models.py:160
 msgid "Your highlight contribution"
 msgstr "亮点贡献"
 
-#: models.py:78 views.py:19
+#: models.py:162 views.py:33
 msgid "Keywords"
 msgstr "关键词"
 
-#: models.py:79
+#: models.py:163
 msgid "The words that might search for when looking"
 msgstr ""
 
-#: models.py:95 models.py:120
+#: models.py:179 models.py:207
 msgid "Is this experience public?"
 msgstr "是否公开此经验"
 
-#: models.py:109 views.py:33
+#: models.py:196 views.py:47 views.py:72
 msgid "Title"
 msgstr "标题"
 
-#: models.py:111 views.py:33
+#: models.py:198 views.py:47 views.py:72
 msgid "Download Link"
 msgstr "下载链接"
 
-#: models.py:112 views.py:34
+#: models.py:199 views.py:48 views.py:73
 msgid "Live Link"
 msgstr "在线展示链接"
 
-#: models.py:114
+#: models.py:201
 msgid "Summary"
 msgstr "摘要"
 
-#: models.py:117
+#: models.py:204
 msgid "Project Image"
 msgstr "项目图片"
 
-#: models.py:118
+#: models.py:205
 msgid "A 300x300 image for the project"
 msgstr "一副300x300的项目图片"
 
-#: templates/resume/index.html:10
-msgid "Welcome to the MemoDir site"
-msgstr "欢迎访问MemoDir站点"
+#: validators.py:18
+msgid ""
+"Enter a value consisting of lower-case letters, numbers or hyphens. Hyphens "
+"can not occur at the start or end of the chosen value."
+msgstr ""
+"输入一个包含小写字母，数字或者短横线(-)的值。选择的值不能以短横线(-)开始或者"
+"结束"
 
-#: templates/resume/index.html:28
-msgid "Experience"
-msgstr "经验"
+#: validators.py:26
+msgid "You cannot use this reserved namespace."
+msgstr "您无法使用这个预留的命名空间"
 
-#: templates/resume/index.html:37
-msgid "Projects"
-msgstr "项目"
-
-#: views.py:18
+#: views.py:32
 msgid "Contribution"
 msgstr "贡献"
+
+#~ msgid "Welcome to the MemoDir site"
+#~ msgstr "欢迎访问MemoDir站点"
+
+#~ msgid "Experience"
+#~ msgstr "经验"
+
+#~ msgid "Projects"
+#~ msgstr "项目"

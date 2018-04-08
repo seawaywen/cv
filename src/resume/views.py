@@ -125,12 +125,27 @@ class SignInOrUpView(TemplateView):
 class SignInView(LoginView):
     template_name = 'resume/signin.html'
     form_class = SignInForm
+    success_url = '/profile/1'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+        })
+        return context
 
 
 class SignUpView(CreateView):
     model = User
     form_class = SignUpForm
-    template_name = 'resume/signin.html'
+    template_name = 'resume/signup.html'
+
+    success_url = '/profile/2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+        })
+        return context
 
 
 

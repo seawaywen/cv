@@ -101,6 +101,8 @@ class SignInForm(forms.Form):
         return self.user_cache
 
     def __init__(self, request=None, *args, **kwargs):
+        self.prefix = 'sign_in'
+
         self.request = request
         self.user_cache = None
         super().__init__(*args, **kwargs)
@@ -112,26 +114,15 @@ class SignInForm(forms.Form):
         self.helper.form_id = 'id-signin-form'
         self.helper.form_class = 'nobottommargin'
         self.helper.form_method = 'post'
-        #self.helper.add_input(Submit('SignIn', 'SignIn',
-        #                             css_class='button button-3d button-green nomargin'))
 
 
 class SignUpForm(forms.ModelForm):
-    '''
-    username = forms.CharField(label='Username',
-                               widget=forms.TextInput(attrs={
-                                   'class': 'form-control not-dark',
-                               }))
-    email = forms.CharField(label='Email',
-                            widget=forms.EmailInput(attrs={
+
+    email = forms.EmailField(label=_('Email'),
+                             widget=forms.EmailInput(attrs={
                                 'class': 'form-control not-dark',
                             }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': 'form-control not-dark'
-    }))
-    '''
-
-    password2 = forms.CharField(label='Re-enter password',
+    password2 = forms.CharField(label=_('Re-enter password'),
                                 widget=forms.PasswordInput(attrs={
                                     'class': 'form-control not-dark'
                                 }))
@@ -139,14 +130,15 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            'username', 'email', 'password'
+            'email', 'username', 'password'
         ]
-
+        labels = {
+        }
+        help_texts = {
+            'username': ''
+        }
         widgets = {
             "username": forms.TextInput(attrs={
-                'class': 'form-control not-dark'
-            }),
-            "email": forms.EmailInput(attrs={
                 'class': 'form-control not-dark'
             }),
             "password": forms.PasswordInput(attrs={
@@ -160,9 +152,21 @@ class SignUpForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.form_id = 'id-signup-form'
-        self.helper.form_class = 'nobottommargin'
-        self.helper.form_method = 'post'
+        self.helper.form_id = 'signup-form-submit'
+        self.helper.add_input(Submit(
+            'sign-up', _('SignUp Now'),
+            css_class='button button-3d button-green nomargin'))
+
+    def clean_username(self):
+
+        existing = User.objects.filter(
+            username__iexact=self.cleaned_data['username'])
+
+        if existing.exists():
+            raise forms.ValidationError(
+                _("The username already exists."))
+        else:
+            return self.cleaned_data['username']
 
     def clean_email(self):
 
@@ -175,13 +179,14 @@ class SignUpForm(forms.ModelForm):
         else:
             return self.cleaned_data['email']
 
+    #todo: password complexcity check
+
     def clean(self):
         """
         Verifiy that the values entered into the two password fields
         match. Note that an error here will end up in
         ``non_field_errors()`` because it doesn't apply to a single
         field.
-
         """
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password'] != self.cleaned_data['password2']:
@@ -189,3 +194,9 @@ class SignUpForm(forms.ModelForm):
                     _("The two password fields didn't match."))
         return self.cleaned_data
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user

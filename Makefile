@@ -7,6 +7,7 @@ GUNICORN = $(ENV)/bin/talisker
 PYTHON = $(ENV)/bin/python
 PIP = $(PYTHON) $(ENV)/bin/pip
 SRC_DIR = $(CURDIR)/src
+TEMPLATE_DIR = $(CURDIR)/static/templates
 STATIC_SRC_DIR = $(CURDIR)/static_src
 LIB_DIR = $(CURDIR)/lib
 PYTHONPATH := $(SRC_DIR):$(LIB_DIR):$(CURDIR):$(PYTHONPATH)
@@ -84,6 +85,12 @@ makemessages:
 	@for app in `ls $(SRC_DIR) | egrep -v '(test|tools)'`; do \
 		mkdir -p "$(SRC_DIR)/$$app/locale"; \
 		cd "$(SRC_DIR)/$$app"; \
+		$(DJANGO_MANAGE) makemessages -l en -l zh_Hans || exit; \
+		cd -; \
+	done
+	@for app in `ls $(TEMPLATE_DIR) | egrep -v '(test|tools)'`; do \
+		mkdir -p "$(TEMPLATE_DIR)/$$app/locale"; \
+		cd "$(TEMPLATE_DIR)/$$app"; \
 		$(DJANGO_MANAGE) makemessages -l en -l zh_Hans || exit; \
 		cd -; \
 	done
