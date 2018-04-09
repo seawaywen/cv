@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+{% block nav-menu %}{% endblock nav-menu %}
+{% block nav-utils %}{% endblock nav-utils %}
+{% block footer-info %} {% endblock footer-info %}
+
+
+{% block page_js %}
+  {% render_bundle 'portfolio' 'js' %}
+{% endblock page_js %}

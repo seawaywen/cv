@@ -4,6 +4,8 @@ import logging
 
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import SetPasswordForm as BaseSetPasswordForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -165,3 +167,42 @@ class SignUpForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class ResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(label=_("Email Address"),
+                             max_length=254,
+                             widget=forms.EmailInput(attrs={
+                                 'class': 'form-control not-dark',
+                             }))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.add_input(Submit(
+            'reset-my-password', _('Reset My Password'),
+            css_class='button button-3d button-green nomargin'))
+
+
+class ResetPasswordForm(BaseSetPasswordForm):
+    class Meta:
+        widgets = {
+            "new_password1": forms.PasswordInput(attrs={
+                'class': 'form-control not-dark'
+            }),
+            "new_password2": forms.PasswordInput(attrs={
+                'class': 'form-control not-dark'
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_id = 'set-password-form'
+        self.helper.add_input(Submit(
+            'change-my-password', _('Change my password'),
+            css_class='button button-3d button-green nomargin'))

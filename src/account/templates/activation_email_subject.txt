@@ -1,0 +1,5 @@
+{% load i18n %}
+
+{% blocktrans with site.name as site_name %}
+Account activation for {{ site_name }}
+{% endblocktrans %}

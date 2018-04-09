@@ -7,7 +7,13 @@ from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
 from django.utils.translation import ugettext_lazy as _
 
-from account.views import SignInView, SignUpView
+from account.views import (
+    SignInView,
+    SignUpView,
+    SignUpCompleteView,
+    ActivationView,
+    ActivationCompleteView,
+)
 
 admin.autodiscover()
 
@@ -23,8 +29,16 @@ urlpatterns += ([
     path('account/', include('account.urls')),
 
     path('signin', SignInView.as_view(), name='signin'),
-    path('signup', SignUpView.as_view(), name='signup'),
 
+    path('signup', SignUpView.as_view(), name='signup'),
+    path('signup/complete/',  SignUpCompleteView.as_view(),
+         name='signup_complete'),
+    path('activate/<activation_key>/',
+         ActivationView.as_view(),
+         name='signup_activate'),
+    path('activate/complete/',
+         ActivationCompleteView.as_view(),
+         name='signup_activate_complete'),
 
 ])
 

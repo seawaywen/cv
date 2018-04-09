@@ -60,6 +60,9 @@ AUTHENTICATION_BACKENDS = (
     'resume.authentication.EmailAuthBackend',
 )
 
+SIGNUP_OPEN = True
+EMAIL_DEFAULT_FROM = 'admin@memodir.com'
+ACCOUNT_ACTIVATION_HOURS = 1
 
 LOGIN_URL = "signin"
 LOGOUT_URL = "signout"

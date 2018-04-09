@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+{% block nav-menu %}{% endblock nav-menu %}
+{% block nav-utils %}{% endblock nav-utils %}
+{% block footer-info %} {% endblock footer-info %}
+
+
+{% block sub_content %}
+<h1>{% trans "Activation successful" %}</h1>
+{% url 'signin' as signin_url %}
+<h5>
+  {% blocktrans %}You can now proceed to <a href="{{ signin_url }}">signin.</a>{% endblocktrans %}
+</h5>
+{% endblock sub_content %}

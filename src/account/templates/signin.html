@@ -1,16 +1,6 @@
-{% extends 'base/base.html' %}
+{% extends 'base.html' %}
 {% load i18n static %}
-{% load render_bundle from webpack_loader %}
 {% load crispy_forms_tags %}
-
-{% block page_css %}
-  {% render_bundle 'portfolio' 'css' %}
-{% endblock %}
-
-{% block slider %}{% endblock slider %}
-{% block nav-menu %}{% endblock nav-menu %}
-{% block nav-utils %}{% endblock nav-utils %}
-{% block footer-info %} {% endblock footer-info %}
 
 
 {% block content %}
@@ -52,13 +42,7 @@
         </div>
       </div>
 
-
-
-
     </div>
   </section>
 {% endblock content %}
 
-{% block page_js %}
-  {% render_bundle 'portfolio' 'js' %}
-{% endblock page_js %}

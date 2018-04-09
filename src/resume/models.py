@@ -11,7 +11,11 @@ from django.urls import reverse_lazy
 
 from resume.countries import country_dict, country_list
 from resume.validators import validate_namespace
-from resume.utils import create_thumbnail, convert_to_png_uploaded_file, generate_uuid
+from resume.utils import (
+    create_thumbnail,
+    convert_to_png_uploaded_file,
+    generate_uuid
+)
 
 
 logger = logging.getLogger(__name__)
