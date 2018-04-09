@@ -167,6 +167,7 @@ STATICFILES_DIRS = [
     ('css', os.path.join(BASE_DIR, 'static', 'css')),
     ('images', os.path.join(BASE_DIR, 'static', 'images')),
     ('js', os.path.join(BASE_DIR, 'static', 'js')),
+    ('templates', os.path.join(BASE_DIR, 'static', 'templates')),
 ]
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -193,13 +194,17 @@ TEMPLATES = [
         }
     },
 ]
-#AUTH_USER_MODEL = "resume.UserProfile"
+#AUTH_USER_MODEL = "templates.UserProfile"
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '',
         'STATS_FILE': os.path.join(BASE_DIR, 'static_src/webpack-stats.json'),
     }
 }
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 RESERVED_PROFILE_NAMESPACE_LIST = (
     'memodir-test-namespace'
@@ -212,3 +217,117 @@ THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m'
 
 
 
+
+class LevelFilter(object):
+    def __init__(self, level):
+        self.level = level
+
+    def filter(self, record):
+        if self.level == record.levelname:
+            return 1
+        return 0
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s] [%(levelname)s] [logger: %(name)s] [line %(lineno)s, in %(module)s::%(funcName)s] %(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'standard': {
+            'format': "[%(asctime)s] [%(levelname)s] %(name)s[%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'OnlyDebug': {
+            '()': LevelFilter,
+            'level': 'DEBUG'
+        },
+        'OnlyInfo': {
+            '()': LevelFilter,
+            'level': 'INFO'
+        },
+        'OnlyWarning': {
+            '()': LevelFilter,
+            'level': 'WARNING'
+        },
+        'OnlyError': {
+            '()': LevelFilter,
+            'level': 'ERROR'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'all.log'),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 10,
+            'formatter': 'standard',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'debug_log_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'debug.log'),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 10,
+            'formatter': 'verbose',
+            'filters': ['OnlyDebug']
+        },
+        'info_log_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'info.log'),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 10,
+            'formatter': 'standard',
+            'filters': ['OnlyInfo']
+        },
+        'warn_log_file': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'warning.log'),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 10,
+            'formatter': 'standard',
+            'filters': ['OnlyWarning']
+        },
+        'error_log_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'error.log'),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 10,
+            'formatter': 'standard',
+            'filters': ['OnlyError']
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        }
+    }
+}

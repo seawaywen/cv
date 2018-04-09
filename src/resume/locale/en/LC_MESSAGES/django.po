@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-08 06:37+0000\n"
+"POT-Creation-Date: 2018-04-09 03:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,16 +16,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin.py:38
 msgid "User Info"
 msgstr ""
 
-#: admin.py:42 models.py:153 views.py:30
+#: admin.py:42 models.py:153 views.py:31
 msgid "Job Position"
 msgstr ""
 
-#: admin.py:46 models.py:155 views.py:30
+#: admin.py:46 models.py:155 views.py:31
 msgid "Location"
 msgstr ""
 
@@ -40,27 +41,27 @@ msgstr ""
 msgid "This account is inactive."
 msgstr ""
 
-#: forms.py:136
-msgid "Re-enter password"
-msgstr ""
-
-#: forms.py:147
+#: forms.py:121
 msgid "Email"
 msgstr ""
 
-#: forms.py:174
+#: forms.py:125
+msgid "Re-enter password"
+msgstr ""
+
+#: forms.py:157
 msgid "SignUp Now"
 msgstr ""
 
-#: forms.py:184
+#: forms.py:167
 msgid "The username already exists."
 msgstr ""
 
-#: forms.py:195
+#: forms.py:178
 msgid "A user with this email already exists."
 msgstr ""
 
-#: forms.py:210
+#: forms.py:194
 msgid "The two password fields didn't match."
 msgstr ""
 
@@ -126,7 +127,7 @@ msgstr ""
 msgid "Facebook"
 msgstr ""
 
-#: models.py:88 models.py:200 views.py:48 views.py:73
+#: models.py:88 models.py:200 views.py:49 views.py:74
 msgid "Github"
 msgstr ""
 
@@ -134,7 +135,7 @@ msgstr ""
 msgid "Personal Site"
 msgstr ""
 
-#: models.py:91 views.py:49 views.py:74
+#: models.py:91 views.py:50 views.py:75
 msgid "Description"
 msgstr ""
 
@@ -142,19 +143,19 @@ msgstr ""
 msgid "{}'s profile"
 msgstr ""
 
-#: models.py:151 views.py:29
+#: models.py:151 views.py:30
 msgid "Language"
 msgstr ""
 
-#: models.py:154 views.py:29
+#: models.py:154 views.py:30
 msgid "Company"
 msgstr ""
 
-#: models.py:156 views.py:31
+#: models.py:156 views.py:32
 msgid "Start Date"
 msgstr ""
 
-#: models.py:158 views.py:31
+#: models.py:158 views.py:32
 msgid "End Date"
 msgstr ""
 
@@ -162,7 +163,7 @@ msgstr ""
 msgid "Your highlight contribution"
 msgstr ""
 
-#: models.py:162 views.py:33
+#: models.py:162 views.py:34
 msgid "Keywords"
 msgstr ""
 
@@ -174,15 +175,15 @@ msgstr ""
 msgid "Is this experience public?"
 msgstr ""
 
-#: models.py:196 views.py:47 views.py:72
+#: models.py:196 views.py:48 views.py:73
 msgid "Title"
 msgstr ""
 
-#: models.py:198 views.py:47 views.py:72
+#: models.py:198 views.py:48 views.py:73
 msgid "Download Link"
 msgstr ""
 
-#: models.py:199 views.py:48 views.py:73
+#: models.py:199 views.py:49 views.py:74
 msgid "Live Link"
 msgstr ""
 
@@ -198,6 +199,34 @@ msgstr ""
 msgid "A 300x300 image for the project"
 msgstr ""
 
+#: templates/index.html:7
+msgid "Experience"
+msgstr ""
+
+#: templates/index.html:17
+msgid "Projects"
+msgstr ""
+
+#: templates/profile_edit.html:14
+msgid "Profile"
+msgstr ""
+
+#: templates/signin.html:32 templates/signin.html:40
+msgid "SignIn"
+msgstr ""
+
+#: templates/signin.html:47
+msgid "Don't have an account? Signup one now!"
+msgstr ""
+
+#: templates/signup.html:35
+msgid "SignUp"
+msgstr ""
+
+#: templates/signup.html:42
+msgid "Already have an account? SignUp HERE"
+msgstr ""
+
 #: validators.py:18
 msgid ""
 "Enter a value consisting of lower-case letters, numbers or hyphens. Hyphens "
@@ -208,6 +237,14 @@ msgstr ""
 msgid "You cannot use this reserved namespace."
 msgstr ""
 
-#: views.py:32
+#: views.py:33
 msgid "Contribution"
+msgstr ""
+
+#: views.py:156
+msgid "Password reset"
+msgstr ""
+
+#: views.py:162
+msgid "Password reset sent"
 msgstr ""

@@ -1,4 +1,4 @@
-{% extends '../base/base.html' %}
+{% extends 'base/base.html' %}
 {% load i18n %}
 {% load static %}
 {% load render_bundle from webpack_loader %}
@@ -27,31 +27,23 @@
       <div class="card divcenter noradius noborder"
            style="max-width: 700px; background-color: rgba(255,255,255,0.93);
             margin-top: 40px;">
-        <div class="card-body" style="padding: 40px">
-          <form id="sign-in-form" name="sign_in-form" class="nobottommargin"
-                action="{% url 'signin' %}" method="post">
-            <h3>{% trans 'SignIn' %}</h3>
+        <div class="card-body" style="padding: 40px;">
+
+          <form id="signup-form" name="signup-form"
+                class="nobottommargin" action="{% url 'signup' %}" method="post">
+
+            <h3>{% trans 'SignUp' %}</h3>
 
             {% crispy form form.helper %}
 
-            <div class="col_full nobottommargin1">
-              <div class="clear"></div>
-              <button class="button button-3d button-green nomargin"
-                      id="login-form-submit" name="login-form-submit"
-                      value="signIn">{% trans 'SignIn' %}
-              </button>
-            </div>
           </form>
 
           <div style="padding-top: 20px;">
-            <a href="{% url 'signup' %}">
-              {% trans "Don't have an account? Signup one now!" %}
-            </a>
+            <a href="{% url 'signin' %}">{% trans 'Already have an account? SignUp HERE' %}</a>
           </div>
-
         </div>
-      </div>
 
+      </div>
 
 
 

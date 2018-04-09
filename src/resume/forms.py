@@ -53,14 +53,15 @@ class ProfileForm(forms.ModelForm):
 
 
 class SignInForm(forms.Form):
-    email = forms.CharField(label='Email',
+    email = forms.CharField(label=_('Email'),
                             widget=forms.EmailInput(attrs={
                                 'class': 'form-control not-dark',
                             }))
 
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-                            'class': 'form-control not-dark'
-                            }))
+    password = forms.CharField(label=_('Password'),
+                               widget=forms.PasswordInput(attrs={
+                                   'class': 'form-control not-dark'
+                               }))
 
     error_messages = {
         'invalid_login': _("Please enter a correct %(username)s and password. "

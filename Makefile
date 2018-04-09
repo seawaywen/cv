@@ -88,12 +88,12 @@ makemessages:
 		$(DJANGO_MANAGE) makemessages -l en -l zh_Hans || exit; \
 		cd -; \
 	done
-	@for app in `ls $(TEMPLATE_DIR) | egrep -v '(test|tools)'`; do \
-		mkdir -p "$(TEMPLATE_DIR)/$$app/locale"; \
+	@for app in `ls $(TEMPLATE_DIR)`; do \
 		cd "$(TEMPLATE_DIR)/$$app"; \
 		$(DJANGO_MANAGE) makemessages -l en -l zh_Hans || exit; \
 		cd -; \
 	done
+
 
 compilemessages:
 	@echo "Compiling translations for django apps."

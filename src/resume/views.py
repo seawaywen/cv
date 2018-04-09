@@ -3,7 +3,8 @@
 import logging
 
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView, \
+    PasswordResetDoneView
 from django.shortcuts import render # noqa
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect # noqa 
@@ -59,12 +60,12 @@ def home(request):
         'work_experience_list': work_experience_list,
         'project_list': project_list
     }
-    return render(request, 'resume/index.html', context)
+    return render(request, 'index.html', context)
 
 
 class ProjectView(View):
     form_class = ProjectForm
-    template_name = 'resume/index.html'
+    template_name = 'index.html'
     list_url_name = 'project_list'
     
     def get(self, request, **kwargs):
@@ -102,17 +103,17 @@ class ProjectView(View):
 class ProfileUpdateView(UpdateView):
     model = UserProfile
     form_class = ProfileForm
-    template_name = 'resume/profile_edit.html'
+    template_name = 'profile_edit.html'
 
 
 class ProfileDetailView(DetailView):
     model = UserProfile
-    template_name = 'resume/profile_detail.html'
+    template_name = 'profile_detail.html'
     context_object_name = 'profile_obj'
 
 
 class SignInOrUpView(TemplateView):
-    template_name = 'resume/signin.html'
+    template_name = 'signin.html'
 
     def get_context_data(self, **kwargs):
         kwargs.update({
@@ -123,7 +124,7 @@ class SignInOrUpView(TemplateView):
 
 
 class SignInView(LoginView):
-    template_name = 'resume/signin.html'
+    template_name = 'signin.html'
     form_class = SignInForm
     success_url = '/profile/1'
 
@@ -137,7 +138,7 @@ class SignInView(LoginView):
 class SignUpView(CreateView):
     model = User
     form_class = SignUpForm
-    template_name = 'resume/signup.html'
+    template_name = 'signup.html'
 
     success_url = '/profile/2'
 
@@ -148,6 +149,16 @@ class SignUpView(CreateView):
         return context
 
 
+class ResetPasswordView(PasswordResetView):
+    email_template_name = 'account/password_reset_email.html'
+    subject_template_name = 'account/password_reset_subject.txt'
+    template_name = 'account/password_reset_form.html'
+    title = _('Password reset')
+    # todo: we should check the email availability in the form first
 
+
+class ResetPasswordDoneView(PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
+    title = _('Password reset sent')
 
 
