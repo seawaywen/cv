@@ -7,7 +7,7 @@ from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
 from django.utils.translation import ugettext_lazy as _
 
-from resume.views import ResetPasswordView, ResetPasswordDoneView
+from account.views import SignInView, SignUpView
 
 admin.autodiscover()
 
@@ -20,11 +20,10 @@ urlpatterns = [
 urlpatterns += ([
     path('', RedirectView.as_view(url='main/'), name='home'),
     path('main/', include('resume.urls')),
+    path('account/', include('account.urls')),
 
-    path('password_reset/', ResetPasswordView.as_view(), name='password_reset'),
-    path('password_reset/done/', ResetPasswordDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth.views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth.views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('signin', SignInView.as_view(), name='signin'),
+    path('signup', SignUpView.as_view(), name='signup'),
 
 
 ])

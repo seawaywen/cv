@@ -14,7 +14,6 @@ from resume.validators import validate_namespace
 from resume.utils import create_thumbnail, convert_to_png_uploaded_file, generate_uuid
 
 
-
 logger = logging.getLogger(__name__)
 
 models.options.DEFAULT_NAMES += ('translation', 'multilingual')
@@ -142,7 +141,6 @@ class UserProfile(models.Model):
         return reverse_lazy('profile-edit', kwargs={'pk': self.pk})
     
 
-
 class WorkExperienceTranslation(models.Model):
     work_experience = models.ForeignKey(
         'resume.WorkExperience',
@@ -191,6 +189,7 @@ class WorkExperience(MultilingualModel):
 
     def __str__(self):
         return self.__unicode__()
+
 
 class Project(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('Title'))

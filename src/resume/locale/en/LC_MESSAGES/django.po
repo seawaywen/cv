@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 03:15+0000\n"
+"POT-Creation-Date: 2018-04-09 04:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,180 +22,184 @@ msgstr ""
 msgid "User Info"
 msgstr ""
 
-#: admin.py:42 models.py:153 views.py:31
+#: admin.py:42 models.py:151 views.py:28
 msgid "Job Position"
 msgstr ""
 
-#: admin.py:46 models.py:155 views.py:31
+#: admin.py:46 models.py:153 views.py:28
 msgid "Location"
 msgstr ""
 
-#: forms.py:66
+#: forms.py:56 forms.py:122
+msgid "Email"
+msgstr ""
+
+#: forms.py:61
+msgid "Password"
+msgstr ""
+
+#: forms.py:67
 #, python-format
 msgid ""
 "Please enter a correct %(username)s and password. Note that both fields may "
 "be case-sensitive."
 msgstr ""
 
-#: forms.py:68
+#: forms.py:69
 msgid "This account is inactive."
 msgstr ""
 
-#: forms.py:121
-msgid "Email"
-msgstr ""
-
-#: forms.py:125
+#: forms.py:126
 msgid "Re-enter password"
 msgstr ""
 
-#: forms.py:157
+#: forms.py:158
 msgid "SignUp Now"
 msgstr ""
 
-#: forms.py:167
+#: forms.py:168
 msgid "The username already exists."
 msgstr ""
 
-#: forms.py:178
+#: forms.py:179
 msgid "A user with this email already exists."
 msgstr ""
 
-#: forms.py:194
+#: forms.py:195
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: models.py:47
+#: models.py:46
 msgid "Male"
 msgstr ""
 
-#: models.py:48
+#: models.py:47
 msgid "Female"
 msgstr ""
 
-#: models.py:49
+#: models.py:48
 msgid "Unknown"
 msgstr ""
 
-#: models.py:51
+#: models.py:50
 msgid "Gender"
 msgstr ""
 
-#: models.py:54
+#: models.py:53
 msgid "Birthday"
 msgstr ""
 
-#: models.py:58
+#: models.py:57
 msgid "A 256x256 image for your profile."
 msgstr ""
 
-#: models.py:65
+#: models.py:64
 msgid "Original photo name"
 msgstr ""
 
-#: models.py:68
+#: models.py:67
 msgid "Phone"
 msgstr ""
 
-#: models.py:69
+#: models.py:68
 msgid "Country/Region"
 msgstr ""
 
-#: models.py:71
+#: models.py:70
 msgid "City"
 msgstr ""
 
-#: models.py:76
+#: models.py:75
 msgid "namespace"
 msgstr ""
 
-#: models.py:77
+#: models.py:76
 msgid ""
 "Required before creating any related operation.\n"
 "Lower-case letters, numbers, dots or hyphens allowed only."
 msgstr ""
 
-#: models.py:82
+#: models.py:81
 msgid "LinkedIn"
 msgstr ""
 
-#: models.py:84
+#: models.py:83
 msgid "Wechat"
 msgstr ""
 
-#: models.py:86
+#: models.py:85
 msgid "Facebook"
 msgstr ""
 
-#: models.py:88 models.py:200 views.py:49 views.py:74
+#: models.py:87 models.py:199 views.py:46 views.py:71
 msgid "Github"
 msgstr ""
 
-#: models.py:90
+#: models.py:89
 msgid "Personal Site"
 msgstr ""
 
-#: models.py:91 views.py:50 views.py:75
+#: models.py:90 views.py:47 views.py:72
 msgid "Description"
 msgstr ""
 
-#: models.py:101
+#: models.py:100
 msgid "{}'s profile"
 msgstr ""
 
-#: models.py:151 views.py:30
+#: models.py:149 views.py:27
 msgid "Language"
 msgstr ""
 
-#: models.py:154 views.py:30
+#: models.py:152 views.py:27
 msgid "Company"
 msgstr ""
 
-#: models.py:156 views.py:32
+#: models.py:154 views.py:29
 msgid "Start Date"
 msgstr ""
 
-#: models.py:158 views.py:32
+#: models.py:156 views.py:29
 msgid "End Date"
 msgstr ""
 
-#: models.py:160
+#: models.py:158
 msgid "Your highlight contribution"
 msgstr ""
 
-#: models.py:162 views.py:34
+#: models.py:160 views.py:31
 msgid "Keywords"
 msgstr ""
 
-#: models.py:163
+#: models.py:161
 msgid "The words that might search for when looking"
 msgstr ""
 
-#: models.py:179 models.py:207
+#: models.py:177 models.py:206
 msgid "Is this experience public?"
 msgstr ""
 
-#: models.py:196 views.py:48 views.py:73
+#: models.py:195 views.py:45 views.py:70
 msgid "Title"
 msgstr ""
 
-#: models.py:198 views.py:48 views.py:73
+#: models.py:197 views.py:45 views.py:70
 msgid "Download Link"
 msgstr ""
 
-#: models.py:199 views.py:49 views.py:74
+#: models.py:198 views.py:46 views.py:71
 msgid "Live Link"
 msgstr ""
 
-#: models.py:201
+#: models.py:200
 msgid "Summary"
 msgstr ""
 
-#: models.py:204
+#: models.py:203
 msgid "Project Image"
 msgstr ""
 
-#: models.py:205
+#: models.py:204
 msgid "A 300x300 image for the project"
 msgstr ""
 
@@ -211,22 +215,6 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: templates/signin.html:32 templates/signin.html:40
-msgid "SignIn"
-msgstr ""
-
-#: templates/signin.html:47
-msgid "Don't have an account? Signup one now!"
-msgstr ""
-
-#: templates/signup.html:35
-msgid "SignUp"
-msgstr ""
-
-#: templates/signup.html:42
-msgid "Already have an account? SignUp HERE"
-msgstr ""
-
 #: validators.py:18
 msgid ""
 "Enter a value consisting of lower-case letters, numbers or hyphens. Hyphens "
@@ -237,14 +225,6 @@ msgstr ""
 msgid "You cannot use this reserved namespace."
 msgstr ""
 
-#: views.py:33
+#: views.py:30
 msgid "Contribution"
-msgstr ""
-
-#: views.py:156
-msgid "Password reset"
-msgstr ""
-
-#: views.py:162
-msgid "Password reset sent"
 msgstr ""

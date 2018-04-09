@@ -2,21 +2,18 @@
 
 import logging
 
-from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, PasswordResetView, \
-    PasswordResetDoneView
-from django.shortcuts import render # noqa
+from django.shortcuts import render  # noqa
 from django.forms.models import model_to_dict
-from django.http import HttpResponse, HttpResponseRedirect # noqa 
+from django.http import HttpResponseRedirect # noqa
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _  # noqa 
 from django.utils import translation
-from django.views.generic.base import View, TemplateView
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.base import View
+from django.views.generic.edit import UpdateView
 from django.views.generic import DetailView
 
 from resume.models import WorkExperience, Project, UserProfile
-from resume.forms import ProjectForm, ProfileForm, SignInForm, SignUpForm
+from resume.forms import ProjectForm, ProfileForm
 
 logger = logging.getLogger(__name__)
 
@@ -110,55 +107,5 @@ class ProfileDetailView(DetailView):
     model = UserProfile
     template_name = 'profile_detail.html'
     context_object_name = 'profile_obj'
-
-
-class SignInOrUpView(TemplateView):
-    template_name = 'signin.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs.update({
-            'sign_in_form': SignInForm(),
-            'sign_up_form': SignUpForm(),
-        })
-        return kwargs
-
-
-class SignInView(LoginView):
-    template_name = 'signin.html'
-    form_class = SignInForm
-    success_url = '/profile/1'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-        })
-        return context
-
-
-class SignUpView(CreateView):
-    model = User
-    form_class = SignUpForm
-    template_name = 'signup.html'
-
-    success_url = '/profile/2'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-        })
-        return context
-
-
-class ResetPasswordView(PasswordResetView):
-    email_template_name = 'account/password_reset_email.html'
-    subject_template_name = 'account/password_reset_subject.txt'
-    template_name = 'account/password_reset_form.html'
-    title = _('Password reset')
-    # todo: we should check the email availability in the form first
-
-
-class ResetPasswordDoneView(PasswordResetDoneView):
-    template_name = 'account/password_reset_done.html'
-    title = _('Password reset sent')
 
 

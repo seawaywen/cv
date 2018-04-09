@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     
     'crispy_forms',
     'webpack_loader',
-    
+
+    'account',
     'resume',
 ]
 

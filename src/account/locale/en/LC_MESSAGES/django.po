@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-09 04:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:20 forms.py:86
+msgid "Email"
+msgstr ""
+
+#: forms.py:25
+msgid "Password"
+msgstr ""
+
+#: forms.py:31
+#, python-format
+msgid ""
+"Please enter a correct %(username)s and password. Note that both fields may "
+"be case-sensitive."
+msgstr ""
+
+#: forms.py:33
+msgid "This account is inactive."
+msgstr ""
+
+#: forms.py:90
+msgid "Re-enter password"
+msgstr ""
+
+#: forms.py:122
+msgid "SignUp Now"
+msgstr ""
+
+#: forms.py:132
+msgid "The username already exists."
+msgstr ""
+
+#: forms.py:143
+msgid "A user with this email already exists."
+msgstr ""
+
+#: forms.py:159
+msgid "The two password fields didn't match."
+msgstr ""
+
+#: templates/password_reset_complete.html:14
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: templates/password_reset_complete.html:16
+msgid "Log in"
+msgstr ""
+
+#: templates/password_reset_confirm.html:16
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: templates/password_reset_confirm.html:22
+msgid "New password:"
+msgstr ""
+
+#: templates/password_reset_confirm.html:27
+msgid "Confirm password:"
+msgstr ""
+
+#: templates/password_reset_confirm.html:30
+msgid "Change my password"
+msgstr ""
+
+#: templates/password_reset_confirm.html:36
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/password_reset_done.html:14
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: templates/password_reset_done.html:16
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: templates/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: templates/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/password_reset_email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: templates/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: templates/password_reset_form.html:13
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: templates/password_reset_form.html:19
+msgid "Email address:"
+msgstr ""
+
+#: templates/password_reset_form.html:22
+msgid "Reset my password"
+msgstr ""
+
+#: templates/password_reset_subject.txt:2
+#, python-format
+msgid "Password reset on %(site_name)s"
+msgstr ""
+
+#: templates/signin.html:32 templates/signin.html:40
+msgid "SignIn"
+msgstr ""
+
+#: templates/signin.html:42
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/signin.html:48
+msgid "Don't have an account? Signup one now!"
+msgstr ""
+
+#: templates/signup.html:35
+msgid "SignUp"
+msgstr ""
+
+#: templates/signup.html:42
+msgid "Already have an account? SignUp HERE"
+msgstr ""
+
+#: views.py:54
+msgid "Password reset"
+msgstr ""
+
+#: views.py:60
+msgid "Password reset sent"
+msgstr ""
