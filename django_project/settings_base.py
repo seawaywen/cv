@@ -52,12 +52,13 @@ INSTALLED_APPS = [
     'webpack_loader',
 
     'account',
+    'profile',
     'resume',
 ]
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'resume.authentication.EmailAuthBackend',
+    'account.authentication.EmailAuthBackend',
 )
 
 SIGNUP_OPEN = True

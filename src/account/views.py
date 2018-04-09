@@ -6,7 +6,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, PasswordResetView, \
-    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, \
+    LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.shortcuts import redirect
@@ -42,6 +43,10 @@ class SignInView(LoginView):
         context.update({
         })
         return context
+
+
+class SignOutView(LogoutView):
+    template_name = 'signout.html'
 
 
 class ResetPasswordView(PasswordResetView):
@@ -160,6 +165,7 @@ class ActivationCompleteView(TemplateView):
 class ActivationView(TemplateView):
 
     template_name = 'activation_complete.html'
+    success_url = 'signup_activate_complete'
 
     def get(self, *args, **kwargs):
         activated_user = self.activate(*args, **kwargs)

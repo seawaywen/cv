@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from account.views import (
     SignInView,
+    SignOutView,
     SignUpView,
     SignUpCompleteView,
     ActivationView,
@@ -27,8 +28,10 @@ urlpatterns += ([
     path('', RedirectView.as_view(url='main/'), name='home'),
     path('main/', include('resume.urls')),
     path('account/', include('account.urls')),
+    path('profile/', include('profile.urls')),
 
     path('signin', SignInView.as_view(), name='signin'),
+    path('signout', SignOutView.as_view(), name='signout'),
 
     path('signup', SignUpView.as_view(), name='signup'),
     path('signup/complete/',  SignUpCompleteView.as_view(),
