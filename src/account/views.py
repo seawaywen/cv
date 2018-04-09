@@ -20,7 +20,9 @@ from django.views.generic.edit import CreateView
 from account.forms import (
     SignInForm,
     SignUpForm,
-    ResetPasswordForm)
+    ResetPasswordForm,
+    PasswordChangeForm,
+)
 from account import signals
 
 logger = logging.getLogger(__name__)
@@ -59,7 +61,7 @@ class ResetPasswordDoneView(PasswordResetDoneView):
 class ResetPasswordConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy('password_reset_complete')
     template_name = 'password_reset_confirm.html'
-    form_class = ResetPasswordForm
+    form_class = PasswordChangeForm
 
 
 class ResetPasswordCompleteView(PasswordResetCompleteView):

@@ -5,7 +5,7 @@ import logging
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.forms import SetPasswordForm as BaseSetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -185,20 +185,21 @@ class ResetPasswordForm(PasswordResetForm):
             'reset-my-password', _('Reset My Password'),
             css_class='button button-3d button-green nomargin'))
 
+    def clean_email(self):
 
-class ResetPasswordForm(BaseSetPasswordForm):
-    class Meta:
-        widgets = {
-            "new_password1": forms.PasswordInput(attrs={
-                'class': 'form-control not-dark'
-            }),
-            "new_password2": forms.PasswordInput(attrs={
-                'class': 'form-control not-dark'
-            })
-        }
+        existing = User.objects.filter(
+            email__iexact=self.cleaned_data['email'])
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        if not existing.exists():
+            raise forms.ValidationError(
+                _("We don't have user with this email in our database."))
+        else:
+            return self.cleaned_data['email']
+
+
+class PasswordChangeForm(BasePasswordChangeForm):
+
+    def __init__(self, user, *args, **kwargs):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -206,3 +207,5 @@ class ResetPasswordForm(BaseSetPasswordForm):
         self.helper.add_input(Submit(
             'change-my-password', _('Change my password'),
             css_class='button button-3d button-green nomargin'))
+
+        super().__init__(user, *args, **kwargs)
