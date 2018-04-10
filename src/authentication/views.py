@@ -18,13 +18,13 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 
-from account.forms import (
+from authentication.forms import (
     SignInForm,
     SignUpForm,
     ResetPasswordForm,
     PasswordChangeForm,
 )
-from account import signals
+from authentication import signals
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +46,17 @@ class SignInView(LoginView):
         return context
 
 
+sign_in = SignInView.as_view()
+
+
 class SignOutView(LogoutView):
     template_name = 'signout.html'
     extra_context = {
         'title': _('Signed Out'),
     }
+
+
+sign_out = SignOutView.as_view()
 
 
 class ResetPasswordView(PasswordResetView):
@@ -62,9 +68,15 @@ class ResetPasswordView(PasswordResetView):
     # todo: we should check the email availability in the form first
 
 
+reset_password = ResetPasswordView.as_view()
+
+
 class ResetPasswordDoneView(PasswordResetDoneView):
     template_name = 'password_reset_done.html'
     title = _('Password reset sent')
+
+
+reset_password_done = ResetPasswordDoneView.as_view()
 
 
 class ResetPasswordConfirmView(PasswordResetConfirmView):
@@ -73,8 +85,14 @@ class ResetPasswordConfirmView(PasswordResetConfirmView):
     form_class = PasswordChangeForm
 
 
+reset_password_confirm = ResetPasswordConfirmView.as_view()
+
+
 class ResetPasswordCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
+
+
+reset_password_complete = ResetPasswordCompleteView.as_view()
 
 
 class BaseSignUpView(CreateView):
@@ -158,12 +176,21 @@ class SignUpView(BaseSignUpView):
                              salt=SIGNUP_SALT)
 
 
+sign_up = SignUpView.as_view()
+
+
 class SignUpCompleteView(TemplateView):
     template_name = 'signup_complete.html'
 
 
+sign_up_complete = SignUpCompleteView.as_view()
+
+
 class ActivationCompleteView(TemplateView):
     template_name = 'activate_complete.html'
+
+
+activate_complete = ActivationCompleteView.as_view()
 
 
 class ActivationView(TemplateView):
@@ -216,4 +243,4 @@ class ActivationView(TemplateView):
             return False
 
 
-
+activate = ActivationView.as_view()

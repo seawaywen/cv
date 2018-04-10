@@ -3,5 +3,5 @@
 from django.apps import AppConfig
 
 
-class ResumeConfig(AppConfig):
-    name = 'profile'
+class ProfileConfig(AppConfig):
+    name = 'memodir.profile'

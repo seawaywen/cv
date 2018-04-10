@@ -1,22 +1,22 @@
+# -*- coding: utf-8 -*-
+
 from django.urls import include, path
-from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
-from django.contrib import admin, auth
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
-from django.utils.translation import ugettext_lazy as _
 
-from account.views import (
-    SignInView,
-    SignOutView,
-    SignUpView,
-    SignUpCompleteView,
-    ActivationView,
-    ActivationCompleteView,
+from authentication.views import (
+    sign_in,
+    sign_out,
+    sign_up,
+    sign_up_complete,
+    activate,
+    activate_complete,
 )
-
 admin.autodiscover()
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,20 +27,15 @@ urlpatterns = [
 urlpatterns += ([
     path('', RedirectView.as_view(url='main/'), name='home'),
     path('main/', include('resume.urls')),
-    path('account/', include('account.urls')),
+    path('authentication/', include('authentication.urls')),
     path('profile/', include('profile.urls')),
 
-    path('signin', SignInView.as_view(), name='signin'),
-    path('signout', SignOutView.as_view(), name='signout'),
-
-    path('signup', SignUpView.as_view(), name='signup'),
-    path('signup/complete/',  SignUpCompleteView.as_view(),
-         name='signup_complete'),
-    path('activate/<activation_key>/',
-         ActivationView.as_view(),
-         name='signup_activate'),
-    path('activate/complete/',
-         ActivationCompleteView.as_view(),
+    path('signin', sign_in, name='signin'),
+    path('signout', sign_out, name='signout'),
+    path('signup', sign_up, name='signup'),
+    path('signup/complete/', sign_up_complete, name='signup_complete'),
+    path('activate/<activation_key>/', activate,  name='signup_activate'),
+    path('activate/complete/', activate_complete,
          name='signup_activate_complete'),
 
 ])

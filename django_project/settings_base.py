@@ -51,14 +51,14 @@ INSTALLED_APPS = [
     'crispy_forms',
     'webpack_loader',
 
-    'account',
+    'authentication',
     'profile',
     'resume',
 ]
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'account.authentication.EmailAuthBackend',
+    'authentication.authentication.EmailAuthBackend',
 )
 
 SIGNUP_OPEN = True
