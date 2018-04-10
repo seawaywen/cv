@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+{% load i18n static %}
+{% load crispy_forms_tags %}
+
+{% block sub_content %}
+
+<form id="signup-form" name="signup-form"
+      class="nobottommargin" action="{% url 'signup' %}" method="post">
+
+  <h3>{% trans 'SignUp' %}</h3>
+
+  {% crispy form form.helper %}
+
+</form>
+
+<div style="padding-top: 20px;">
+  <a href="{% url 'signin' %}">{% trans 'Already have an account? SignUp HERE' %}</a>
+</div>
+
+
+{% endblock sub_content %}
+

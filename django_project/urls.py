@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.views.generic import RedirectView
 from django.views.i18n import JavaScriptCatalog
 
-from authentication.views import (
+from myaccount.views import (
     sign_in,
     sign_out,
     sign_up,
@@ -26,11 +26,6 @@ urlpatterns = [
 
 urlpatterns += ([
     path('', RedirectView.as_view(url='main/'), name='home'),
-    path('main/', include('resume.urls')),
-    path('authentication/', include('authentication.urls')),
-    path('profile/', include('profile.urls')),
-    path('accounts/', include('allauth.urls')),
-
     path('signin', sign_in, name='signin'),
     path('signout', sign_out, name='signout'),
     path('signup', sign_up, name='signup'),
@@ -38,6 +33,12 @@ urlpatterns += ([
     path('activate/<activation_key>/', activate,  name='signup_activate'),
     path('activate/complete/', activate_complete,
          name='signup_activate_complete'),
+
+    path('main/', include('resume.urls')),
+    path('myaccount/', include('myaccount.urls')),
+    path('profile/', include('profile.urls')),
+    path('accounts/', include('allauth.urls')),
+
 
 ])
 

@@ -59,14 +59,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.weixin',
 
-    'authentication',
+    'myaccount',
     'profile',
     'resume',
 ]
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'authentication.authentication.EmailAuthBackend',
+    'myaccount.authentication.EmailAuthBackend',
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
@@ -196,7 +196,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
         'DIRS': (
-            #os.path.join(BASE_DIR, "static_src/dist/templates"),
             os.path.join(BASE_DIR, 'static', 'templates'),
         ),
         'OPTIONS': {
@@ -228,8 +227,6 @@ IMAGE_UPLOAD_TO = 'images/%Y/%m'
 PROFILE_PHOTO_UPLOAD_TO = 'profile_photo/%Y/%m'
 THUMBNAIL_UPLOAD_TO = 'thumbnails/%Y/%m'
 THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m' 
-
-
 
 
 class LevelFilter(object):
@@ -345,3 +342,6 @@ LOGGING = {
         }
     }
 }
+
+
+SITE_ID = 1

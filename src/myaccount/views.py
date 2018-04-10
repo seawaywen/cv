@@ -5,9 +5,14 @@ import logging
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, PasswordResetView, \
-    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, \
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
     LogoutView
+)
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.shortcuts import redirect
@@ -18,13 +23,13 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 
-from authentication.forms import (
+from myaccount.forms import (
     SignInForm,
     SignUpForm,
     ResetPasswordForm,
     PasswordChangeForm,
 )
-from authentication import signals
+from myaccount import signals
 
 logger = logging.getLogger(__name__)
 

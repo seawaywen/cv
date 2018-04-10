@@ -1,0 +1,11 @@
+{% extends "password_reset_base.html" %}
+{% load i18n static %}
+
+{% block form_content %}
+
+<h2>{% trans "User registration successful" %}</h2>
+<div>
+  {% trans "We've e-mailed you instructions for activating your account to the e-mail address you submitted. You should be receiving it shortly." %}
+</div>
+
+{% endblock form_content %}

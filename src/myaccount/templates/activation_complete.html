@@ -2,9 +2,10 @@
 {% load i18n static %}
 
 {% block password_form %}
-<h1>{% trans "Activation successful" %}</h1>
+<h2>{% trans "Activation successful" %}</h2>
+
 {% url 'signin' as signin_url %}
-<h5>
+<div>
   {% blocktrans %}You can now proceed to <a href="{{ signin_url }}">signin.</a>{% endblocktrans %}
-</h5>
+</div>
 {% endblock password_form %}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import path
-from authentication.views import (
+from myaccount.views import (
     reset_password,
     reset_password_done,
     reset_password_confirm,

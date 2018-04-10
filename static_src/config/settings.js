@@ -2,6 +2,7 @@ module.exports = {
   dev: {
     filename: '[name]-bundle.js',
     publicPath: 'http://localhost:8080/static/dist/', //!!! point to the dev server
+    publicPath: '/static/dist/',
     assetsSubDirectory: 'static',
     sourceMap: false,
     cssFilename: '[name].css'
