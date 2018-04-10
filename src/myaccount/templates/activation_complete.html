@@ -1,11 +1,11 @@
 {% extends 'password_reset_base.html' %}
 {% load i18n static %}
 
-{% block password_form %}
+{% block form_content %}
 <h2>{% trans "Activation successful" %}</h2>
 
 {% url 'signin' as signin_url %}
 <div>
-  {% blocktrans %}You can now proceed to <a href="{{ signin_url }}">signin.</a>{% endblocktrans %}
+  {% blocktrans %}You can now proceed to <a href="{{ signin_url }}">sign in.</a>{% endblocktrans %}
 </div>
-{% endblock password_form %}
+{% endblock form_content %}

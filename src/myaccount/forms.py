@@ -3,7 +3,8 @@
 import logging 
 
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate, get_user_model, \
+    password_validation
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth.models import User
@@ -117,7 +118,6 @@ class SignUpForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.user_cache = None
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -161,7 +161,17 @@ class SignUpForm(forms.ModelForm):
         else:
             return self.cleaned_data['email']
 
-    #todo: password complexcity check
+    def clean_password(self):
+        password_validation.validate_password(
+            self.cleaned_data['password'])
+
+        return self.cleaned_data['password']
+
+    def clean_password2(self):
+        password_validation.validate_password(
+            self.cleaned_data['password2'])
+
+        return self.cleaned_data['password2']
 
     def clean(self):
         """
@@ -173,7 +183,8 @@ class SignUpForm(forms.ModelForm):
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(
-                    _("The two password fields didn't match."))
+                    _("The two password fields didn't match."),
+                    code='password_mismatch')
         return self.cleaned_data
 
     def save(self, commit=True):
