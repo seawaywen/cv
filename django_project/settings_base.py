@@ -47,9 +47,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     'crispy_forms',
     'webpack_loader',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.weixin',
 
     'authentication',
     'profile',
@@ -59,6 +67,7 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'authentication.authentication.EmailAuthBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 SIGNUP_OPEN = True

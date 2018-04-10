@@ -29,6 +29,7 @@ urlpatterns += ([
     path('main/', include('resume.urls')),
     path('authentication/', include('authentication.urls')),
     path('profile/', include('profile.urls')),
+    path('accounts/', include('allauth.urls')),
 
     path('signin', sign_in, name='signin'),
     path('signout', sign_out, name='signout'),
