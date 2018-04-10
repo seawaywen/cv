@@ -56,8 +56,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.weixin',
 
     'myaccount',
     'profile',
@@ -76,7 +74,7 @@ ACCOUNT_ACTIVATION_HOURS = 1
 
 LOGIN_URL = "signin"
 LOGOUT_URL = "signout"
-LOGIN_REDIRECT_URL = 'profile/1'
+LOGIN_REDIRECT_URL = '/profile/1'
 
 
 MIDDLEWARE = [
