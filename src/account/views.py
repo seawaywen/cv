@@ -36,6 +36,7 @@ SIGNUP_SALT = getattr(settings, 'SIGNUP_SALT', 'user_signup_salt')
 class SignInView(LoginView):
     template_name = 'signin.html'
     form_class = SignInForm
+    redirect_authenticated_user = True
     success_url = '/profile/1'
 
     def get_context_data(self, **kwargs):
@@ -47,6 +48,9 @@ class SignInView(LoginView):
 
 class SignOutView(LogoutView):
     template_name = 'signout.html'
+    extra_context = {
+        'title': _('Signed Out'),
+    }
 
 
 class ResetPasswordView(PasswordResetView):
