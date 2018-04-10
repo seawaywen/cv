@@ -7,10 +7,13 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+
+from myaccount import validators
 
 
 logger = logging.getLogger(__name__)
@@ -125,15 +128,27 @@ class SignUpForm(forms.ModelForm):
             css_class='button button-3d button-green nomargin'))
 
     def clean_username(self):
+        username_val = self.cleaned_data.get('username')
 
-        existing = User.objects.filter(
-            username__iexact=self.cleaned_data['username'])
+        if username_val is not None:
+            reserved_validator = validators.ReservedNameValidator(
+                reserved_names=validators.DEFAULT_RESERVED_NAMES
+            )
+            reserved_validator(username_val)
 
-        if existing.exists():
-            raise forms.ValidationError(
-                _("The username already exists."))
-        else:
+            validators.validate_confusables(username_val)
+
+            existing = User.objects.filter(
+                username__iexact=self.cleaned_data['username'])
+
+            if existing.exists():
+                raise forms.ValidationError(
+                    _("The username already exists."))
+
             return self.cleaned_data['username']
+        else:
+            raise forms.ValidationError(
+                _("The username cannot be None value."))
 
     def clean_email(self):
 

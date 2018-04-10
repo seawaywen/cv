@@ -5,3 +5,4 @@ requests==2.18.4
 talisker==0.9.6
 psycopg2-binary==2.7.4
 Pillow==5.0.0
+confusable_homoglyphs==3.0.0
