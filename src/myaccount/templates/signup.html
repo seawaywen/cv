@@ -11,12 +11,11 @@
   <h3>{% trans 'SignUp' %}</h3>
 
   {% crispy form form.helper %}
-  <a href="{% provider_login_url 'github' %}">Sign Up</a>
 
 </form>
 
 <div style="padding-top: 20px;">
-  <a href="{% url 'signin' %}">{% trans 'Already have an account? SignUp HERE' %}</a>
+  <a href="{% url 'signin' %}">{% trans 'Already have an account? Sign In here' %}</a>
 </div>
 
 

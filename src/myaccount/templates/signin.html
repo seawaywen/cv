@@ -16,51 +16,42 @@
             id="login-form-submit" name="login-form-submit"
             value="signIn">{% trans 'SignIn' %}
     </button>
-    <a href="{% url 'password_reset' %}" class="fright">{% trans 'Forgot Password?' %}</a>
+    <a href="{% url 'password_reset' %}" class="fright" style="margin-top:8px;">{% trans 'Forgot Password?' %}</a>
   </div>
 </form>
 
 <div>
 {% get_providers as socialaccount_providers %}
-
 {% if socialaccount_providers %}
-
-<div class="col_full clearfix">
+  <div>{% trans 'Sign In with third party accounts:' %}</div>
+  <div class="line line-sm" style="margin:2px 0 1px 0;"> </div>
   <div>
-    {% blocktrans with site.name as site_name %}
-      Or sign in with following third party accounts:
-    {% endblocktrans %}
+    {% for provider in socialaccount_providers %}
+      {% with provider_name=provider.name|lower %}
+        <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider_name}}"
+           href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
+        {% if provider.name|lower == 'github' %}
+          <i class="icon-{{provider_name}}-circled"></i>
+          <i class="icon-{{provider_name}}-circled"></i>
+        {% else %}
+          <i class="icon-{{provider_name}}"></i>
+          <i class="icon-{{provider_name}}"></i>
+        {% endif %}
+      {% endwith %}
+    </a>
+    {% endfor %}
   </div>
 
-  {% for provider in socialaccount_providers %}
-    {% with provider_name=provider.name|lower %}
-    <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider_name}}"
-       href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
-      {% if provider.name|lower == 'github' %}
-        <i class="icon-{{provider_name}}-circled"></i>
-        <i class="icon-{{provider_name}}-circled"></i>
-      {% else %}
-        <i class="icon-{{provider_name}}"></i>
-        <i class="icon-{{provider_name}}"></i>
-      {% endif %}
-    {% endwith %}
-    </a>
-  {% endfor %}
-
+  <div class="clearfix"></div>
 </div>
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-
-</div>
-
 {% endif %}
 
 
-<div style="padding-top: 20px;">
+<div style="padding-top: 30px;">
   <a href="{% url 'signup' %}">
-    {% trans "Don't have an account? Signup one now!" %}
+    {% blocktrans %}
+    Don't have an account? <span class='font-weight-bold'>Sign Up Now!</span>
+    {% endblocktrans %}
   </a>
 </div>
 
