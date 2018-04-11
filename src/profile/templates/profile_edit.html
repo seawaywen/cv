@@ -1,14 +1,7 @@
-{% extends "base/base.html" %}
+{% extends "_base_profie.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
-
-{% block page_css %}
-{% render_bundle 'profile' 'css' %}
-{% endblock %}
-
-{% block header_container %}
-{% endblock header_container %}
 
 {% block sub_content %}
 <h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
@@ -21,6 +14,3 @@
 
 
 
-{% block page_js %}
-  {% render_bundle 'profile' 'js' %}
-{% endblock page_js %}

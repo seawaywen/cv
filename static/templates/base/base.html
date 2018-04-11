@@ -13,6 +13,20 @@
           <a href="#" class="retina-logo" data-dark-logo="{% static 'images/logo-dark@2x.png' %}"><img src="{% static 'images/logo@2x.png' %}" alt="Memodir Logo"></a>
         </div>
 
+      {% block user-status %}
+        {% if user.is_authenticated %}
+        <div id="top-account" class="dropdown">
+						<a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="icon-user"></i></a>
+						<ul class="dropdown-menu dropdown-menu-right bg-white" aria-labelledby="dropdownMenu1">
+							<a class="dropdown-item tleft" href="{% url 'profile-detail' %}">Profile</a>
+              <div class="dropdown-divider"></div>
+							<a class="dropdown-item tleft bg-white" href="{% url 'signout' %}">Logout <i class="icon-signout"></i></a>
+						</ul>
+					</div>
+        {% endif  %}
+
+        {% endblock user-status %}
+
         <nav id="primary-menu">
           {% block nav-menu %}
           <ul>
@@ -25,27 +39,11 @@
           {% endblock nav-menu %}
 
           {% block nav-utils %}
-          <div id="logout">
-          <a href="{% url 'signout' %}">SignOut</a>
-          </div>
+
           <div id="top-search">
             <a href="#" id="top-search-trigger"><i class="icon-search3"></i><i class="icon-line-cross"></i></a>
             <form action="#" method="get">
               <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter..">
-            </form>
-          </div><!-- #top-search end -->
-
-          <div id="switch-language" style='float:right;'>
-            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
-              <input name="next" type="hidden" value="{{ redirect_to }}" />
-              <select name="language">
-                {% for language in languages %}
-                  <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                  </option>
-                {% endfor %}
-              </select>
-              <input type="submit" value="Go" />
             </form>
           </div><!-- #top-search end -->
 
@@ -66,6 +64,7 @@
               </div>
             </div>
           </div><!-- #top-cart end -->
+
           {% endblock nav-utils %}
         </nav>
       </div>

@@ -74,7 +74,7 @@ ACCOUNT_ACTIVATION_HOURS = 1
 
 LOGIN_URL = "signin"
 LOGOUT_URL = "signout"
-LOGIN_REDIRECT_URL = '/profile/1'
+LOGIN_REDIRECT_URL = '/profile'
 
 
 MIDDLEWARE = [
@@ -205,7 +205,7 @@ TEMPLATES = [
         }
     },
 ]
-#AUTH_USER_MODEL = "templates.UserProfile"
+#AUTH_USER_MODEL = "profile.UserProfile"
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '',

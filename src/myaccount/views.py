@@ -30,6 +30,7 @@ from myaccount.forms import (
     PasswordChangeForm,
 )
 from myaccount import signals
+from profile.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -241,6 +242,7 @@ class ActivationView(TemplateView):
 
             user.is_active = True
             user.save()
+            UserProfile.objects.create(user=user, gender='U')
             return user
         except signing.BadSignature:
             return False

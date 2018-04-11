@@ -119,4 +119,4 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
         
     def get_absolute_url(self):
-        return reverse_lazy('profile-edit', kwargs={'pk': self.pk})
+        return reverse_lazy('profile-edit')

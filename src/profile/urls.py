@@ -3,12 +3,12 @@
 from django.urls import path
 
 from profile.views import (
-    ProfileDetailView,
-    ProfileUpdateView,
+    show_detail,
+    edit_profile,
 )
 
 urlpatterns = [
-    path('<int:pk>/edit', ProfileUpdateView.as_view(), name='profile-edit'),
-    path('<int:pk>', ProfileDetailView.as_view(), name='profile-detail'),
+    path('', show_detail, name='profile-detail'),
+    path('edit', edit_profile, name='profile-edit'),
 
 ]
