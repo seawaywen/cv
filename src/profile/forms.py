@@ -22,19 +22,17 @@ UserModel = get_user_model()
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['user', 'gender', 'birthday', 'photo', 'phone_number', 'country', 
-                  'city', 'namespace', 'linkedin', 'wechat', 'facebook', 
-                  'github', 'personal_site', 'description']
+        fields = ['user', 'gender', 'birthday', 'photo', 'phone_number',
+                  'country', 'city', 'namespace', 'linkedin', 'wechat',
+                  'facebook', 'github', 'personal_site', 'description']
 
         widgets = {
             'birthday': forms.DateInput(attrs={
-                'class': 'form-control daterange3'
+                'class': 'form-control form-birthday'
             }),
             'photo': forms.FileInput(attrs={
                 'class': 'file-loading'
             })
-            #< input id = "input-5" name = "input5[]" type = "file" multiple class ="file-loading" >
-
         }
 
     def __init__(self, *args, **kwargs):
@@ -44,3 +42,8 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
+
+    def clean_birthday(self):
+        cleaned = self.cleaned_data['birthday']
+        logger.error(cleaned)
+        return cleaned

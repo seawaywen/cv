@@ -38,14 +38,18 @@
   <script src="{% static  'js/components/bs-filestyle.js' %}"></script>
 
   <script>
-    $(".daterange3").daterangepicker({
+    $(".form-birthday").daterangepicker({
+          autoUpdateInput: false,
 				  singleDatePicker: true,
 				  showDropdowns: true,
-          "locale": {
+          'locale': {
             format: 'YYYY-MM-DD',
           }
 			},
-			function(start, end, label) {});
+			function(start, end, label) {
+        this.element.val(start.format('YYYY-MM-DD'));
+      });
+
     $("#id_photo").fileinput({
       showUpload: false,
 			maxFileCount: 10,
