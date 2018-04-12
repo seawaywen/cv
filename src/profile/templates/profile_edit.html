@@ -20,7 +20,7 @@
   <div class="card-body" style="padding: 40px">
 
     <div class="row clearfix">
-      {% if object.photo_crop.url  %}
+      {% if object.photo_crop and object.photo_crop.url  %}
         <img src="{{ object.photo_crop.url }}" class="alignleft img img-thumbnail noborder notopmargin nobottommargin" style="max-width: 256px; margin-left:10px;">
       {% endif %}
       <div class="heading-block noborder nomargin">

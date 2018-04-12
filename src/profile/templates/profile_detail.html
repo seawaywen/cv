@@ -8,7 +8,7 @@
 
 {% block sub_content %}
   <div class="row clearfix">
-    {% if object.photo.url  %}
+    {% if object.photo and object.photo.url  %}
       <img src="{{ object.photo.url }}" class="alignleft img-circle img-thumbnail noborder notopmargin nobottommargin" style="max-width: 200px;">
     {% endif %}
     <div class="heading-block noborder nomargin">
