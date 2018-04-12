@@ -7,6 +7,9 @@
   {{ block.super }}
 
 	<link rel="stylesheet" href="{% static 'css/components/daterangepicker.css' %}" type="text/css" />
+
+  <link rel="stylesheet" href="{% static 'css/components/bs-filestyle.css' %}" type="text/css" />
+
 {% endblock page_css %}
 
 {% block sub_content %}
@@ -28,6 +31,8 @@
 	<script src="{% static 'js/components/moment.js' %}"></script>
 	<script src="{% static  'js/components/daterangepicker.js' %}"></script>
 
+  <script src="{% static  'js/components/bs-filestyle.js' %}"></script>
+
   <script>
     $(".daterange3").daterangepicker({
 				  singleDatePicker: true,
@@ -37,6 +42,12 @@
           }
 			},
 			function(start, end, label) {});
+    $("#id_photo").fileinput({
+      showUpload: false,
+			maxFileCount: 10,
+			mainClass: "input-group-lg",
+      showCaption: true
+    });
 
 
   </script>

@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
-{% load i18n %}
+{% load i18n static %}
 {% load render_bundle from webpack_loader %}
+{% get_media_prefix as MEDIA_PREFIX %}
+
 
 {% block page_css %}
 {% render_bundle 'portfolio' 'css' %}
@@ -11,6 +13,8 @@
 {% block sub_content %}
 <div id="portfolio"></div>
 {{ user }}
+  <image src="{{  profile_obj.photo.url }}" style="width: 200px; height: 200px;"></image>
+  {{ profile_obj.photo.url }}
 {% endblock sub_content %}
 
 {% block footer-info %}

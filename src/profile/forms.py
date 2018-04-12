@@ -29,7 +29,12 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             'birthday': forms.DateInput(attrs={
                 'class': 'form-control daterange3'
+            }),
+            'photo': forms.FileInput(attrs={
+                'class': 'file-loading'
             })
+            #< input id = "input-5" name = "input5[]" type = "file" multiple class ="file-loading" >
+
         }
 
     def __init__(self, *args, **kwargs):
