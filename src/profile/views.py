@@ -2,19 +2,19 @@
 
 import logging
 
-from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth.views import redirect_to_login
-from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.http import HttpResponse, StreamingHttpResponse
-from django.utils.encoding import force_text
+from django.dispatch import receiver
 from django.views.generic.edit import UpdateView
 from django.views.generic import DetailView
 
+from allauth.account.signals import user_signed_up
+from allauth.socialaccount.models import SocialLogin
+from allauth.socialaccount.signals import social_account_added
+
 from profile.models import UserProfile
 from profile.forms import ProfileForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ edit_profile = login_required(ProfileUpdateView.as_view())
 class ProfileDetailView(DetailView):
     model = UserProfile
     template_name = 'profile_detail.html'
+
     context_object_name = 'profile_obj'
 
     def get_object(self, queryset=None):
@@ -48,3 +49,23 @@ class ProfileDetailView(DetailView):
 
 show_detail = login_required(ProfileDetailView.as_view())
 
+
+@receiver(user_signed_up, sender=User)
+def save_profile(sender, request, user, **kwargs):
+    if not UserProfile.objects.filter(user=user).exists():
+        UserProfile.objects.create(user=user)
+
+
+@receiver(social_account_added, sender=SocialLogin)
+def update_profile_info(sender, request, sociallogin, **kwargs):
+    # todo: Guess the following values here from
+    print(sociallogin.account.get_profile_url())
+    print(sociallogin.account.provider)
+
+    profiles = UserProfile.objects.filter(user=sociallogin.user)
+    if profiles.exists():
+        for profile in profiles:
+            if hasattr(profile, sociallogin.account.provider):
+                setattr(profile, sociallogin.account.provider,
+                        sociallogin.account.get_profile_url())
+            profile.save()
