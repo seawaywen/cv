@@ -5,6 +5,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.views.generic import DetailView
 
@@ -23,6 +24,7 @@ class ProfileUpdateView(UpdateView):
     model = UserProfile
     form_class = ProfileForm
     template_name = 'profile_edit.html'
+    success_url = reverse_lazy('profile-detail')
 
     def get_object(self, queryset=None):
         if self.request.user:

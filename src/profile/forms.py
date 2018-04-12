@@ -27,12 +27,13 @@ class ProfileForm(forms.ModelForm):
                   'facebook', 'github', 'personal_site', 'description']
 
         widgets = {
+            'user': forms.HiddenInput(),
             'birthday': forms.DateInput(attrs={
                 'class': 'form-control form-birthday'
             }),
             'photo': forms.FileInput(attrs={
                 'class': 'file-loading'
-            })
+            }),
         }
 
     def __init__(self, *args, **kwargs):
@@ -43,7 +44,3 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-    def clean_birthday(self):
-        cleaned = self.cleaned_data['birthday']
-        logger.error(cleaned)
-        return cleaned

@@ -17,11 +17,15 @@
     {% block user-status %}
       {% if user.is_authenticated %}
       <div id="top-account" class="dropdown">
-          <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="icon-user"></i></a>
+          <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-top:3px;"><i class="icon-user"></i></a>
           <ul class="dropdown-menu dropdown-menu-right bg-white" aria-labelledby="dropdownMenu1">
-            <a class="dropdown-item tleft" href="{% url 'profile-detail' %}">Profile</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item tleft" href="{% url 'signout' %}">Signout <i class="icon-signout"></i></a>
+            <li><a class="dropdown-item tleft" href="{% url 'profile-detail' %}" >
+              <i class="icon-settings" style="margin-right: 10px;"></i> Profile</a>
+            </li>
+            <li><div class="dropdown-divider"></div></li>
+            <li><a class="dropdown-item tleft" href="{% url 'signout' %}">
+              <i class="icon-signout" style="margin-right: 10px;"></i> Signout</a>
+            </li>
           </ul>
         </div>
       {% endif %}

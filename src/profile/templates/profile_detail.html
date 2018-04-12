@@ -7,14 +7,20 @@
 {% block slider %}{% endblock slider %}
 
 {% block sub_content %}
-<div id="portfolio"></div>
+  <div class="row clearfix">
+    {% if object.photo.url  %}
+      <img src="{{ object.photo.url }}" class="alignleft img-circle img-thumbnail noborder notopmargin nobottommargin" style="max-width: 200px;">
+    {% endif %}
+    <div class="heading-block noborder nomargin">
+      <div style="margin: 40px 0 0 60px;">
 
-  {% if profile_obj.photo %}
-  <image src="{{  profile_obj.photo.url }}" style="width: 200px; height: 200px;"></image>
-  {{ profile_obj.photo.url }}
-  {% endif %}
+        <h3>{{ object.user}}'s {% blocktrans %}Profile{% endblocktrans %}</h3>
+        <div class="fright"> <a href="{% url 'profile-edit' %}">Edit Profile</a></div>
+      </div>
+    </div>
+  </div>
 
-
+  <div id="portfolio1"></div>
 {% endblock sub_content %}
 
 {% block footer-info %}

@@ -18,7 +18,16 @@
      style="max-width: 800px; background-color: rgba(250,250,250,0.91);
         margin: 40px 0;">
   <div class="card-body" style="padding: 40px">
-    <h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
+
+    <div class="row clearfix">
+      {% if object.photo_crop.url  %}
+        <img src="{{ object.photo_crop.url }}" class="alignleft img img-thumbnail noborder notopmargin nobottommargin" style="max-width: 256px; margin-left:10px;">
+      {% endif %}
+      <div class="heading-block noborder nomargin">
+        <h3 style="margin: 30px;">{{ object.user}}'s {% blocktrans %}Profile{% endblocktrans %}</h3>
+      </div>
+    </div>
+
     {% crispy form form.helper %}
   </div>
 </div>
