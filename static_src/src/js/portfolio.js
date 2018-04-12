@@ -1,4 +1,4 @@
-import '../less/blog.less';
+import '../less/portfolio.less';
 
 import Vue from 'vue'
 import Portfolio from './Portfolio.vue'
