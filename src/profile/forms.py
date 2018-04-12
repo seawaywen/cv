@@ -25,7 +25,13 @@ class ProfileForm(forms.ModelForm):
         fields = ['user', 'gender', 'birthday', 'photo', 'phone_number', 'country', 
                   'city', 'namespace', 'linkedin', 'wechat', 'facebook', 
                   'github', 'personal_site', 'description']
-        
+
+        widgets = {
+            'birthday': forms.DateInput(attrs={
+                'class': 'form-control daterange3'
+            })
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()

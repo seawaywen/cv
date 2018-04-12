@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+
+
+{% block content %}
+
+    <div class="container clearfix">
+      <div class="card divcenter noradius border"
+           style="max-width: 800px; background-color: rgba(250,250,250,0.91);
+            margin-top: 40px;">
+        <div class="card-body" style="padding: 40px">
+          {% block sub_content %}{% endblock sub_content %}
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+
+{% block page_js %}
+  {% render_bundle 'portfolio' 'js' %}
+{% endblock page_js %}
+
+
+
+

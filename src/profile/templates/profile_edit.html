@@ -1,7 +1,13 @@
 {% extends "_base_profie.html" %}
-{% load i18n %}
+{% load i18n static %}
 {% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {{ block.super }}
+
+	<link rel="stylesheet" href="{% static 'css/components/daterangepicker.css' %}" type="text/css" />
+{% endblock page_css %}
 
 {% block sub_content %}
 <h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
@@ -14,3 +20,24 @@
 
 
 
+{% block page_js %}
+
+  {{ block.super }}
+
+  <!-- Include Date Range Picker -->
+	<script src="{% static 'js/components/moment.js' %}"></script>
+	<script src="{% static  'js/components/daterangepicker.js' %}"></script>
+
+  <script>
+    $(".daterange3").daterangepicker({
+				  singleDatePicker: true,
+				  showDropdowns: true,
+          "locale": {
+            format: 'YYYY-MM-DD',
+          }
+			},
+			function(start, end, label) {});
+
+
+  </script>
+{% endblock %}
