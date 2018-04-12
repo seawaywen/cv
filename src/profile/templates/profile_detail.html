@@ -1,29 +1,23 @@
-{% extends "base/base.html" %}
+{% extends "_base_profie.html" %}
 {% load i18n static %}
+{% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
 {% get_media_prefix as MEDIA_PREFIX %}
-
-
-{% block page_css %}
-{% render_bundle 'portfolio' 'css' %}
-{% endblock %}
 
 {% block slider %}{% endblock slider %}
 
 {% block sub_content %}
 <div id="portfolio"></div>
-{{ user }}
+
+  {% if profile_obj.photo %}
   <image src="{{  profile_obj.photo.url }}" style="width: 200px; height: 200px;"></image>
   {{ profile_obj.photo.url }}
+  {% endif %}
+
+
 {% endblock sub_content %}
 
 {% block footer-info %}
   <h4> 这里是中文显示的系统字体 </h4>
   <h4 class="font-kai"> 这里是中文显示的楷体</h4>
-  <h4> if this is English, here is how it looks like</h4>
 {% endblock footer-info %}
-
-
-{% block page_js %}
-  {% render_bundle 'portfolio' 'js' %}
-{% endblock page_js %}

@@ -27,18 +27,11 @@
   <div class="line line-sm" style="margin:2px 0 1px 0;"> </div>
   <div>
     {% for provider in socialaccount_providers %}
-      {% with provider_name=provider.name|lower %}
-        <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider_name}}"
-           href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
-        {% if provider.name|lower == 'github' %}
-          <i class="icon-{{provider_name}}-circled"></i>
-          <i class="icon-{{provider_name}}-circled"></i>
-        {% else %}
-          <i class="icon-{{provider_name}}"></i>
-          <i class="icon-{{provider_name}}"></i>
-        {% endif %}
-      {% endwith %}
-    </a>
+      <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider.id}}"
+         href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
+        <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
+        <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
+      </a>
     {% endfor %}
   </div>
 

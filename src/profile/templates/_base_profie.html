@@ -11,18 +11,25 @@
 {% block slider %}{% endblock slider %}
 
 
-
 {% block content %}
 
-    <div class="container clearfix">
-      <div class="card divcenter noradius border"
-           style="max-width: 800px; background-color: rgba(250,250,250,0.91);
-            margin-top: 40px;">
-        <div class="card-body" style="padding: 40px">
-          {% block sub_content %}{% endblock sub_content %}
+<div id="messages">
+  {% block messages %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="style-msg {% if message.tags %}{{ message.tags }}msg{% endif %}">
+          <div class="sb-msg"><i class="icon-info-sign"></i><strong></strong>{{ message }}</div>
+          <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
         </div>
-      </div>
-    </div>
+      {% endfor %}
+    {% endif %}
+  {% endblock messages %}
+</div>
+
+<div class="container clearfix">
+  {% block sub_content %}{% endblock sub_content %}
+</div>
+
 {% endblock content %}
 
 

@@ -13,11 +13,15 @@
 {% endblock page_css %}
 
 {% block sub_content %}
-<h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
 
-<div id="profile"> </div>
-
-{% crispy form form.helper %}
+<div class="card divcenter noradius border"
+     style="max-width: 800px; background-color: rgba(250,250,250,0.91);
+        margin: 40px 0;">
+  <div class="card-body" style="padding: 40px">
+    <h2>{% blocktrans %}Profile{% endblocktrans %}</h2>
+    {% crispy form form.helper %}
+  </div>
+</div>
 
 {% endblock sub_content %}
 
