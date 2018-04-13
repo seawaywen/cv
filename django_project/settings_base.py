@@ -1,4 +1,6 @@
 import os
+
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ImproperlyConfigured
 
@@ -74,7 +76,7 @@ ACCOUNT_ACTIVATION_HOURS = 1
 
 LOGIN_URL = "signin"
 LOGOUT_URL = "signout"
-LOGIN_REDIRECT_URL = '/profile'
+LOGIN_REDIRECT_URL = reverse_lazy('profile')
 
 
 MIDDLEWARE = [

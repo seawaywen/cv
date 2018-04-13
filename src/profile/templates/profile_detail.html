@@ -8,14 +8,17 @@
 
 {% block sub_content %}
   <div class="row clearfix">
-    {% if object.photo and object.photo.url  %}
-      <img src="{{ object.photo.url }}" class="alignleft img-circle img-thumbnail noborder notopmargin nobottommargin" style="max-width: 200px;">
-    {% endif %}
+    <div class="col-md-auto">
+      {% if object.photo and object.photo.url  %}
+        <img src="{{ object.photo.url }}" class="aligncenter img-circle img-thumbnail noborder notopmargin nobottommargin" style="max-width: 200px;">
+      {% endif %}
+    </div>
     <div class="heading-block noborder nomargin">
-      <div style="margin: 40px 0 0 60px;">
-
+      <div style="margin-top: 50px;">
         <h3>{{ object.user}}'s {% blocktrans %}Profile{% endblocktrans %}</h3>
-        <div class="fright"> <a href="{% url 'profile-edit' %}">Edit Profile</a></div>
+        {% if object.user == user %}
+        <div class="fright"> <a href="{% url 'profile-edit' request.user %}">Edit Profile</a></div>
+        {% endif %}
       </div>
     </div>
   </div>

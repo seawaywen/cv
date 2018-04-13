@@ -70,6 +70,8 @@ class UserProfile(models.Model):
                                      verbose_name=_('Personal Site'))
     description = models.TextField(blank=True, verbose_name=_('Description'))
 
+    is_public = models.BooleanField(default=True, verbose_name=_('Public it?'))
+
     class Meta:
         app_label = 'resume'
         ordering = ['id']
@@ -119,4 +121,5 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
         
     def get_absolute_url(self):
-        return reverse_lazy('profile-edit')
+        return reverse_lazy('profile-edit',
+                            kwargs={'username': self.user.username})

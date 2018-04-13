@@ -22,7 +22,7 @@ UserModel = get_user_model()
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['user', 'gender', 'birthday', 'photo', 'phone_number',
+        fields = ['user', 'is_public', 'gender', 'birthday', 'photo', 'phone_number',
                   'country', 'city', 'namespace', 'linkedin', 'wechat',
                   'facebook', 'github', 'personal_site', 'description']
 
