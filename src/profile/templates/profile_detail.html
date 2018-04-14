@@ -4,26 +4,229 @@
 {% load render_bundle from webpack_loader %}
 {% get_media_prefix as MEDIA_PREFIX %}
 
+{% block page_css %}
+  {{ block.super }}
+  <style>
+
+.blurred-img {
+    -webkit-transform: scale(1.01) translate3d(0,0,0);
+    -ms-transform: scale(1.01) translate3d(0,0,0);
+    -o-transform: scale(1.01) translate3d(0,0,0);
+    transform: scale(1.01) translate3d(0,0,0);
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+    -webkit-backface-visibility: hidden;
+    opacity: 0;
+}
+
+  </style>
+{% endblock page_css %}
+
 {% block slider %}{% endblock slider %}
 
-{% block sub_content %}
-  <div class="row clearfix">
-    <div class="col-md-auto">
-      {% if object.photo and object.photo.url  %}
-        <img src="{{ object.photo.url }}" class="aligncenter img-circle img-thumbnail noborder notopmargin nobottommargin" style="max-width: 200px;">
+{% block content %}
+  <!--
+		<section id="slider" class="slider-element full-screen force-full-screen clearfix">
+			<div class="full-screen force-full-screen" style="position: fixed; width: 100%; background: #FFF url({% static "images/about/me-parallax.jpg" %}) no-repeat top center; background-size: cover; background-attachment: fixed;">
+
+				<div class="container clearfix">
+					<div class="slider-caption dark slider-caption-right">
+						<h2 class="font-primary ls5" data-animate="fadeIn">Pliff Jenkins</h2>
+						<p class="t300 ls1 d-none d-sm-block" data-animate="fadeIn" data-delay="400">Simple Design Methodology.<br>Melbourn, Australia.</p>
+						<a class="font-primary noborder ls1 topmargin-sm inline-block more-link text-white dark d-none d-sm-inline-block" data-animate="fadeIn" data-delay="800" data-scrollto="#section-works" data-offset="0" href="#"><u>My Works</u> &rarr;</a>
+					</div>
+				</div>
+
+			</div>
+      <div class="full-screen force-full-screen blurred-img" style="position: fixed; width: 100%; top: 0; left: 0; background: #FFF url({% static 'images/about/me-parallax.jpg' %}) no-repeat top center; background-size: cover; background-attachment: fixed;"></div>
+		</section>
+-->
+
+  <section id="page-title" class="page-title-parallax page-title-dark page-title-right"
+           style="padding: 250px 0; background-image: url('{% static "images/about/me-parallax.jpg" %}'); background-size: cover; background-position: center center;"
+           data-bottom-top="background-position:0px 440px;" data-top-bottom="background-position:0px -500px;">
+
+    <div class="container clearfix">
+      <h1 class="font-primary ls1" data-animate="fadeIn">{{ object.user.first_name }} {{ object.user.last_name }}</h1>
+      <span>CEO &amp; Co-Founder</span>
+      {% if object.user == user %}
+        <div class="fright"><a href="{% url 'profile-edit' request.user %}">Edit Profile</a></div>
       {% endif %}
     </div>
-    <div class="heading-block noborder nomargin">
-      <div style="margin-top: 50px;">
-        <h3>{{ object.user}}'s {% blocktrans %}Profile{% endblocktrans %}</h3>
-        {% if object.user == user %}
-        <div class="fright"> <a href="{% url 'profile-edit' request.user %}">Edit Profile</a></div>
-        {% endif %}
+  </section><!-- #page-title end -->
+
+
+  <section id="content">
+    <div class="content-wrap nopadding">
+
+      <div id="section-about" class="section page-section nomargin clearfix" style="background: rgba(255,255,255,0.9); padding: 40px 0">
+        <div class="container clearfix">
+          <div class="row clearfix">
+            <div class="col-md-9 clearfix">
+              <div class="heading-block noborder">
+                <h3 class="font-primary center">About Me</h3>
+              </div>
+              <span>{{ object.description }}</span>
+            </div>
+
+            <div class="col-md-1 clearfix"> </div>
+
+            <div class="col-md-2 clearfix col_last">
+              <a href="#" class="button button-large button-border button-black button-dark noleftmargin"><i class="icon-line-cloud-download"></i> Download CV</a>
+              <table class="table" style="margin-top: 20px;">
+                <tbody>
+                <tr>
+                  <td class="notopborder center" colspan="2"><strong>Contact me</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Email:</strong></td>
+                  <td>{{ object.user.email }}</td>
+                </tr>
+                {%  if object.phone %}
+                <tr>
+                  <td><strong>Phone:</strong></td>
+                  <td>{{ object.phone_number }}</td>
+                </tr>
+                {% endif %}
+                {%  if object.personal_site %}
+                <tr>
+                  <td><strong>Website:</strong></td>
+                  <td>{{ object.personal_site }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <td colspan="2">
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div id="section-skills" class="section page-section nomargin dark clearfix" style="background: rgba(50, 50, 50, 0.9) url({% static "images/about/me-parallax1.jpg" %}) no-repeat top center; background-size: cover; padding: 40px 0">
+        <div class="container clearfix">
+          <div class="heading-block noborder">
+            <h3 class="font-primary center">Tech stack & Skills</h3>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+              <div class="fbox-icon">
+                <a href="#"><i class="icon-html5" style="color: #DDD"></i></a>
+              </div>
+              <h3 class="t400 ls2" style="color: #FFF">HTML5</h3>
+              <p style="color:#AAA;">Powerful Layout with Responsive functionality that can be adapted to any screen size.</p>
+            </div>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+              <div class="fbox-icon">
+                <a href="#"><i class="icon-code" style="color: #DDD"></i></a>
+              </div>
+              <h3 class="t400 ls2" style="color: #FFF">Javascripts</h3>
+              <p style="color:#AAA;">Looks beautiful &amp; ultra-sharp on Retina Displays with Retina Icons, Fonts &amp; Images.</p>
+            </div>
+          </div>
+
+          <div class="col_one_third col_last">
+            <div class="feature-box fbox-plain">
+              <div class="fbox-icon">
+                <a href="#"><i class="icon-picture" style="color: #DDD"></i></a>
+              </div>
+              <h3 class="t400 ls2" style="color: #FFF">Photoshop</h3>
+              <p style="color:#AAA;">Optimized code that are completely customizable and deliver unmatched fast performance.</p>
+            </div>
+          </div>
+
+          <div class="clear"></div>
+
+        </div>
+      </div>
+
+
+      <div id="section-info" class="section page-section nomargin clearfix" style="background: rgba(255,255,255,0.9);  padding: 40px 0">
+        <div class="container clearfix">
+          <div class="heading-block noborder">
+            <h3 class="font-primary center">Project Info</h3>
+          </div>
+
+          <div class="col_half">
+            <div class="feature-box fbox-plain">
+              <div class="fbox-icon">
+                <a href="#"><i class="icon-truck" style="color: #DDD"></i></a>
+              </div>
+              <h3 class="t400 ls2" style="color: #FFF">Info</h3>
+            </div>
+          </div>
+
+          <div class="col_half col_last">
+          </div>
+
+        </div>
+      </div>
+
+
+      <div id="section-work-experience" class="section page-section nomargin dark clearfix" style="background: rgba(50,50,50,0.9);  padding: 40px 0">
+        <div class="container clearfix">
+          <div class="heading-block noborder">
+            <h3 class="font-primary center">Work Experience</h3>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+            </div>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+            </div>
+          </div>
+
+          <div class="col_one_third col_last">
+            <div class="feature-box fbox-plain">
+            </div>
+          <div class="clear"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="section-fancy-intro" class="section page-section nomargin clearfix" style="padding-bottom: 20px">
+        <div class="container clearfix">
+          <div class="heading-block noborder">
+            <h3 class="font-primary center">My Fancy Introduction</h3>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+            </div>
+          </div>
+
+          <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+            </div>
+          </div>
+
+          <div class="col_one_third col_last">
+            <div class="feature-box fbox-plain">
+            </div>
+            <div class="clear"></div>
+          </div>
+
+        </div>
+      </div>
+
+
+
   </div>
+  </section>
 
   <div id="portfolio1"></div>
+{% endblock content %}
+{% block sub_content %}
 {% endblock sub_content %}
 
 {% block footer-info %}

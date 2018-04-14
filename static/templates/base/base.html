@@ -17,7 +17,7 @@
     {% block user-status %}
       {% if user.is_authenticated %}
       <div id="top-account" class="dropdown">
-          <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-top:3px;"><i class="icon-user"></i></a>
+          <a href="#" class="btn btn-secondary btn-sm dropdown-toggle bg-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-top:3px;"><i class="icon-user"></i></a>
           <ul class="dropdown-menu dropdown-menu-right bg-white" aria-labelledby="dropdownMenu1">
             <li><a class="dropdown-item tleft" href="{% url 'profile-detail' user %}" >
               <i class="icon-settings" style="margin-right: 10px;"></i> Profile</a>
