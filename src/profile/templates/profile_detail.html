@@ -25,33 +25,32 @@
 {% block slider %}{% endblock slider %}
 
 {% block content %}
-  <!--
-		<section id="slider" class="slider-element full-screen force-full-screen clearfix">
-			<div class="full-screen force-full-screen" style="position: fixed; width: 100%; background: #FFF url({% static "images/about/me-parallax.jpg" %}) no-repeat top center; background-size: cover; background-attachment: fixed;">
-
-				<div class="container clearfix">
-					<div class="slider-caption dark slider-caption-right">
-						<h2 class="font-primary ls5" data-animate="fadeIn">Pliff Jenkins</h2>
-						<p class="t300 ls1 d-none d-sm-block" data-animate="fadeIn" data-delay="400">Simple Design Methodology.<br>Melbourn, Australia.</p>
-						<a class="font-primary noborder ls1 topmargin-sm inline-block more-link text-white dark d-none d-sm-inline-block" data-animate="fadeIn" data-delay="800" data-scrollto="#section-works" data-offset="0" href="#"><u>My Works</u> &rarr;</a>
-					</div>
-				</div>
-
-			</div>
-      <div class="full-screen force-full-screen blurred-img" style="position: fixed; width: 100%; top: 0; left: 0; background: #FFF url({% static 'images/about/me-parallax.jpg' %}) no-repeat top center; background-size: cover; background-attachment: fixed;"></div>
-		</section>
--->
 
   <section id="page-title" class="page-title-parallax page-title-dark page-title-right"
-           style="padding: 250px 0; background-image: url('{% static "images/about/me-parallax.jpg" %}'); background-size: cover; background-position: center center;"
+           style="padding: 250px 0; background: rgba(20, 20, 20, 0.70)  top center; background-size: cover;"
            data-bottom-top="background-position:0px 440px;" data-top-bottom="background-position:0px -500px;">
 
     <div class="container clearfix">
-      <h1 class="font-primary ls1" data-animate="fadeIn">{{ object.user.first_name }} {{ object.user.last_name }}</h1>
-      <span>CEO &amp; Co-Founder</span>
-      {% if object.user == user %}
-        <div class="fright"><a href="{% url 'profile-edit' request.user %}">Edit Profile</a></div>
-      {% endif %}
+      <div class="slider-caption dark slider-caption-right">
+        <h1 class="font-primary ls1" data-animate="fadeIn" style="text-transform: capitalize">
+          {{ object.user.first_name }} {{ object.user.last_name }}
+          <a href="{% url 'profile-edit' request.user %}">
+            <span class="fright leftmargin-sm" ><i class="icon-edit"></i></span>
+          </a>
+        </h1>
+        <p class="t300 ls2 d-none d-sm-block" data-animate="fadeIn" data-delay="400">
+          人工智能算法工程师
+          <br>
+          {{ object.city }}, {{ object.country }}
+        </p>
+        {% comment %}
+        <span></span>
+        todo: if user has associated work experience, set the latest oen's job title here
+        {% endcomment %}
+        {% if object.user == user %}
+          <div class="fright">
+        {% endif %}
+      </div>
     </div>
   </section><!-- #page-title end -->
 
@@ -65,8 +64,8 @@
             <div class="col-md-9 clearfix">
               <div class="heading-block noborder">
                 <h3 class="font-primary center">About Me</h3>
+                <span style="font-size: 16px">{{ object.description }}</span>
               </div>
-              <span>{{ object.description }}</span>
             </div>
 
             <div class="col-md-1 clearfix"> </div>
@@ -194,7 +193,7 @@
         </div>
       </div>
 
-      <div id="section-fancy-intro" class="section page-section nomargin clearfix" style="padding-bottom: 20px">
+      <div id="section-fancy-intro" class="section page-section nomargin clearfix" style="padding: 20px 0;">
         <div class="container clearfix">
           <div class="heading-block noborder">
             <h3 class="font-primary center">My Fancy Introduction</h3>
@@ -230,6 +229,5 @@
 {% endblock sub_content %}
 
 {% block footer-info %}
-  <h4> 这里是中文显示的系统字体 </h4>
-  <h4 class="font-kai"> 这里是中文显示的楷体</h4>
+
 {% endblock footer-info %}

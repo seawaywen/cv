@@ -27,13 +27,6 @@ class ProfileUpdateView(UpdateView):
     def get_success_url(self):
         return reverse(
             'profile-detail', kwargs={'username': self.request.user.username})
-        #return self.object.get_absolute_url()
-
-    def get_object1(self, queryset=None):
-        if self.request.user:
-            profile_obj = UserProfile.objects.get(user=self.request.user)
-            return profile_obj
-        return None
 
     def get_object(self, queryset=None):
         username = self.kwargs.get('username')
@@ -58,6 +51,14 @@ class ProfileUpdateView(UpdateView):
 
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        self.request.user.first_name = form.cleaned_data['first_name']
+        self.request.user.last_name = form.cleaned_data['last_name']
+        self.request.user.save()
+        return super().form_valid(form)
 
 
 edit_profile = login_required(ProfileUpdateView.as_view())
