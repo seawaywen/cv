@@ -42,7 +42,9 @@
 
 
 {% block page_js %}
+
   {% render_bundle 'portfolio' 'js' %}
+  {{ block.super }}
 {% endblock page_js %}
 
 
