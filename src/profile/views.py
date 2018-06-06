@@ -109,7 +109,7 @@ class ProfileRedirectView(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 
-direct_to_detail = ProfileRedirectView.as_view()
+direct_to_detail = login_required(ProfileRedirectView.as_view())
 
 
 @receiver(user_signed_up, sender=User)
