@@ -20,11 +20,12 @@ HOST_DIR = os.path.abspath(os.getenv('MEMODIR_HOST_DIR', _HOST_DIR))
 _LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir)) + '-logs'
 LOG_DIR = os.path.abspath(os.getenv('MEMODIR_LOG_DIR', _LOG_DIR))
 
-
+"""
 print('BASE_DIR:{}'.format(BASE_DIR))
 print('SRC_DIR:{}'.format(SRC_DIR))
 print('HOST_DIR:{}'.format(HOST_DIR))
 print('LOG_DIR:{}'.format(_LOG_DIR))
+"""
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     'crispy_forms',
     'webpack_loader',
 
@@ -176,7 +177,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
-STATICFILES_DIRS = [ 
+STATICFILES_DIRS = [
     ('dist', os.path.join(BASE_DIR, 'static_src', 'dist')),
     ('css', os.path.join(BASE_DIR, 'static', 'css')),
     ('images', os.path.join(BASE_DIR, 'static', 'images')),
@@ -200,7 +201,7 @@ TEMPLATES = [
         ),
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',  
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages']
@@ -226,7 +227,7 @@ RESERVED_PROFILE_NAMESPACE_LIST = (
 IMAGE_UPLOAD_TO = 'images/%Y/%m'
 PROFILE_PHOTO_UPLOAD_TO = 'profile_photo/%Y/%m'
 THUMBNAIL_UPLOAD_TO = 'thumbnails/%Y/%m'
-THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m' 
+THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m'
 
 
 class LevelFilter(object):

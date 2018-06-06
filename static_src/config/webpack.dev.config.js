@@ -8,7 +8,7 @@ const baseWebpackConfig = require('./webpack.base.config');
 const devWebpackConfig = merge(baseWebpackConfig, {
 
   devtool: 'eval-source-map',
-  
+
   devServer: {
       contentBase: "./dist",
       historyApiFallback: true,
@@ -21,12 +21,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       overlay: {
         warnings: false,
         errors: true,
-      }, 
-      publicPath: '/static/dist/', 
+      },
+      publicPath: '/static/dist/',
       proxy: {},
       //quiet: true, // necessary for FriendlyErrorsPlugin
       watchOptions: {
-        poll: false 
+        poll: false
       },
       headers: {
         "Access-Control-Allow-Origin": "\*",
@@ -52,9 +52,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       chunks: ['main'],
     }),
     */
-    
+
     new webpack.NamedModulesPlugin(),
-    
+
     new webpack.HotModuleReplacementPlugin(),
 
     new webpack.NoEmitOnErrorsPlugin()

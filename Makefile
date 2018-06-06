@@ -121,7 +121,7 @@ $(PG_DATA_DIR):
 	mkdir -p $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
 	docker run -d --name $(PG_DB_NAME) -p 5432:5432 -v $(PG_DATA_DIR):/var/lib/postgresql/data -v $(PG_VAR_RUN_DIR):/var/run/postgresql postgres
 	@echo 'starting docker...(waiting for 15 secs)'
-	sleep 15 
+	sleep 15
 	createdb --host=$(PG_HOST) --username=$(PG_USER) $(PG_NAME)
 	$(DJANGO_MANAGE) migrate
 
@@ -134,10 +134,10 @@ createsuperuser:
 
 setup-db: $(PG_DATA_DIR)
 
-start-db: 
+start-db:
 	@echo 'starting db...(waiting for 10 secs)'
 	docker start $(PG_DB_NAME)
-	sleep 10 
+	sleep 10
 	$(DJANGO_MANAGE) migrate
 
 stop-db: $(PG_SOCKET)
