@@ -20,6 +20,9 @@ HOST_DIR = os.path.abspath(os.getenv('MEMODIR_HOST_DIR', _HOST_DIR))
 _LOG_DIR = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir)) + '-logs'
 LOG_DIR = os.path.abspath(os.getenv('MEMODIR_LOG_DIR', _LOG_DIR))
 
+if not os.path.exists(LOG_DIR):
+    os.mkdir(LOG_DIR)
+
 """
 print('BASE_DIR:{}'.format(BASE_DIR))
 print('SRC_DIR:{}'.format(SRC_DIR))
