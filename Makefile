@@ -147,7 +147,7 @@ stop-db: $(PG_SOCKET)
 destroy-db: stop-db
 	@echo 'destroy db...'
 	docker rm $(PG_DB_NAME)
-	rm -rf $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
+	sudo rm -rf $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
 
 
 .PHONY: collectstatic makemessages compilemessages setup-db

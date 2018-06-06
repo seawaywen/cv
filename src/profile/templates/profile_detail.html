@@ -33,15 +33,22 @@
     <div class="container clearfix">
       <div class="slider-caption dark slider-caption-right">
         <h1 class="font-primary ls1" data-animate="fadeIn" style="text-transform: capitalize">
-          {{ object.user.first_name }} {{ object.user.last_name }}
+          {% if object.full_user_name %}
+          {{ object.full_user_name }}
+          {% else %}
+          &nbsp;
+          {% endif %}
+
+          {% if object.user == user %}
           <a href="{% url 'profile-edit' request.user %}">
             <span class="fright leftmargin-sm" ><i class="icon-edit"></i></span>
           </a>
+          {% endif %}
         </h1>
         <p class="t300 ls2 d-none d-sm-block" data-animate="fadeIn" data-delay="400">
           人工智能算法工程师
           <br>
-          {{ object.city }}, {{ object.country }}
+          {{ object.city|default_if_none:'' }} {{ object.verbose_country|default_if_none:'' }}
         </p>
         {% comment %}
         <span></span>
