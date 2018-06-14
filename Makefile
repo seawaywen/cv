@@ -107,6 +107,9 @@ lint:
 	@$(FLAKE8) --exclude='migrations' --filename='*.py' src/
 
 
+test: collectstatic.deps.mk  ## Run unit tests
+	$(DJANGO_MANAGE) test $(ARGS)
+
 PG_NAME = $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['NAME'])")
 PG_HOST = $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['HOST'])")
 PG_USER= $(shell DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) PYTHONPATH=$(PYTHONPATH) $(PYTHON) -c "from django.conf import settings; print(settings.DATABASES['default']['USER'])")
