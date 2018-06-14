@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class ResumeConfig(AppConfig):
-    name = 'memodir.resume'
+    name = 'resume'

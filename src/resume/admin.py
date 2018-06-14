@@ -19,13 +19,18 @@ class WorkExperienceAdmin(admin.ModelAdmin):
     inlines = [
         WorkExperienceTranslationInline
     ]
-    
+
     list_display = ('show_user_info', 'show_position', 'show_location')
-    
+
     def show_user_info(self, obj):
-        return '{}@{}'.format(obj.user.user.username, obj.company)
+        from itertools import chain
+        user_info = [obj.user.user.username]
+        if obj.company:
+            user_info.append(obj.company)
+        return '-'.join(user_info)
+        #return '{}@{}'.format(obj.user.user.username, obj.company)
     show_user_info.short_description = _('User Info')
-    
+
     def show_position(self, obj):
         return obj.position
     show_position.short_description = _('Job Position')

@@ -5,7 +5,7 @@ import re
 
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.utils.translation import get_language, ugettext_lazy as _
 
 from profile.models import UserProfile
@@ -29,17 +29,16 @@ class MultilingualModel(models.Model):
 
         lang = get_language()
         try:
-            translation = self._meta.translation.objects.get(language=lang)
+            translation = self._meta.translation.objects.get(
+                related_model=self, language=lang)
             return getattr(translation, name)
         except self._meta.translation.DoesNotExist:
             return self.__dict__[name]
 
 
 class WorkExperienceTranslation(models.Model):
-    work_experience = models.ForeignKey(
-        'resume.WorkExperience',
-        on_delete=models.CASCADE,
-        related_name='translations')
+    related_model = models.ForeignKey('resume.WorkExperience',
+        on_delete=models.CASCADE, related_name='translations')
     language = models.CharField(max_length=30, verbose_name=_('Language'),
                                 choices=settings.LANGUAGES, db_index=True)
     position = models.CharField(max_length=255, verbose_name=_('Job Position'))
@@ -56,11 +55,12 @@ class WorkExperienceTranslation(models.Model):
 
     class Meta:
         ordering = ('language',)
+        unique_together = (('related_model', 'language'),)
 
     def __unicode__(self):
         return '{0}@{1} - {2}'.format(
             self.position, self.company, self.location)
-    
+
     def __str__(self):
         return self.__unicode__()
 
