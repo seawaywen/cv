@@ -28,7 +28,7 @@ def str_contain_chinese(check_str):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
 
     GENDER_CHOICES = (
         ('M', _('Male')),
@@ -142,3 +142,10 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('profile-edit',
                             kwargs={'username': self.user.username})
+
+
+def post_save_user_handler(sender, instance, created, **kwargs):
+    """Ensure the profile table exists."""
+    assert sender == User
+    if created:
+        UserProfile.objects.create(user=instance)
