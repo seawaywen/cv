@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 {% load socialaccount %}
 
+{% block title %}SignIn{% endblock title %}
+
 {% block sub_content %}
 <form id="sign-in-form" name="sign_in-form" class="nobottommargin"
       action="{% url 'signin' %}" method="post">
