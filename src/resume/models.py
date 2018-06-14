@@ -5,10 +5,12 @@ import re
 
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
 #from django.contrib.auth.models import User
 from django.utils.translation import get_language, ugettext_lazy as _
 
 from profile.models import UserProfile
+
 
 logger = logging.getLogger(__name__)
 
@@ -44,8 +46,8 @@ class WorkExperienceTranslation(models.Model):
     position = models.CharField(max_length=255, verbose_name=_('Job Position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
-    date_start = models.DateTimeField(verbose_name=_('Start Date'))
-    date_end = models.DateTimeField(
+    date_start = models.DateField(verbose_name=_('Start Date'))
+    date_end = models.DateField(
         null=True, blank=True, verbose_name=_('End Date'))
     contribution = models.TextField(
         blank=True, verbose_name=_('Your highlight contribution'))
@@ -63,6 +65,11 @@ class WorkExperienceTranslation(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+    def clean(self):
+        if self.date_end <= self.date_start:
+            raise ValidationError({
+                'date_end': _('End date should not be earlier than start date!')})
 
 
 class WorkExperience(MultilingualModel):
@@ -109,3 +116,8 @@ class Project(models.Model):
 
     def __str__(self):
         return self.__unicode__()
+
+
+def pre_save_workexperience_translation_handler(sender, instance, created, **kwargs):
+    assert sender == WorkExperienceTranslation
+    instance.clean()
