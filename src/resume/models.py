@@ -6,8 +6,9 @@ import re
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-#from django.contrib.auth.models import User
 from django.utils.translation import get_language, ugettext_lazy as _
+
+from tinymce.models import HTMLField
 
 from profile.models import UserProfile
 
@@ -43,14 +44,15 @@ class WorkExperienceTranslation(models.Model):
         on_delete=models.CASCADE, related_name='translations')
     language = models.CharField(max_length=30, verbose_name=_('Language'),
                                 choices=settings.LANGUAGES, db_index=True)
-    position = models.CharField(max_length=255, verbose_name=_('Job Position'))
+    position = models.CharField(max_length=255, verbose_name=_('Job position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
-    date_start = models.DateField(verbose_name=_('Start Date'))
+    date_start = models.DateField(verbose_name=_('Start date'))
     date_end = models.DateField(
-        null=True, blank=True, verbose_name=_('End Date'))
-    contribution = models.TextField(
-        blank=True, default='', verbose_name=_('Your highlight contribution'))
+        null=True, blank=True, verbose_name=_('End date'))
+
+    contribution = HTMLField(blank=True, default='',
+                             verbose_name=_('Highlighted contribution'))
     keywords = models.TextField(
         blank=True, default='', verbose_name=_('Keywords'),
         help_text=_('The words that might search for when looking'))
@@ -78,7 +80,6 @@ class WorkExperienceTranslation(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-
 
 
 class WorkExperience(MultilingualModel):

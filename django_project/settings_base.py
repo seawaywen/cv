@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'webpack_loader',
+    'tinymce',
 
     'allauth',
     'allauth.account',
@@ -349,3 +350,10 @@ LOGGING = {
 
 
 SITE_ID = 1
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "simple", # default value
+    'relative_urls': False, # default value
+    'width': '70%',
+    'height': 300
+}

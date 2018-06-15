@@ -39,6 +39,7 @@ urlpatterns += ([
     path('profile/', include('profile.urls')),
     path('accounts/', include('allauth.urls')),
 
+    path(r'tinymce/', include('tinymce.urls')),
 
 ])
 
