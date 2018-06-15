@@ -5,6 +5,7 @@ import random
 import string
 
 from django.test import RequestFactory
+from django.conf import settings
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth import get_user_model
 from django.contrib.messages.storage.fallback import FallbackStorage
@@ -15,6 +16,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from requests import Response
 
 from profile.models import UserProfile
+from resume.models import (
+    WorkExperience,
+    WorkExperienceTranslation,
+)
 
 
 LETTERS = string.ascii_letters + string.digits
@@ -108,7 +113,7 @@ class Factory():
     def make_user(self, username=None, password=None, email=None, is_admin=False,
                   permissions=None, groups=None, first_name='', last_name='',
                   gender=None, birthday=None, phone_number='', country='',
-                  city='', namespace='', is_public=True, photo=None,
+                  city='', namespace=None, is_public=True, photo=None,
                   photo_upload_name=None):
         if username is None:
             username = self.make_unique_string(prefix='user-')
@@ -121,6 +126,8 @@ class Factory():
             gender = 'U'
         if birthday is None:
             birthday = timezone.now()
+        if namespace is None:
+            namespace = self.make_unique_string(prefix='namespace-')
         if permissions is None:
             permissions = []
         if groups is None:
@@ -156,3 +163,51 @@ class Factory():
         user.profile.refresh_from_db()
 
         return user
+
+    def make_work_experience_translation(
+        self, related_model=None, language=None, position=None, company=None, location=None,
+        date_start=None, date_end=None, contribution=None, keywords=None):
+
+        languages = settings.LANGUAGES
+
+        if related_model is None:
+            user = self.make_user()
+            related_model = WorkExperience.objects.create(user=user.profile, is_public=True)
+
+        if language is None or \
+                language not in [x for x, _ in languages]:
+            language = languages[0][0]
+
+        position = self.make_unique_string('position-') if position is None else position
+        company = self.make_unique_string('company-') if company is None else company
+        location = self.make_unique_string('location-') if location is None else location
+        date_start = timezone.now() if date_start is None else date_start
+        date_end = timezone.now() if date_end is None else date_end
+        contribution = self.make_unique_string(length=20) if contribution is None else ''
+        keywords = self.make_unique_string() if keywords is None else ''
+
+        translation = WorkExperienceTranslation.objects.create(
+            related_model=related_model, language=language,
+            position=position, company=company, location=location,
+            date_start=date_start, date_end=date_end,
+            contribution=contribution, keywords=keywords)
+        return translation
+
+    def make_multi_work_experience_translations(self, user=None, number=1):
+        languages = settings.LANGUAGES
+        user = self.make_user() if user is None else user
+        work_experience = WorkExperience.objects.create(user=user.profile, is_public=True)
+
+        translation_list = []
+        if number > len(languages):
+            print('translation number cannot be greater than languages number, '
+                  'use the language max number instead!')
+            number = len(languages)
+
+        for i in range(number):
+            translation = self.make_work_experience_translation(
+                related_model=work_experience, language=languages[i][0])
+            translation_list.append(translation)
+        return translation_list
+
+

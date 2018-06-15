@@ -50,7 +50,7 @@ class WorkExperienceTranslation(models.Model):
     date_end = models.DateField(
         null=True, blank=True, verbose_name=_('End Date'))
     contribution = models.TextField(
-        blank=True, verbose_name=_('Your highlight contribution'))
+        blank=True, default='', verbose_name=_('Your highlight contribution'))
     keywords = models.TextField(
         blank=True, default='', verbose_name=_('Keywords'),
         help_text=_('The words that might search for when looking'))
@@ -60,16 +60,25 @@ class WorkExperienceTranslation(models.Model):
         unique_together = (('related_model', 'language'),)
 
     def __unicode__(self):
-        return '{0}@{1} - {2}'.format(
-            self.position, self.company, self.location)
+        return '[{0}]{1}@{2} - {3}'.format(
+            self.language, self.position, self.company, self.location)
 
     def __str__(self):
         return self.__unicode__()
 
     def clean(self):
-        if self.date_end <= self.date_start:
+        if self.date_end and self.date_end and self.date_end <= self.date_start:
             raise ValidationError({
                 'date_end': _('End date should not be earlier than start date!')})
+
+        if self.language not in [x for x, _ in settings.LANGUAGES]:
+            raise ValidationError({
+                'language': _('Your selected language currently is not supported in the system!')})
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
 
 
 class WorkExperience(MultilingualModel):
@@ -120,4 +129,4 @@ class Project(models.Model):
 
 def pre_save_workexperience_translation_handler(sender, instance, created, **kwargs):
     assert sender == WorkExperienceTranslation
-    instance.clean()
+    #instance.clean()
