@@ -1,0 +1,22 @@
+{% extends "_base_resume.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+{% block sub_content %}
+
+<h2>{% blocktrans %}Experiences{% endblocktrans %}</h2>
+
+{% crispy form form.helper %}
+
+{% endblock sub_content %}
+
+

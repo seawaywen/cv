@@ -25,10 +25,12 @@ class WorkExperienceAdmin(admin.ModelAdmin):
     def show_user_info(self, obj):
         from itertools import chain
         user_info = [obj.user.user.username]
-        if obj.company:
-            user_info.append(obj.company)
-        return '-'.join(user_info)
-        #return '{}@{}'.format(obj.user.user.username, obj.company)
+        try:
+            if obj.company:
+                user_info.append(obj.company)
+            return '-'.join(user_info)
+        except KeyError:
+            return '{}\' work_experience'.format(obj.user.user.username)
     show_user_info.short_description = _('User Info')
 
     def show_position(self, obj):

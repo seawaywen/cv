@@ -10,8 +10,7 @@ from django.utils import translation
 from django.views.generic.base import View
 
 from resume.models import WorkExperience, Project
-from resume.forms import ProjectForm
-
+from resume.forms import ProjectForm, WorkExperienceForm
 
 logger = logging.getLogger(__name__)
 
@@ -94,3 +93,29 @@ class ProjectView(View):
             }
             return render(request, self.template_name, context)
 
+
+class WorkExperiencesView(View):
+    form_class = WorkExperienceForm
+    template_name = 'work_experience.html'
+    list_url_name = 'work_experience_list'
+
+    def get(self, request, **kwargs):
+
+        context = {
+            'form': self.form_class()
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, **kwargs):
+        post_data = request.POST.copy()
+        post_data['user'] = request.user.profile.id
+        form = self.form_class(post_data)
+        if form.is_valid():
+            form.save()
+            detail_url = reverse(self.list_url_name)
+            return HttpResponseRedirect(detail_url)
+        else:
+            context = {
+                'form': self.form_class()
+            }
+            return render(request, self.template_name, context)

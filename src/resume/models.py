@@ -3,9 +3,9 @@
 import logging
 import re
 
-from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils.translation import get_language, ugettext_lazy as _
 
 from tinymce.models import HTMLField
@@ -36,11 +36,15 @@ class MultilingualModel(models.Model):
                 related_model=self, language=lang)
             return getattr(translation, name)
         except self._meta.translation.DoesNotExist:
-            return self.__dict__[name]
+            try:
+                return self.__dict__[name]
+            except KeyError:
+                return ''
 
 
 class WorkExperienceTranslation(models.Model):
-    related_model = models.ForeignKey('resume.WorkExperience',
+    related_model = models.ForeignKey(
+        'resume.WorkExperience',
         on_delete=models.CASCADE, related_name='translations')
     language = models.CharField(max_length=30, verbose_name=_('Language'),
                                 choices=settings.LANGUAGES, db_index=True)
@@ -62,7 +66,7 @@ class WorkExperienceTranslation(models.Model):
         unique_together = (('related_model', 'language'),)
 
     def __unicode__(self):
-        return '[{0}]{1}@{2} - {3}'.format(
+        return '[{0}]{1}@{2}-{3}'.format(
             self.language, self.position, self.company, self.location)
 
     def __str__(self):
@@ -71,11 +75,13 @@ class WorkExperienceTranslation(models.Model):
     def clean(self):
         if self.date_end and self.date_end and self.date_end <= self.date_start:
             raise ValidationError({
-                'date_end': _('End date should not be earlier than start date!')})
+                'date_end': _(
+                    'End date should not be earlier than start date!')})
 
+        error_msg = _('Your selected language currently is not supported in '
+                      'the system!')
         if self.language not in [x for x, _ in settings.LANGUAGES]:
-            raise ValidationError({
-                'language': _('Your selected language currently is not supported in the system!')})
+            raise ValidationError({'language': error_msg})
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -93,10 +99,7 @@ class WorkExperience(MultilingualModel):
         translation = WorkExperienceTranslation
 
     def __unicode__(self):
-        try:
-            return '%s@%s in %s' % (self.position, self.company, self.location)
-        except:
-            return self.user.user.username
+        return '%s@%s in %s' % (self.position, self.company, self.location)
 
     def __str__(self):
         return self.__unicode__()
@@ -104,8 +107,8 @@ class WorkExperience(MultilingualModel):
 
 class Project(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('Title'))
-    download_link = models.CharField(max_length=255,
-                                     verbose_name=_('Download Link'))
+    download_link = models.CharField(
+        max_length=255, verbose_name=_('Download Link'))
     live_link = models.CharField(max_length=255, verbose_name=_('Live Link'))
     github = models.CharField(max_length=255, verbose_name=_('Github'))
     description = models.TextField(blank=True, verbose_name=_('Summary'))
@@ -114,7 +117,7 @@ class Project(models.Model):
         verbose_name=_('Project Image'),
         help_text=_('A 300x300 image for the project'))
     is_public = models.BooleanField(
-        _('Is this experience public?'), default=False)
+        _('Is this project public?'), default=False)
 
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 

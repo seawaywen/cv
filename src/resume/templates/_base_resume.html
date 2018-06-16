@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+
+{% block content %}
+
+<div id="messages">
+  {% block messages %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="style-msg {% if message.tags %}{{ message.tags }}msg{% endif %}">
+          <div class="sb-msg"><i class="icon-info-sign"></i><strong></strong>{{ message }}</div>
+          <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endblock messages %}
+</div>
+
+<div class="container clearfix">
+  {% block sub_content %}{% endblock sub_content %}
+</div>
+
+{% endblock content %}
+
+
+{% block page_js %}
+  {% render_bundle 'portfolio' 'js' %}
+  {{ block.super }}
+{% endblock page_js %}
+
+
+
+

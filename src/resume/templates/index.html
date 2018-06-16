@@ -1,8 +1,17 @@
-{% extends "base/base.html" %}
+{% extends "_base_resume.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load render_bundle from webpack_loader %}
 
-{% block content_container %}
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+{% block sub_content %}
 <hr>
 <h2>{% blocktrans %}Experience{% endblocktrans %}</h2>
 {% for we1_fields in work_experience_list %}
@@ -33,6 +42,6 @@
 
 {% crispy form form.helper %}
 
-{% endblock content_container %}
+{% endblock sub_content %}
 
 

@@ -37,6 +37,7 @@ urlpatterns += ([
     path('main/', include('resume.urls')),
     path('myaccount/', include('myaccount.urls')),
     path('profile/', include('profile.urls')),
+    path('resume/', include('resume.urls')),
     path('accounts/', include('allauth.urls')),
 
     path(r'tinymce/', include('tinymce.urls')),
