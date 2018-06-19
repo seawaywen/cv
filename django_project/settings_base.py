@@ -352,8 +352,17 @@ LOGGING = {
 SITE_ID = 1
 
 TINYMCE_DEFAULT_CONFIG = {
-    'theme': "simple", # default value
+    'theme': "advanced",
+    'theme_advanced_buttons1': '''bold, italic, underline, strikethrough, |,
+                               forecolor, backcolor, |,
+                               justifyleft, justifycenter, justifyright,
+                               justifyfull, fontselect, fontsizeselect,
+                               fullscreen, code''',
+    'theme_advanced_buttons2': '''bullist, numlist, |, outdent, indent,
+                               blockquote, |, undo, redo, |, link, unlink, |,
+                               ''',
+    'theme_advanced_buttons3': '',
     'relative_urls': False, # default value
-    'width': '70%',
+    'width': '100%',
     'height': 300
 }

@@ -32,7 +32,7 @@
     <br>
     {% if not error and not are_all_languages_created %}
       {% if type != 'update' %}
-        <button class="button" onclick="javascript:$('#id-new-work-experience-translation-form').removeClass('hidden');$(this).hide();">Create new translation</button>
+        <button class="button capitalize" onclick="javascript:$('#id-new-work-experience-translation-form').removeClass('hidden');$(this).hide();">Create new translation</button>
       {% endif %}
       {% crispy form form.helper %}
     {% endif %}
