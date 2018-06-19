@@ -16,8 +16,8 @@
   {% if error %}
     <div class="error">{{ error }}</div>
   {% endif %}
-  {% if work_experience_list %}
-    <h3>{% blocktrans %}Work Experience List{% endblocktrans %}</h3>
+    <h3>{% blocktrans %}Work experience list{% endblocktrans %}</h3>
+
     {% if not error %}
       {% crispy form form.helper %}
     {% endif %}
@@ -31,7 +31,6 @@
       | <a href="{{ delete_work_experience_url }}">Delete</a>
     </li>
   {% endfor %}
-  {% endif %}
   </ul>
 
 {% endblock sub_content %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging 
+import logging
 
 from django import forms
 from django.conf import settings
@@ -22,13 +22,13 @@ UserModel = get_user_model()
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['title', 'download_link', 'live_link', 
+        fields = ['title', 'download_link', 'live_link',
                   'github', 'cover_image', 'is_public',
                   'description', 'user']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()        
+        self.helper = FormHelper()
         self.helper.form_id = 'id-new-project-form'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
