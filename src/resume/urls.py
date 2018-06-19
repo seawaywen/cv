@@ -7,13 +7,34 @@ from resume.views import (
     home,
     ProjectView,
     WorkExperiencesView,
+    add_work_experience_translation,
+    update_work_experience_translation,
+    delete_work_experience_translation,
 )
 
 urlpatterns = [
-    path('work-experience', WorkExperiencesView.as_view(), name='work_experience_list'),
-    path('project', ProjectView.as_view(), name='project_list'),
+    path('work-experience/translation/<int:work_experience_id>/new/',
+         add_work_experience_translation,
+         name='work-experience-translation-new'),
 
-    path('', home, name='home'),
+    path('work-experience/translation/<int:pk>/delete/',
+         delete_work_experience_translation,
+         name='work-experience-translation-delete'),
+
+    path('work-experience/translation/<int:pk>/',
+         update_work_experience_translation,
+         name='work-experience-translation-update'),
+
+    #path('work-experience/translation/list', work_experience_translation_list,
+    #     name='work-experience-list'),
+
+    path('work-experience/', WorkExperiencesView.as_view(),
+         name='work-experience-list'),
+
+    path('project/', ProjectView.as_view(), name='project_list'),
+
+
+    #path('', home, name='home'),
 
     # url(r'^account')
 ]

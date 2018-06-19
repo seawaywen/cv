@@ -52,11 +52,14 @@ class WorkExperienceForm(forms.ModelForm):
         self.helper.form_id = 'id-new-work-experience-form'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('work_experience_list')
+        self.helper.form_action = reverse('work-experience-list')
         self.helper.add_input(Submit('submit', 'Create'))
 
 
 class WorkExperienceTranslationForm(forms.ModelForm):
+    related_model = forms.IntegerField(
+        required=False, widget=forms.HiddenInput())
+
     class Meta:
         model = WorkExperienceTranslation
         fields = ['language', 'position', 'company', 'location',
@@ -69,7 +72,7 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         self.helper.form_id = 'id-new-work-experience-translation-form'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('work_experience_trans_list')
+        #self.helper.form_action = reverse('work-experience-trans-list')
         self.helper.add_input(Submit('submit', 'Submit'))
 
     #def clean(self):

@@ -1,0 +1,40 @@
+{% extends "_base_resume.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+{% block sub_content %}
+
+  <h3>{% blocktrans %}Work Experiences Translation List{% endblocktrans %}</h3>
+
+  {% if error %}
+    <div class="alert-danger">{{ error }}</div>
+    <br>
+    <a href="{% url 'work-experience-list' %}">Go back to experience list</a>
+  {% else %}
+    {% for translation in work_experience_translation_list %}
+      {% url 'work-experience-translation-update' translation.id as translation_url %}
+      {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
+      <li>
+        {{ translation }} -- <a href="{{ translation_url }}">Edit</a> | <a href="{{ delete_translation_url }}">Delete</a>
+      </li>
+    {% endfor %}
+
+    <br>
+    {% if not error %}
+      {% crispy form form.helper %}
+    {% endif %}
+
+  {% endif %}
+
+{% endblock sub_content %}
+
+

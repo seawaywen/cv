@@ -4,13 +4,15 @@ import logging
 
 from django.shortcuts import render  # noqa
 from django.http import HttpResponseRedirect # noqa
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _  # noqa
 from django.utils import translation
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.base import View
 
-from resume.models import WorkExperience, Project
-from resume.forms import ProjectForm, WorkExperienceForm
+from resume.models import WorkExperience, Project, WorkExperienceTranslation
+from resume.forms import ProjectForm, WorkExperienceForm, \
+    WorkExperienceTranslationForm
 
 logger = logging.getLogger(__name__)
 
@@ -97,12 +99,13 @@ class ProjectView(View):
 class WorkExperiencesView(View):
     form_class = WorkExperienceForm
     template_name = 'work_experience.html'
-    list_url_name = 'work_experience_list'
 
     def get(self, request, **kwargs):
-
+        work_experience_list = WorkExperience.objects.filter(
+            user=request.user.profile)
         context = {
-            'form': self.form_class()
+            'form': self.form_class(),
+            'work_experience_list': work_experience_list,
         }
         return render(request, self.template_name, context)
 
@@ -110,12 +113,83 @@ class WorkExperiencesView(View):
         post_data = request.POST.copy()
         post_data['user'] = request.user.profile.id
         form = self.form_class(post_data)
+
         if form.is_valid():
             form.save()
-            detail_url = reverse(self.list_url_name)
+
+            detail_url = reverse(
+                'work-experience-translation-new',
+                kwargs={'work_experience_id': form.instance.id})
+
             return HttpResponseRedirect(detail_url)
         else:
             context = {
                 'form': self.form_class()
             }
             return render(request, self.template_name, context)
+
+
+class WorkExperienceTranslationView(CreateView):
+    model = WorkExperienceTranslation
+    form_class = WorkExperienceTranslationForm
+    template_name = 'work_experience_translation.html'
+
+    def get_initial(self):
+        work_experience_id = self.kwargs.get('work_experience_id')
+        return {'related_model': work_experience_id}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        work_experience_id = self.kwargs.get('work_experience_id')
+        work_experience = WorkExperience.objects.filter(id=work_experience_id)
+
+        work_experience_translations = WorkExperienceTranslation.objects.filter(
+            related_model=work_experience_id)
+        context.update({
+            'work_experience_translation_list': work_experience_translations
+        })
+
+        if not work_experience:
+            context.update({
+                'error': 'The related work experience do not exist!'
+            })
+
+        #todo: check if all the lanaguage translation existed,
+        # don't render the create form
+        return context
+
+    def form_valid(self, form):
+        work_experience_id = self.kwargs.get('work_experience_id')
+        work_experience = WorkExperience.objects.get(id=work_experience_id)
+        form.instance.related_model = work_experience
+        return super().form_valid(form)
+
+
+add_work_experience_translation = WorkExperienceTranslationView.as_view()
+
+
+class WorkExperienceTranslationUpdateView(UpdateView):
+    model = WorkExperienceTranslation
+    form_class = WorkExperienceTranslationForm
+    template_name = 'work_experience.html'
+
+
+update_work_experience_translation = \
+    WorkExperienceTranslationUpdateView.as_view()
+
+
+class WorkExperienceTranslationDeleteView(DeleteView):
+    model = WorkExperienceTranslation
+    template_name = 'work_experience_translation_confirm_delete.html'
+
+    def get_success_url(self):
+        work_experience_id = self.object.related_model.id
+        detail_url = reverse(
+            'work-experience-translation-new',
+            kwargs={'work_experience_id': work_experience_id})
+        return detail_url
+
+
+delete_work_experience_translation = \
+    WorkExperienceTranslationDeleteView.as_view()

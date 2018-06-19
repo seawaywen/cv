@@ -6,6 +6,7 @@ import re
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import get_language, ugettext_lazy as _
 
 from tinymce.models import HTMLField
@@ -86,6 +87,11 @@ class WorkExperienceTranslation(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('work-experience-translation-new', kwargs={
+            'work_experience_id': self.related_model.id
+        })
 
 
 class WorkExperience(MultilingualModel):

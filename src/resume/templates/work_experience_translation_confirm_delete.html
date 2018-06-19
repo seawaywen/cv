@@ -1,0 +1,37 @@
+{% extends "_base_resume.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+{% block sub_content %}
+
+<h2>{% blocktrans %}Experiences{% endblocktrans %}</h2>
+
+<form action="" method="post">
+  <div>
+    {% csrf_token %}
+    {% trans 'The following translation for the related work experience will be deleted. Are you sure?' %}
+    {{ object }}
+  </div>
+
+  <div>
+    <br>
+    {% url 'work-experience-translation-new' object.related_model.id as work_experience_translation_list_url %}
+    <input type="submit" value="{% trans 'Confirm deletion' %}" name="confirm_delete" class="button button-blue capitalize "/>
+    <a href="{{ work_experience_translation_list_url }}" class="button button-teal capitalize">Cancel</a>
+
+  </div>
+
+</form>
+
+{% endblock sub_content %}
+
+
