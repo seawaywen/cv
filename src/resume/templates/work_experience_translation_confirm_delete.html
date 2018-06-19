@@ -18,15 +18,22 @@
 <form action="" method="post">
   <div>
     {% csrf_token %}
-    {% trans 'The following translation for the related work experience will be deleted. Are you sure?' %}
-    {{ object }}
+    {{ warning_msg }}
+    <div>
+      <ul>
+        {% for delete_object in delete_object_list %}
+          <li>
+            {{ delete_object }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 
   <div>
     <br>
-    {% url 'work-experience-translation-new' object.related_model.id as work_experience_translation_list_url %}
     <input type="submit" value="{% trans 'Confirm deletion' %}" name="confirm_delete" class="button button-blue capitalize "/>
-    <a href="{{ work_experience_translation_list_url }}" class="button button-teal capitalize">Cancel</a>
+    <a href="{{ back_url }}" class="button button-teal capitalize">Cancel</a>
 
   </div>
 

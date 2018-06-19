@@ -13,7 +13,6 @@
 
 {% block sub_content %}
 
-  {# these are for the work Experiences #}
   {% if error %}
     <div class="error">{{ error }}</div>
   {% endif %}
@@ -23,33 +22,17 @@
       {% crispy form form.helper %}
     {% endif %}
     <ul>
+
   {% for work_experience in work_experience_list %}
     {% url 'work-experience-translation-new' work_experience.id as update_translation_url %}
+    {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
     <li>
       {{ work_experience }}[{{ work_experience.id }}] -- <a href="{{ update_translation_url }}">Edit</a>
+      | <a href="{{ delete_work_experience_url }}">Delete</a>
     </li>
   {% endfor %}
   {% endif %}
   </ul>
-
-  {# these are for the work Experiences translations #}
-  {{ work_experience_translation_list }}
-  {% if work_experience_translation_list %}
-    <h3>{% blocktrans %}Work Experiences Translation List{% endblocktrans %}</h3>
-  {% for translation in work_experience_translation_list %}
-    {% url 'work-experience-translation-update' translation.id as translation_url %}
-    {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
-    <li>
-      {{ translation }} -- <a href="{{ translation_url }}">Edit</a> | <a href="{{ delete_translation_url }}">Delete</a>
-    </li>
-  {% endfor %}
-    <br>
-    {% if not error %}
-      {% crispy form form.helper %}
-    {% endif %}
-
-  {% endif %}
-  <hr>
 
 {% endblock sub_content %}
 

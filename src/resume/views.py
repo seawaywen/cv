@@ -14,6 +14,7 @@ from resume.models import WorkExperience, Project, WorkExperienceTranslation
 from resume.forms import ProjectForm, WorkExperienceForm, \
     WorkExperienceTranslationForm
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -129,6 +130,28 @@ class WorkExperiencesView(View):
             return render(request, self.template_name, context)
 
 
+class WorkExperienceDeleteView(DeleteView):
+    model = WorkExperience
+    template_name = 'work_experience_translation_confirm_delete.html'
+    success_url = reverse_lazy('work-experience-list')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        warning_msg = _('The work experience with following translations ' 
+                        'will be deleted. Are you sure?')
+
+        to_be_deleted_translations = self.get_object().translations.all()
+        context_data.update({
+            'delete_object_list': to_be_deleted_translations,
+            'warning_msg': warning_msg,
+            'back_url': self.success_url
+        })
+        return context_data
+
+
+delete_work_experience = WorkExperienceDeleteView.as_view()
+
+
 class WorkExperienceTranslationView(CreateView):
     model = WorkExperienceTranslation
     form_class = WorkExperienceTranslationForm
@@ -185,10 +208,25 @@ class WorkExperienceTranslationDeleteView(DeleteView):
 
     def get_success_url(self):
         work_experience_id = self.object.related_model.id
-        detail_url = reverse(
+        return_url = reverse(
             'work-experience-translation-new',
             kwargs={'work_experience_id': work_experience_id})
-        return detail_url
+        return return_url
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        warning_msg = _('The following translation for the related work '
+                        'experience will be deleted. Are you sure?')
+
+        back_url = reverse('work-experience-translation-new', kwargs={
+            'work_experience_id': self.object.related_model.id
+        })
+        context_data.update({
+            'delete_object_list': [self.get_object()],
+            'warning_msg': warning_msg,
+            'back_url': back_url,
+        })
+        return context_data
 
 
 delete_work_experience_translation = \
