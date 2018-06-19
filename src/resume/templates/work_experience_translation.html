@@ -12,13 +12,14 @@
 {% block slider %}{% endblock slider %}
 
 {% block sub_content %}
+  <a href="{% url 'work-experience-list' %}">experience list</a> <
+  <a href="{{ back_url }}">translation list</a>
 
-  <h3>{% blocktrans %}Work Experiences Translation List{% endblocktrans %}</h3>
+  <h3>{{ title }}</h3>
 
   {% if error %}
     <div class="alert-danger">{{ error }}</div>
     <br>
-    <a href="{% url 'work-experience-list' %}">Go back to experience list</a>
   {% else %}
     {% for translation in work_experience_trans_list %}
       {% url 'work-experience-translation-update' translation.id as translation_url %}
@@ -30,11 +31,29 @@
 
     <br>
     {% if not error and not are_all_languages_created %}
+      {% if type != 'update' %}
+        <button class="button" onclick="javascript:$('#id-new-work-experience-translation-form').removeClass('hidden');$(this).hide();">Create new translation</button>
+      {% endif %}
       {% crispy form form.helper %}
     {% endif %}
+    {% comment %}
+    todo: when the form contains the validation error, it still hide the form byd default
+    {% endcomment %}
 
   {% endif %}
 
 {% endblock sub_content %}
 
 
+{% block page_js %}
+{{ super }}
+
+<script>
+  {% if type == 'update' %}
+    $(document).ready(function(){
+        $('#id-new-work-experience-translation-form').removeClass('hidden');
+    });
+  {% endif  %}
+</script>
+
+{% endblock page_js %}

@@ -119,11 +119,10 @@ class WorkExperiencesView(View):
         if form.is_valid():
             form.save()
 
-            detail_url = reverse(
-                'work-experience-translation-new',
-                kwargs={'work_experience_id': form.instance.id})
-
-            return HttpResponseRedirect(detail_url)
+            redirect_url = reverse(
+                'work-experience-translation-new', kwargs={
+                    'work_experience_id': form.instance.id})
+            return HttpResponseRedirect(redirect_url)
         else:
             context = {
                 'form': self.form_class()
@@ -157,6 +156,7 @@ class WorkExperienceTranslationView(CreateView):
     model = WorkExperienceTranslation
     form_class = WorkExperienceTranslationForm
     template_name = 'work_experience_translation.html'
+    work_experience = None
 
     def get_initial(self):
         work_experience_id = self.kwargs.get('work_experience_id')
@@ -167,16 +167,21 @@ class WorkExperienceTranslationView(CreateView):
 
         work_experience_id = self.kwargs.get('work_experience_id')
         try:
-            work_experience = WorkExperience.objects.get(id=work_experience_id)
+            work_experience_translations = WorkExperienceTranslation.objects \
+                .filter(related_model=work_experience_id)
 
-            work_experience_translations = WorkExperienceTranslation.objects.filter(
-                related_model=work_experience_id)
-
+            work_experience = WorkExperience.objects.get(
+                id=work_experience_id)
+            # check if the translation languages exist, if all the available
+            # translation languages were all created, use the
+            # `are_all_language_created` flag to control the form rendering
+            # in the template
             unfilled_languages = work_experience.get_unfilled_languages()
 
             context.update({
                 'work_experience_trans_list': work_experience_translations,
-                'are_all_languages_created': len(unfilled_languages) == 0
+                'are_all_languages_created': len(unfilled_languages) == 0,
+                'title': _('Work experience translation list'),
             })
 
         except WorkExperience.DoesNotExist:
@@ -201,6 +206,16 @@ class WorkExperienceTranslationUpdateView(UpdateView):
     form_class = WorkExperienceTranslationForm
     template_name = 'work_experience_translation.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': _('Work experience translation'),
+            'back_url': reverse_lazy('work-experience-translation-new', kwargs={
+                'work_experience_id': self.object.related_model.id
+            }),
+            'type': 'update'
+        })
+        return context
 
 update_work_experience_translation = \
     WorkExperienceTranslationUpdateView.as_view()

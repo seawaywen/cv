@@ -71,7 +71,7 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-new-work-experience-translation-form'
-        self.helper.form_class = 'blueForms'
+        self.helper.form_class = 'blueForms hidden'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
