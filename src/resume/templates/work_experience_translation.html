@@ -20,7 +20,7 @@
     <br>
     <a href="{% url 'work-experience-list' %}">Go back to experience list</a>
   {% else %}
-    {% for translation in work_experience_translation_list %}
+    {% for translation in work_experience_trans_list %}
       {% url 'work-experience-translation-update' translation.id as translation_url %}
       {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
       <li>
@@ -29,7 +29,7 @@
     {% endfor %}
 
     <br>
-    {% if not error %}
+    {% if not error and not are_all_languages_created %}
       {% crispy form form.helper %}
     {% endif %}
 

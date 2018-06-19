@@ -3,6 +3,7 @@
 import logging 
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -72,8 +73,18 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         self.helper.form_id = 'id-new-work-experience-translation-form'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        #self.helper.form_action = reverse('work-experience-trans-list')
         self.helper.add_input(Submit('submit', 'Submit'))
 
-    #def clean(self):
+    def clean(self):
+        super().clean()
+        language = self.cleaned_data['language']
+        error_msg = _('Your selected language currently is not supported in '
+                      'the system!')
+        if language not in [x for x, _ in settings.LANGUAGES]:
+            self.add_error('language', error_msg)
+
+        error_msg = _("This translation language already exists!")
+        if WorkExperienceTranslation.objects.is_language_exist(
+                self.cleaned_data['related_model'], language):
+            self.add_error('language', error_msg)
 

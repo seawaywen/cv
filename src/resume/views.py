@@ -2,6 +2,7 @@
 
 import logging
 
+from django.conf import settings
 from django.shortcuts import render  # noqa
 from django.http import HttpResponseRedirect # noqa
 from django.urls import reverse, reverse_lazy
@@ -165,21 +166,24 @@ class WorkExperienceTranslationView(CreateView):
         context = super().get_context_data(**kwargs)
 
         work_experience_id = self.kwargs.get('work_experience_id')
-        work_experience = WorkExperience.objects.filter(id=work_experience_id)
+        try:
+            work_experience = WorkExperience.objects.get(id=work_experience_id)
 
-        work_experience_translations = WorkExperienceTranslation.objects.filter(
-            related_model=work_experience_id)
-        context.update({
-            'work_experience_translation_list': work_experience_translations
-        })
+            work_experience_translations = WorkExperienceTranslation.objects.filter(
+                related_model=work_experience_id)
 
-        if not work_experience:
+            unfilled_languages = work_experience.get_unfilled_languages()
+
+            context.update({
+                'work_experience_trans_list': work_experience_translations,
+                'are_all_languages_created': len(unfilled_languages) == 0
+            })
+
+        except WorkExperience.DoesNotExist:
             context.update({
                 'error': 'The related work experience do not exist!'
             })
 
-        #todo: check if all the lanaguage translation existed,
-        # don't render the create form
         return context
 
     def form_valid(self, form):
@@ -195,7 +199,7 @@ add_work_experience_translation = WorkExperienceTranslationView.as_view()
 class WorkExperienceTranslationUpdateView(UpdateView):
     model = WorkExperienceTranslation
     form_class = WorkExperienceTranslationForm
-    template_name = 'work_experience.html'
+    template_name = 'work_experience_translation.html'
 
 
 update_work_experience_translation = \

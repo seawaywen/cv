@@ -43,6 +43,18 @@ class MultilingualModel(models.Model):
                 return ''
 
 
+class WorkExperienceTranslationManager(models.Manager):
+
+    def get_all_existing_languages(self, work_experience_id):
+        return self.get_queryset()\
+            .filter(related_model__exact=work_experience_id)\
+            .values_list('language', flat=True)
+
+    def is_language_exist(self, work_experience_id, language):
+        return self.get_all_existing_languages(work_experience_id)\
+            .filter(language__iexact=language).exists()
+
+
 class WorkExperienceTranslation(models.Model):
     related_model = models.ForeignKey(
         'resume.WorkExperience',
@@ -62,6 +74,8 @@ class WorkExperienceTranslation(models.Model):
         blank=True, default='', verbose_name=_('Keywords'),
         help_text=_('The words that might search for when looking'))
 
+    objects = WorkExperienceTranslationManager()
+
     class Meta:
         ordering = ('language',)
         unique_together = (('related_model', 'language'),)
@@ -78,11 +92,6 @@ class WorkExperienceTranslation(models.Model):
             raise ValidationError({
                 'date_end': _(
                     'End date should not be earlier than start date!')})
-
-        error_msg = _('Your selected language currently is not supported in '
-                      'the system!')
-        if self.language not in [x for x, _ in settings.LANGUAGES]:
-            raise ValidationError({'language': error_msg})
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -103,6 +112,19 @@ class WorkExperience(MultilingualModel):
         app_label = 'resume'
         multilingual = ('position', 'company', 'location', 'contribution',)
         translation = WorkExperienceTranslation
+
+    def get_filled_languages(self):
+        _languages = set(
+            WorkExperienceTranslation.objects.get_all_existing_languages(
+                self.id))
+        return _languages
+
+    def get_unfilled_languages(self):
+        _languages = set(
+            self.get_filled_languages())
+        available_languages = set([x for x, _ in settings.LANGUAGES])
+        unfilled_languages = list(available_languages - _languages)
+        return unfilled_languages
 
     def __unicode__(self):
         return '%s@%s in %s' % (self.position, self.company, self.location)
