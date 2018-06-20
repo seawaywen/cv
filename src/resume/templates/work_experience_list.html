@@ -1,10 +1,17 @@
 {% extends "_base_resume.html" %}
 {% load i18n %}
+{% load l10n %}
 {% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
 
 {% block page_css %}
   {% render_bundle 'portfolio' 'css' %}
+  <style>
+  .card-header .work-experience-title{
+    font-size: 18px;
+    font-weight: bold;
+  }
+  </style>
 {% endblock %}
 
 
@@ -13,18 +20,21 @@
 
 {% block sub_content %}
 
-<h2>
-  {% blocktrans %}Work experience list{% endblocktrans %}
-  <a class="button capitalize leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
-</h2>
+  <div class="col_four_fifth nomargin">
+    <h2 class="topmargin-sm">
+      {% blocktrans %}Work experience list{% endblocktrans %}
+      <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
+    </h2>
+
+    <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
+  </div>
 
 {% for work_experience in work_experience_list %}
-  {% url 'work-experience-translation-new' work_experience.id as update_translation_url %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
 
-  <div class="col_four_fifth card">
+  <div class="col_four_fifth card bottommargin-sm">
     <div class="card-header">
-      <span style="font-size:18px; font-weight: bold;">{{ work_experience.company }}</span>
+      <span class="work-experience-title">{{ work_experience.company|default:'&nbsp;' }}</span>
       <span class="float-right">
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
@@ -53,7 +63,8 @@
                 <a href="{{ delete_translation_url}}">{% trans 'Delete' %}</a>
               </span>
               <h4 class="card-title">{{ translation.position }}</h4>
-              <p>From {{ translation.date_start }} to {{ translation.date_end }}</p>
+              <p>{{ translation.date_start|localize }} -
+                {% if translation.date_end %}{{ translation.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</p>
               <p class="card-text">
                 {% autoescape off %}
                   {{ translation.contribution }}
@@ -73,4 +84,22 @@
 
 {% endblock sub_content %}
 
+
+{% block page_js %}
+  {{ block.super }}
+
+  <script>
+      $(document).ready(function(){
+          /*
+          $('div .card-body').hide();
+
+          $('#show-all').bind({
+              click: function () {
+                  $('div .card-body').show();
+              },
+          })
+          */
+      });
+  </script>
+{% endblock page_js %}
 

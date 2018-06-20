@@ -1,12 +1,7 @@
 {% extends "_base_resume.html" %}
-{% load i18n %}
+{% load i18n static %}
 {% load crispy_forms_tags %}
 {% load render_bundle from webpack_loader %}
-
-{% block page_css %}
-  {% render_bundle 'portfolio' 'css' %}
-{% endblock %}
-
 
 {% block header_container %} {% endblock header_container %}
 {% block slider %}{% endblock slider %}
@@ -21,16 +16,20 @@
     <div class="alert-danger">{{ error }}</div>
     <br>
   {% else %}
+    <ul>
     {% for translation in work_experience_trans_list %}
       {% url 'work-experience-translation-update' translation.id as translation_url %}
       {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
       <li>
         {{ translation }} -- <a href="{{ translation_url }}">Edit</a> | <a href="{{ delete_translation_url }}">Delete</a>
       </li>
+    </ul>
     {% endfor %}
 
     {% if not error and not are_all_languages_created %}
-      {% crispy form form.helper %}
+      <div class="col_four_fifth nomargin">
+        {% crispy form form.helper %}
+      </div>
     {% endif %}
     {% comment %}
     todo: when the form contains the validation error, it still hide the form by default
@@ -42,11 +41,11 @@
 
 
 {% block page_js %}
-{{ super }}
-<script>
-$(document).ready(function(){
+  {{ block.super }}
 
-});
-</script>
+  <script>
+  $(document).ready(function(){
 
+  });
+  </script>
 {% endblock page_js %}

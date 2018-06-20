@@ -4,8 +4,8 @@
 
 {% block page_css %}
   {% render_bundle 'portfolio' 'css' %}
-{% endblock %}
-
+  <link rel="stylesheet" href="{% static 'css/components/daterangepicker.css' %}" type="text/css" />
+{% endblock page_css %}
 
 {% block header_container %} {% endblock header_container %}
 {% block slider %}{% endblock slider %}
@@ -34,12 +34,28 @@
 
 {% endblock content %}
 
-
 {% block page_js %}
-  {% render_bundle 'portfolio' 'js' %}
   {{ block.super }}
-{% endblock page_js %}
+  {% render_bundle 'portfolio' 'js' %}
 
+  <!-- Include Date Range Picker -->
+  <script src="{% static 'js/components/moment.js' %}"></script>
+  <script src="{% static  'js/components/daterangepicker.js' %}"></script>
+
+  <script>
+    $(".form-start-date").daterangepicker({
+            autoUpdateInput: false,
+            singleDatePicker: true,
+            showDropdowns: true,
+            'locale': {
+                format: 'YYYY-MM-DD',
+            }
+        },
+        function(start, end, label) {
+            this.element.val(start.format('YYYY-MM-DD'));
+        });
+  </script>
+{% endblock page_js %}
 
 
 

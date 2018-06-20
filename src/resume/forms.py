@@ -66,6 +66,32 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         fields = ['language', 'position', 'company', 'location',
                   'date_start', 'date_end', 'contribution',
                   'keywords']
+        labels = {
+            'company': '',
+            'position': '',
+            'location': '',
+            'date_start': '',
+            'date_end': '',
+        }
+        widgets = {
+            'company': forms.TextInput(attrs={
+                'placeholder': _('*Company name')
+            }),
+            'position': forms.TextInput(attrs={
+                'placeholder': _('*Job position')
+            }),
+            'location': forms.TextInput(attrs={
+                'placeholder': _('*Location')
+            }),
+            'date_start': forms.DateInput(attrs={
+                'placeholder': _('*Start date'),
+                'class': 'form-control form-start-date'
+            }),
+            'date_end': forms.DateInput(attrs={
+                'placeholder': _('End date'),
+                'class': 'form-control form-end-date'
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -74,6 +100,7 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
+        #self.helper.form_show_labels = False
 
     def clean(self):
         super().clean()
