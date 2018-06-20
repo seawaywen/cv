@@ -31,54 +31,30 @@
 
 {% for work_experience in work_experience_list %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
+  {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
+
 
   <div class="col_four_fifth card bottommargin-sm">
     <div class="card-header">
-      <span class="work-experience-title">{{ work_experience.company|default:'&nbsp;' }}</span>
+      <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
+      <span>{% trans work_experience.position %} </span>
+      <span>{% trans work_experience.date_start %}</span>
       <span class="float-right">
+        <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
     </div>
 
     <div class="card-body">
-      {% with translation_list=work_experience.translations.all %}
-        <div class="tabs tabs-alt clearfix">
-
-          {% if translation_list %}
-          <ul class="tab-nav clearfix">
-            {% for translation in translation_list %}
-              <li><a href="#tabs-{{ translation.id }}">{{ translation.get_language }}</a></li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-
-          {% if translation_list %}
-          <div class="tab-container">
-            {% for translation in translation_list %}
-            <div class="tab-content clearfix" id="tabs-{{ translation.id }}">
-              <span class="float-right">
-                {% url 'work-experience-translation-update' translation.id as update_translation_url %}
-                {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
-                <a href="{{ update_translation_url }}">{% trans 'Edit' %}</a> |
-                <a href="{{ delete_translation_url}}">{% trans 'Delete' %}</a>
-              </span>
-              <h4 class="card-title">{{ translation.position }}</h4>
-              <p>{{ translation.date_start|localize }} -
-                {% if translation.date_end %}{{ translation.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</p>
-              <p class="card-text">
-                {% autoescape off %}
-                  {{ translation.contribution }}
-                {% endautoescape %}
-              </p>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-
-        </div>
-
+      <h4 class="card-title">{% trans work_experience.position %}</h4>
+      <p>{{ translation.date_start|localize }} -
+        {% if translation.date_end %}{{ translation.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</p>
+      <p class="card-text">
+        {% autoescape off %}
+          {%  trans work_experience.contribution %}
+        {% endautoescape %}
+      </p>
     </div>
-      {% endwith %}
   </div>
 {% endfor %}
 

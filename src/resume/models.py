@@ -56,11 +56,14 @@ class WorkExperienceTranslationManager(models.Manager):
 
 
 class WorkExperienceTranslation(models.Model):
+    LANGUAGES = settings.LANGUAGES.copy()
+    LANGUAGES.insert(0, ('', _('*--- select language ---')))
+
     related_model = models.ForeignKey(
         'resume.WorkExperience',
         on_delete=models.CASCADE, related_name='translations')
     language = models.CharField(max_length=30, verbose_name=_('Language'),
-                                choices=settings.LANGUAGES, db_index=True)
+                                choices=LANGUAGES, db_index=True)
     position = models.CharField(max_length=255, verbose_name=_('Job position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
@@ -115,7 +118,7 @@ class WorkExperience(MultilingualModel):
 
     class Meta:
         app_label = 'resume'
-        multilingual = ('position', 'company', 'location', 'contribution',)
+        multilingual = ('position', 'company', 'location', 'contribution',)# 'date_start', 'date_end')
         translation = WorkExperienceTranslation
 
     def get_filled_languages(self):

@@ -10,6 +10,7 @@ from resume.views import (
     add_work_experience,
     delete_work_experience,
     add_work_experience_translation,
+    list_work_experience_translation,
     update_work_experience_translation,
     delete_work_experience_translation,
 )
@@ -18,6 +19,10 @@ urlpatterns = [
     path('work-experience/<int:work_experience_id>/translation/add/',
          add_work_experience_translation,
          name='work-experience-translation-new'),
+
+    path('work-experience/<int:work_experience_id>/translations/',
+         list_work_experience_translation,
+         name='work-experience-translation-list'),
 
     path('work-experience/translation/<int:pk>/delete/',
          delete_work_experience_translation,

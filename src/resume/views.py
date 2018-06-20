@@ -181,24 +181,21 @@ class WorkExperienceDeleteView(DeleteView):
 delete_work_experience = WorkExperienceDeleteView.as_view()
 
 
-class WorkExperienceTranslationView(CreateView):
-    model = WorkExperienceTranslation
-    form_class = WorkExperienceTranslationForm
-    template_name = 'work_experience_translation.html'
-    work_experience = None
+class WorkExperienceTranslationListView(ListView):
+    template_name = 'work_experience_translation-list.html'
+    context_object_name = 'work_experience_trans_list'
 
-    def get_initial(self):
+    def get_queryset(self):
         work_experience_id = self.kwargs.get('work_experience_id')
-        return {'related_model': work_experience_id}
+        work_experience_translations = WorkExperienceTranslation.objects \
+            .filter(related_model=work_experience_id)
+        return work_experience_translations
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         work_experience_id = self.kwargs.get('work_experience_id')
         try:
-            work_experience_translations = WorkExperienceTranslation.objects \
-                .filter(related_model=work_experience_id)
-
             work_experience = WorkExperience.objects.get(
                 id=work_experience_id)
             # check if the translation languages exist, if all the available
@@ -208,9 +205,9 @@ class WorkExperienceTranslationView(CreateView):
             unfilled_languages = work_experience.get_unfilled_languages()
 
             context.update({
-                'work_experience_trans_list': work_experience_translations,
                 'are_all_languages_created': len(unfilled_languages) == 0,
-                'title': _('Work experience translation list'),
+                'title': _('Work experience translations'),
+                'work_experience': work_experience,
             })
 
         except WorkExperience.DoesNotExist:
@@ -219,6 +216,20 @@ class WorkExperienceTranslationView(CreateView):
             })
 
         return context
+
+
+list_work_experience_translation = WorkExperienceTranslationListView.as_view()
+
+
+class WorkExperienceTranslationView(CreateView):
+    model = WorkExperienceTranslation
+    form_class = WorkExperienceTranslationForm
+    template_name = 'work_experience_translation.html'
+    work_experience = None
+
+    def get_initial(self):
+        work_experience_id = self.kwargs.get('work_experience_id')
+        return {'related_model': work_experience_id}
 
     def form_valid(self, form):
         work_experience_id = self.kwargs.get('work_experience_id')
@@ -239,7 +250,7 @@ class WorkExperienceTranslationUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'title': _('Work experience translation'),
-            'back_url': reverse_lazy('work-experience-translation-new', kwargs={
+            'back_url': reverse('work-experience-translation-list', kwargs={
                 'work_experience_id': self.object.related_model.id
             }),
             'type': 'update'
@@ -258,7 +269,7 @@ class WorkExperienceTranslationDeleteView(DeleteView):
     def get_success_url(self):
         work_experience_id = self.object.related_model.id
         return_url = reverse(
-            'work-experience-translation-new',
+            'work-experience-translation-list',
             kwargs={'work_experience_id': work_experience_id})
         return return_url
 
@@ -267,13 +278,10 @@ class WorkExperienceTranslationDeleteView(DeleteView):
         warning_msg = _('The following translation for the related work '
                         'experience will be deleted. Are you sure?')
 
-        back_url = reverse('work-experience-translation-new', kwargs={
-            'work_experience_id': self.object.related_model.id
-        })
         context_data.update({
             'delete_object_list': [self.get_object()],
             'warning_msg': warning_msg,
-            'back_url': back_url,
+            'back_url': self.get_success_url(),
         })
         return context_data
 

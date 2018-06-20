@@ -67,6 +67,7 @@ class WorkExperienceTranslationForm(forms.ModelForm):
                   'date_start', 'date_end', 'contribution',
                   'keywords']
         labels = {
+            'language': '',
             'company': '',
             'position': '',
             'location': '',
