@@ -1,0 +1,35 @@
+{% extends "_base_resume.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load render_bundle from webpack_loader %}
+
+{% block page_css %}
+  {% render_bundle 'portfolio' 'css' %}
+{% endblock %}
+
+
+{% block header_container %} {% endblock header_container %}
+{% block slider %}{% endblock slider %}
+
+{% block sub_content %}
+
+<h2>
+  {% blocktrans %}Work experience list{% endblocktrans %}
+  <a class="button capitalize leftmargin-lg" href="{% url 'work-experience-add' %}">Create new experience</a>
+</h2>
+
+
+<ul>
+{% for work_experience in work_experience_list %}
+  {% url 'work-experience-translation-new' work_experience.id as update_translation_url %}
+  {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
+  <li>
+    {{ work_experience }}[{{ work_experience.id }}] -- <a href="{{ update_translation_url }}">Edit</a>
+    | <a href="{{ delete_work_experience_url }}">Delete</a>
+  </li>
+{% endfor %}
+</ul>
+
+{% endblock sub_content %}
+
+

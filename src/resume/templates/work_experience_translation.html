@@ -15,7 +15,7 @@
   <a href="{% url 'work-experience-list' %}">experience list</a> <
   <a href="{{ back_url }}">translation list</a>
 
-  <h3>{{ title }}</h3>
+  <h2>{{ title }}</h2>
 
   {% if error %}
     <div class="alert-danger">{{ error }}</div>
@@ -29,15 +29,11 @@
       </li>
     {% endfor %}
 
-    <br>
     {% if not error and not are_all_languages_created %}
-      {% if type != 'update' %}
-        <button class="button capitalize" onclick="javascript:$('#id-new-work-experience-translation-form').removeClass('hidden');$(this).hide();">Create new translation</button>
-      {% endif %}
       {% crispy form form.helper %}
     {% endif %}
     {% comment %}
-    todo: when the form contains the validation error, it still hide the form byd default
+    todo: when the form contains the validation error, it still hide the form by default
     {% endcomment %}
 
   {% endif %}
@@ -47,13 +43,10 @@
 
 {% block page_js %}
 {{ super }}
-
 <script>
-  {% if type == 'update' %}
-    $(document).ready(function(){
-        $('#id-new-work-experience-translation-form').removeClass('hidden');
-    });
-  {% endif  %}
+$(document).ready(function(){
+
+});
 </script>
 
 {% endblock page_js %}

@@ -16,22 +16,12 @@
   {% if error %}
     <div class="error">{{ error }}</div>
   {% endif %}
-    <h3>{% blocktrans %}Work experience list{% endblocktrans %}</h3>
 
-    {% if not error %}
-      {% crispy form form.helper %}
-    {% endif %}
-    <ul>
+  <h2>{% blocktrans %}Create new Work experience{% endblocktrans %}</h2>
 
-  {% for work_experience in work_experience_list %}
-    {% url 'work-experience-translation-new' work_experience.id as update_translation_url %}
-    {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
-    <li>
-      {{ work_experience }}[{{ work_experience.id }}] -- <a href="{{ update_translation_url }}">Edit</a>
-      | <a href="{{ delete_work_experience_url }}">Delete</a>
-    </li>
-  {% endfor %}
-  </ul>
+  {% if not error and form%}
+    {% crispy form form.helper %}
+  {% endif %}
 
 {% endblock sub_content %}
 

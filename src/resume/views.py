@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect # noqa
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _  # noqa
 from django.utils import translation
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.base import View
 
 from resume.models import WorkExperience, Project, WorkExperienceTranslation
@@ -98,30 +98,56 @@ class ProjectView(View):
             return render(request, self.template_name, context)
 
 
-class WorkExperiencesView(View):
-    form_class = WorkExperienceForm
+class WorkExperiencesListView(ListView):
+    template_name = 'work_experience_list.html'
+    context_object_name = 'work_experience_list'
+
+    def get_queryset(self):
+        return WorkExperience.objects.filter(user=self.request.user.profile)
+
+
+list_work_experience = WorkExperiencesListView.as_view()
+
+
+class WorkExperiencesCreateView(View):
+    form_class = WorkExperienceTranslationForm
     template_name = 'work_experience.html'
 
     def get(self, request, **kwargs):
         work_experience_list = WorkExperience.objects.filter(
             user=request.user.profile)
+
         context = {
             'form': self.form_class(),
             'work_experience_list': work_experience_list,
         }
         return render(request, self.template_name, context)
 
+    def get_related_work_experience_model(self):
+        related_model = self.kwargs.get('related_model')
+        work_experience = None
+        if related_model:
+            work_experience = WorkExperience.objects.get(id=int(related_model))
+        if not related_model:
+            work_experience = WorkExperience.objects.create(
+                user=self.request.user.profile)
+        return work_experience
+
     def post(self, request, **kwargs):
         post_data = request.POST.copy()
         post_data['user'] = request.user.profile.id
+
         form = self.form_class(post_data)
 
         if form.is_valid():
+            related_model = self.get_related_work_experience_model()
+            form.instance.related_model = related_model
+
             form.save()
 
             redirect_url = reverse(
-                'work-experience-translation-new', kwargs={
-                    'work_experience_id': form.instance.id})
+                'work-experience-translation-new',
+                kwargs={'work_experience_id': related_model.id})
             return HttpResponseRedirect(redirect_url)
         else:
             context = {
@@ -130,9 +156,12 @@ class WorkExperiencesView(View):
             return render(request, self.template_name, context)
 
 
+add_work_experience = WorkExperiencesCreateView.as_view()
+
+
 class WorkExperienceDeleteView(DeleteView):
     model = WorkExperience
-    template_name = 'work_experience_translation_confirm_delete.html'
+    template_name = 'confirm_delete.html'
     success_url = reverse_lazy('work-experience-list')
 
     def get_context_data(self, **kwargs):
@@ -217,13 +246,14 @@ class WorkExperienceTranslationUpdateView(UpdateView):
         })
         return context
 
+
 update_work_experience_translation = \
     WorkExperienceTranslationUpdateView.as_view()
 
 
 class WorkExperienceTranslationDeleteView(DeleteView):
     model = WorkExperienceTranslation
-    template_name = 'work_experience_translation_confirm_delete.html'
+    template_name = 'confirm_delete.html'
 
     def get_success_url(self):
         work_experience_id = self.object.related_model.id
