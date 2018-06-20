@@ -25,10 +25,12 @@
     {% endif %}
   {% endblock messages %}
 </div>
+  <div class="content-wrap">
+    <div class="container clearfix">
+      {% block sub_content %}{% endblock sub_content %}
+    </div>
 
-<div class="container clearfix">
-  {% block sub_content %}{% endblock sub_content %}
-</div>
+  </div>
 
 {% endblock content %}
 
