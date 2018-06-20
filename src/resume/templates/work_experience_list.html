@@ -24,7 +24,7 @@
 
   <div class="col_four_fifth card">
     <div class="card-header">
-      [{{ work_experience.id }}] {{ work_experience.company }}
+      <span style="font-size:18px; font-weight: bold;">{{ work_experience.company }}</span>
       <span class="float-right">
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
@@ -32,14 +32,17 @@
 
     <div class="card-body">
       {% with translation_list=work_experience.translations.all %}
-        <div class="tabs tabs-alt clearfix" id="tab-7">
+        <div class="tabs tabs-alt clearfix">
 
+          {% if translation_list %}
           <ul class="tab-nav clearfix">
             {% for translation in translation_list %}
-              <li><a href="#tabs-{{ translation.id }}">{{ translation.language }}</a></li>
+              <li><a href="#tabs-{{ translation.id }}">{{ translation.get_language }}</a></li>
             {% endfor %}
           </ul>
+          {% endif %}
 
+          {% if translation_list %}
           <div class="tab-container">
             {% for translation in translation_list %}
             <div class="tab-content clearfix" id="tabs-{{ translation.id }}">
@@ -59,6 +62,7 @@
             </div>
             {% endfor %}
           </div>
+          {% endif %}
 
         </div>
 

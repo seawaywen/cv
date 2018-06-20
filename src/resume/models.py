@@ -102,6 +102,11 @@ class WorkExperienceTranslation(models.Model):
             'work_experience_id': self.related_model.id
         })
 
+    def get_language(self):
+        _language = [y for x, y in settings.LANGUAGES
+                     if x == self.language]
+        return _language[0]
+
 
 class WorkExperience(MultilingualModel):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
