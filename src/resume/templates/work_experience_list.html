@@ -15,7 +15,7 @@
 
 <h2>
   {% blocktrans %}Work experience list{% endblocktrans %}
-  <a class="button capitalize leftmargin-lg" href="{% url 'work-experience-add' %}">Create new experience</a>
+  <a class="button capitalize leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
 </h2>
 
 {% for work_experience in work_experience_list %}
@@ -26,19 +26,44 @@
     <div class="card-header">
       [{{ work_experience.id }}] {{ work_experience.company }}
       <span class="float-right">
-        <a href="{{ update_translation_url }}">Edit</a> |
-        <a href="{{ delete_work_experience_url }}">Delete</a>
+        <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
     </div>
 
     <div class="card-body">
-      <h4 class="card-title">{{ work_experience.position }}</h4>
-      <p class="card-text">
-        {% autoescape off %}
-        {{ work_experience.contribution }}
-        {% endautoescape %}
-      </p>
+      {% with translation_list=work_experience.translations.all %}
+        <div class="tabs tabs-alt clearfix" id="tab-7">
+
+          <ul class="tab-nav clearfix">
+            {% for translation in translation_list %}
+              <li><a href="#tabs-{{ translation.id }}">{{ translation.language }}</a></li>
+            {% endfor %}
+          </ul>
+
+          <div class="tab-container">
+            {% for translation in translation_list %}
+            <div class="tab-content clearfix" id="tabs-{{ translation.id }}">
+              <span class="float-right">
+                {% url 'work-experience-translation-update' translation.id as update_translation_url %}
+                {% url 'work-experience-translation-delete' translation.id as delete_translation_url %}
+                <a href="{{ update_translation_url }}">{% trans 'Edit' %}</a> |
+                <a href="{{ delete_translation_url}}">{% trans 'Delete' %}</a>
+              </span>
+              <h4 class="card-title">{{ translation.position }}</h4>
+              <p>From {{ translation.date_start }} to {{ translation.date_end }}</p>
+              <p class="card-text">
+                {% autoescape off %}
+                  {{ translation.contribution }}
+                {% endautoescape %}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
     </div>
+      {% endwith %}
   </div>
 {% endfor %}
 
