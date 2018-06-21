@@ -32,13 +32,13 @@
 
 {% block sub_content %}
 
-  <div class="col_four_fifth nomargin">
-    <h2 class="topmargin-sm">
+  <div class="col_full nomargin">
+    <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
       {% if not is_public %}
         <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
       {% endif %}
-    </h2>
+    </h3>
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
 
@@ -50,8 +50,7 @@
 {% for work_experience in work_experience_list %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
   {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
-
-  <div class="col_four_fifth card bottommargin-sm">
+  <div class="col_full card bottommargin-sm">
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
 

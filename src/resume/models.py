@@ -47,7 +47,10 @@ class WorkExperienceTranslationManager(models.Manager):
 
     def get_all_existing_languages(self, work_experience_id):
         return self.get_queryset()\
-            .filter(related_model__exact=work_experience_id)\
+            .filter(related_model__exact=work_experience_id)
+
+    def get_all_existing_language_list(self, work_experience_id):
+        return self.get_all_existing_languages(work_experience_id)\
             .values_list('language', flat=True)
 
     def is_language_exist(self, work_experience_id, language):
@@ -113,7 +116,7 @@ class WorkExperience(MultilingualModel):
 
     def get_filled_languages(self):
         _languages = set(
-            WorkExperienceTranslation.objects.get_all_existing_languages(
+            WorkExperienceTranslation.objects.get_all_existing_language_list(
                 self.id))
         return _languages
 

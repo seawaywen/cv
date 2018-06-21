@@ -5,17 +5,24 @@ import logging
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render  # noqa
-from django.http import HttpResponseRedirect # noqa
+from django.shortcuts import get_object_or_404, render  #noqa
+from django.http import HttpResponseRedirect  # noqa
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _  # noqa
 from django.utils import translation
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.base import View
 
-from resume.models import WorkExperience, Project, WorkExperienceTranslation
-from resume.forms import ProjectForm, WorkExperienceForm, \
+from resume.models import (
+    WorkExperience,
+    Project,
+    WorkExperienceTranslation
+)
+from resume.forms import (
+    ProjectForm,
+    WorkExperienceForm,
     WorkExperienceTranslationForm
+)
 
 
 logger = logging.getLogger(__name__)
@@ -100,7 +107,11 @@ class ProjectView(View):
             return render(request, self.template_name, context)
 
 
-class WorkExperiencesListView(LoginRequiredMixin, ListView):
+class WorkExperienceBaseMixin(LoginRequiredMixin):
+    pass
+
+
+class WorkExperiencesListView(WorkExperienceBaseMixin, ListView):
     template_name = 'work_experience_list.html'
     context_object_name = 'work_experience_list'
 
@@ -113,100 +124,119 @@ class WorkExperiencesListView(LoginRequiredMixin, ListView):
 list_work_experience = WorkExperiencesListView.as_view()
 
 
-class WorkExperiencesPublicListView(ListView):
-    template_name = 'work_experience_list.html'
-    context_object_name = 'work_experience_list'
+class PublicViewMixin(object):
+    """This Mixin is used for all the public view which doesn't need the
+    authentication to view the data.
 
-    def _find_user_by_username(self, username):
+    Instead make sure the `username` is included as a kwargs in the url
+
+    If the user is not found via the `username`, it raises the 404.
+
+    """
+    user = None
+
+    @staticmethod
+    def find_user_by_username(username):
+        """get the user instance from the username"""
         if username:
-            qs = User.objects.filter(username=username)
-            if qs.exists():
-                user = qs.first()
-                if hasattr(user, 'profile'):
-                    return user
+            user = get_object_or_404(User, username=username)
+            if hasattr(user, 'profile'):
+                return user
         else:
             return None
 
-    def get_queryset(self):
-        username = self.kwargs.get('username')
-        user = self._find_user_by_username(username)
-        if user:
-            work_experience_list = WorkExperience.objects.filter(
-                user=user.profile).order_by('-date_start')
-            return work_experience_list
-        return None
-
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        username = self.kwargs.get('username')
-        user = self._find_user_by_username(username)
-        if not user:
-            context_data.update({
-                'error': 'this user does not exist!'
-            })
-
         context_data.update({
             'is_public': True
         })
         return context_data
 
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs.get('username')
+        self.user = self.find_user_by_username(username)
+        return super().get(request, *args, **kwargs)
 
+
+class WorkExperiencesPublicListView(PublicViewMixin, ListView):
+    template_name = 'work_experience_list.html'
+    context_object_name = 'work_experience_list'
+
+    def get_queryset(self):
+        if self.user:
+            work_experience_list = WorkExperience.objects.filter(
+                user=self.user.profile).order_by('-date_start')
+            return work_experience_list
+        return None
 
 
 list_public_work_experience = WorkExperiencesPublicListView.as_view()
 
 
-class WorkExperiencesCreateView(View):
+class WorkExperienceTranslationEditView(WorkExperienceBaseMixin):
+    model = WorkExperienceTranslation
     form_class = WorkExperienceTranslationForm
-    template_name = 'work_experience.html'
+    template_name = 'work_experience_translation.html'
+    title = None
+    form_type = None
 
-    def get(self, request, **kwargs):
-        work_experience_list = WorkExperience.objects.filter(
-            user=request.user.profile)
+    @staticmethod
+    def _get_work_experience(work_experience_id):
+        try:
+            work_experience = WorkExperience.objects.get(id=work_experience_id)
+            return work_experience
+        except WorkExperience.DoesNotExist:
+            return None
 
-        context = {
-            'form': self.form_class(),
-            'work_experience_list': work_experience_list,
-        }
-        return render(request, self.template_name, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': self.title,
+            'back_url': self.get_success_url(),
+        })
+        if self.form_type is not None:
+            context.update({'form_type': self.form_type})
+        return context
 
-    def get_related_work_experience_model(self):
+
+class WorkExperiencesCreateView(WorkExperienceTranslationEditView, CreateView):
+    title = _('Create new experience')
+    form_type = 'NEW_FORM'
+
+    def get_related_work_experience_model(self, **params):
         related_model = self.kwargs.get('related_model')
         work_experience = None
         if related_model:
             work_experience = WorkExperience.objects.get(id=int(related_model))
         if not related_model:
             work_experience = WorkExperience.objects.create(
-                user=self.request.user.profile)
+                user=self.request.user.profile, **params)
         return work_experience
 
-    def post(self, request, **kwargs):
-        post_data = request.POST.copy()
-        post_data['user'] = request.user.profile.id
+    def form_valid(self, form):
+        related_model = self.get_related_work_experience_model(**{
+            'date_start': form.cleaned_data['date_start'],
+            'date_end': form.cleaned_data['date_end']
+        })
+        form.instance.related_model = related_model
+        form.save()
 
-        form = self.form_class(post_data)
+        return super().form_valid(form)
 
-        if form.is_valid():
-            related_model = self.get_related_work_experience_model()
-            form.instance.related_model = related_model
-
-            form.save()
-
-            redirect_url = reverse(
-                'work-experience-translation-new',
-                kwargs={'work_experience_id': related_model.id})
-            return HttpResponseRedirect(redirect_url)
+    def get_success_url(self):
+        if self.object:
+            work_experience_id = self.object.related_model.id
+            return reverse('work-experience-translation-list', kwargs={
+                'work_experience_id': work_experience_id
+            })
         else:
-            context = {
-                'form': form
-            }
-            return render(request, self.template_name, context)
+            return reverse('work-experience-list')
 
 
 add_work_experience = WorkExperiencesCreateView.as_view()
 
 
-class WorkExperienceDeleteView(DeleteView):
+class WorkExperienceDeleteView(WorkExperienceBaseMixin, DeleteView):
     model = WorkExperience
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('work-experience-list')
@@ -228,7 +258,7 @@ class WorkExperienceDeleteView(DeleteView):
 delete_work_experience = WorkExperienceDeleteView.as_view()
 
 
-class WorkExperienceTranslationListView(ListView):
+class WorkExperienceTranslationListView(WorkExperienceBaseMixin, ListView):
     template_name = 'work_experience_translation-list.html'
     context_object_name = 'work_experience_trans_list'
 
@@ -268,66 +298,63 @@ class WorkExperienceTranslationListView(ListView):
 list_work_experience_translation = WorkExperienceTranslationListView.as_view()
 
 
-class WorkExperienceTranslationView(CreateView):
-    model = WorkExperienceTranslation
-    form_class = WorkExperienceTranslationForm
-    template_name = 'work_experience_translation.html'
+class WorkExperienceTranslationView(WorkExperienceTranslationEditView,
+                                    CreateView):
     work_experience = None
+    title = _('Create new work experience translation')
 
-    def _get_work_experience(self, work_experience_id):
+    def post(self, request, *args, **kwargs):
+        work_experience_id = self.kwargs.get('work_experience_id')
         if self.work_experience is None:
-            try:
-                self.work_experience = WorkExperience.objects.get(
-                    id=work_experience_id)
-                return self.work_experience
-            except WorkExperience.DoesNotExist:
-                self.work_experience = None
-        return self.work_experience
+            self.work_experience = self._get_work_experience(work_experience_id)
+
+        return super().post(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        work_experience_id = self.kwargs.get('work_experience_id')
+        if self.work_experience is None:
+            self.work_experience = self._get_work_experience(work_experience_id)
+
+        return super().get(request, *args, **kwargs)
 
     def get_initial(self):
         initial = super().get_initial()
         work_experience_id = self.kwargs.get('work_experience_id')
         initial.update({'related_model': work_experience_id})
-        work_experience = self._get_work_experience(work_experience_id)
-        if work_experience:
+        if self.work_experience:
             initial.update({
-                'date_start': work_experience.date_start,
-                'date_end': work_experience.date_end,
+                'date_start': self.work_experience.date_start,
+                'date_end': self.work_experience.date_end,
             })
         return initial
 
     def get_form_kwargs(self):
-        kwargs = super(WorkExperienceTranslationView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         # Find which translation languages are already created, only send the
         # languages list that not exists yet!
-        work_experience_id = self.kwargs.get('work_experience_id')
-        work_experience = self._get_work_experience(work_experience_id)
-        if work_experience:
-            language_choices = work_experience.get_unfilled_language_choices()
+        if self.work_experience:
+            language_choices = self.work_experience\
+                .get_unfilled_language_choices()
             kwargs['override_languages'] = language_choices
         return kwargs
 
     def form_valid(self, form):
-        work_experience_id = self.kwargs.get('work_experience_id')
-        work_experience = WorkExperience.objects.get(id=work_experience_id)
-        form.instance.related_model = work_experience
+        form.instance.related_model = self.work_experience
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        if self.work_experience is None:
-            context_data.update({
-                'error': 'The related work experience do not exist!'
-            })
-        return context_data
+    def get_success_url(self):
+        work_experience_id = self.kwargs.get('work_experience_id')
+        return reverse('work-experience-translation-list', kwargs={
+            'work_experience_id': work_experience_id
+        })
+
 
 add_work_experience_translation = WorkExperienceTranslationView.as_view()
 
 
-class WorkExperienceTranslationUpdateView(UpdateView):
-    model = WorkExperienceTranslation
-    form_class = WorkExperienceTranslationForm
-    template_name = 'work_experience_translation.html'
+class WorkExperienceTranslationUpdateView(WorkExperienceTranslationEditView,
+                                          UpdateView):
+    title = _('Update work experience translation')
 
     def get_initial(self):
         initial = super().get_initial()
@@ -338,20 +365,19 @@ class WorkExperienceTranslationUpdateView(UpdateView):
         })
         return initial
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # Find and set the only option for current translation language,
+        language_choices = [
+            (x, y) for x, y in settings.LANGUAGES if x == self.object.language]
+        kwargs['override_languages'] = language_choices
+        return kwargs
+
     def form_valid(self, form):
         self.object.related_model.date_start = form.cleaned_data['date_start']
         self.object.related_model.date_end = form.cleaned_data['date_end']
         self.object.related_model.save()
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'title': _('Work experience translation'),
-            'back_url': self.get_success_url(),
-            'type': 'update'
-        })
-        return context
 
     def get_success_url(self):
         return reverse('work-experience-translation-list', kwargs={
@@ -363,16 +389,14 @@ update_work_experience_translation = \
     WorkExperienceTranslationUpdateView.as_view()
 
 
-class WorkExperienceTranslationDeleteView(DeleteView):
+class WorkExperienceTranslationDeleteView(WorkExperienceBaseMixin, DeleteView):
     model = WorkExperienceTranslation
     template_name = 'confirm_delete.html'
 
     def get_success_url(self):
         work_experience_id = self.object.related_model.id
-        return_url = reverse(
-            'work-experience-translation-list',
-            kwargs={'work_experience_id': work_experience_id})
-        return return_url
+        return reverse('work-experience-translation-list',
+                       kwargs={'work_experience_id': work_experience_id})
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

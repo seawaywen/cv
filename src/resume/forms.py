@@ -67,9 +67,6 @@ class WorkExperienceForm(forms.ModelForm):
 
 
 class WorkExperienceTranslationForm(forms.ModelForm):
-    LANGUAGES = settings.LANGUAGES.copy()
-    LANGUAGES.insert(0, ('', _('*--- select language ---')))
-
     related_model = forms.IntegerField(
         required=False, widget=forms.HiddenInput())
     date_start = forms.DateField(label='', widget=forms.DateInput(
@@ -84,13 +81,12 @@ class WorkExperienceTranslationForm(forms.ModelForm):
                 'class': 'form-control form-start-date'
             }))
 
-    language = forms.ChoiceField(label='', choices=LANGUAGES)
-
     class Meta:
         model = WorkExperienceTranslation
         fields = ['language', 'position', 'company', 'location',
                   'date_start', 'date_end', 'contribution', 'keywords']
         labels = {
+            'language': '',
             'company': '',
             'position': '',
             'location': '',
@@ -127,9 +123,3 @@ class WorkExperienceTranslationForm(forms.ModelForm):
                       'the system!')
         if language not in [x for x, _ in settings.LANGUAGES]:
             self.add_error('language', error_msg)
-
-        error_msg = _("This translation language already exists!")
-        if WorkExperienceTranslation.objects.is_language_exist(
-                self.cleaned_data['related_model'], language):
-            self.add_error('language', error_msg)
-

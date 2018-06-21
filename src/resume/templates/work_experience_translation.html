@@ -8,10 +8,13 @@
 
 {% block sub_content %}
 
-  <div class="col_four_fifth nomargin">
-    <a href="{% url 'work-experience-list' %}">experience list</a> <
-    <a href="{{ back_url }}">translation list</a>
-    <h2 class="topmargin-sm">{{ title }}</h2>
+  <div style="margin-top:6px;">
+    <a href="{% url 'work-experience-list' %}">experience list</a>
+    {% if form_type != 'NEW_FORM' %}
+      <
+      <a href="{{ back_url }}">translation list</a>
+    {% endif %}
+    <h3 class="topmargin-sm">{{ title }}</h3>
   </div>
 
   {% if error %}
@@ -19,8 +22,8 @@
     <div class="alert-danger" style="font-size:20px; margin: 12px;">{{ error }}</div>
   </div>
   {% else %}
-  <div class="col_four_fifth nomargin">
-  {% crispy form form.helper %}
+  <div class="col_full nomargin">
+    {% crispy form form.helper %}
   </div>
   {% endif %}
 
