@@ -98,7 +98,7 @@ class WorkExperienceTranslation(models.Model):
     def get_language(self):
         _language = [y for x, y in settings.LANGUAGES
                      if x == self.language]
-        return _language[0]
+        return _(_language[0])
 
 
 class WorkExperience(MultilingualModel):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 04:25+0000\n"
+"POT-Creation-Date: 2018-06-21 12:10+0000\n"
 "PO-Revision-Date: 2018-04-09 11:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,206 +18,188 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: admin.py:38
+#: admin.py:34
 msgid "User Info"
 msgstr "用户信息"
 
-#: admin.py:42 models.py:151 views.py:28
+#: admin.py:38 views.py:38
 msgid "Job Position"
 msgstr "工作职位"
 
-#: admin.py:46 models.py:153 views.py:28
+#: admin.py:42 models.py:72 views.py:38
 msgid "Location"
 msgstr "位置"
 
-#: forms.py:56 forms.py:122
-msgid "Email"
-msgstr "电子邮件"
-
-#: forms.py:61
+#: forms.py:50 forms.py:74
 #, fuzzy
-#| msgid "Password reset"
-msgid "Password"
-msgstr "重置密码"
+#| msgid "Start Date"
+msgid "*Start date"
+msgstr "开始时间"
 
-#: forms.py:67
-#, python-format
-msgid ""
-"Please enter a correct %(username)s and password. Note that both fields may "
-"be case-sensitive."
-msgstr "请输入正确的用户名%(username)s和密码。注意区分大小写。"
+#: forms.py:54 forms.py:80 models.py:110
+#, fuzzy
+#| msgid "End Date"
+msgid "End date"
+msgstr "结束时间"
 
-#: forms.py:69
-msgid "This account is inactive."
-msgstr "此帐户处于未激活状态."
+#: forms.py:96
+#, fuzzy
+#| msgid "Company"
+msgid "*Company name"
+msgstr "公司"
 
-#: forms.py:126
-msgid "Re-enter password"
-msgstr "再输一遍密码"
+#: forms.py:99
+#, fuzzy
+#| msgid "Job Position"
+msgid "*Job position"
+msgstr "工作职位"
 
-#: forms.py:158
-msgid "SignUp Now"
-msgstr "立即注册"
+#: forms.py:102
+#, fuzzy
+#| msgid "Location"
+msgid "*Location"
+msgstr "位置"
 
-#: forms.py:168
-msgid "The username already exists."
-msgstr "用户名已存在。"
-
-#: forms.py:179
-msgid "A user with this email already exists."
-msgstr "使用该邮箱的用户已经存在。"
-
-#: forms.py:195
-msgid "The two password fields didn't match."
-msgstr "两次密码输入不同。"
-
-#: models.py:46
-msgid "Male"
-msgstr "男"
-
-#: models.py:47
-msgid "Female"
-msgstr "女"
-
-#: models.py:48
-msgid "Unknown"
-msgstr "未知"
-
-#: models.py:50
-msgid "Gender"
-msgstr "性别"
-
-#: models.py:53
-msgid "Birthday"
-msgstr "生日"
-
-#: models.py:57
-msgid "A 256x256 image for your profile."
-msgstr "一张256x256大小的档案图片。"
-
-#: models.py:64
-msgid "Original photo name"
-msgstr "原始图片名称"
-
-#: models.py:67
-msgid "Phone"
-msgstr "手机"
-
-#: models.py:68
-msgid "Country/Region"
-msgstr "国家/地区"
-
-#: models.py:70
-msgid "City"
-msgstr "城市"
-
-#: models.py:75
-msgid "namespace"
-msgstr "命名空间"
-
-#: models.py:76
-msgid ""
-"Required before creating any related operation.\n"
-"Lower-case letters, numbers, dots or hyphens allowed only."
-msgstr ""
-"在建立任何操作之前需要。\n"
-"只允许小写字母，数字，点或者横线。"
-
-#: models.py:81
-msgid "LinkedIn"
-msgstr "领英"
-
-#: models.py:83
-msgid "Wechat"
-msgstr "微信"
-
-#: models.py:85
-msgid "Facebook"
-msgstr "脸书"
-
-#: models.py:87 models.py:199 views.py:46 views.py:71
-msgid "Github"
+#: forms.py:122
+msgid "Your selected language currently is not supported in the system!"
 msgstr ""
 
-#: models.py:89
-msgid "Personal Site"
-msgstr "个人网站"
+#: models.py:63
+msgid "*--- select language ---"
+msgstr "*请选择语言"
 
-#: models.py:90 views.py:47 views.py:72
-msgid "Description"
-msgstr "描述"
-
-#: models.py:100
-msgid "{}'s profile"
-msgstr "{} 的介绍"
-
-#: models.py:149 views.py:27
+#: models.py:68 views.py:37
 msgid "Language"
 msgstr "语言"
 
-#: models.py:152 views.py:27
+#: models.py:70
+#, fuzzy
+#| msgid "Job Position"
+msgid "Job position"
+msgstr "工作职位"
+
+#: models.py:71 views.py:37
 msgid "Company"
 msgstr "公司"
 
-#: models.py:154 views.py:29
-msgid "Start Date"
-msgstr "开始时间"
-
-#: models.py:156 views.py:29
-msgid "End Date"
-msgstr "结束时间"
-
-#: models.py:158
-msgid "Your highlight contribution"
+#: models.py:75
+#, fuzzy
+#| msgid "Your highlight contribution"
+msgid "Highlighted contribution"
 msgstr "突出贡献"
 
-#: models.py:160 views.py:31
+#: models.py:77 views.py:41
 msgid "Keywords"
 msgstr "关键词"
 
-#: models.py:161
+#: models.py:78
 msgid "The words that might search for when looking"
 msgstr "可能的搜索词"
 
-#: models.py:177 models.py:206
+#: models.py:107
 msgid "Is this experience public?"
 msgstr "是否公开此经验?"
 
-#: models.py:195 views.py:45 views.py:70
+#: models.py:108
+#, fuzzy
+#| msgid "Start Date"
+msgid "Start date"
+msgstr "开始时间"
+
+#: models.py:142
+msgid "End date should not be earlier than start date!"
+msgstr "结束日期不能比开始时间早!"
+
+#: models.py:156 views.py:55 views.py:80
 msgid "Title"
 msgstr "标题"
 
-#: models.py:197 views.py:45 views.py:70
+#: models.py:158 views.py:55 views.py:80
 msgid "Download Link"
 msgstr "下载链接"
 
-#: models.py:198 views.py:46 views.py:71
+#: models.py:159 views.py:56 views.py:81
 msgid "Live Link"
 msgstr "在线展示链接"
 
-#: models.py:200
+#: models.py:160 views.py:56 views.py:81
+msgid "Github"
+msgstr ""
+
+#: models.py:161
 msgid "Summary"
 msgstr "摘要"
 
-#: models.py:203
+#: models.py:164
 msgid "Project Image"
 msgstr "项目图片"
 
-#: models.py:204
+#: models.py:165
 msgid "A 300x300 image for the project"
 msgstr "一张300x300大小的项目图片"
 
-#: templates/index.html:7
+#: models.py:167
+#, fuzzy
+#| msgid "Is this experience public?"
+msgid "Is this project public?"
+msgstr "是否公开此经验?"
+
+#: templates/confirm_delete.html:16
+msgid "Deletion confirmation"
+msgstr "删除确认"
+
+#: templates/confirm_delete.html:34
+msgid "Confirm deletion"
+msgstr "确认删除"
+
+#: templates/index.html:16
 msgid "Experience"
 msgstr "经验"
 
-#: templates/index.html:17
+#: templates/index.html:26
 msgid "Projects"
 msgstr "项目"
 
-#: templates/profile_edit.html:14
-msgid "Profile"
-msgstr "档案"
+#: templates/work_experience.html:19
+msgid "Create new work experience"
+msgstr "创建新的工作经验"
+
+#: templates/work_experience_list.html:43
+#, fuzzy
+#| msgid "Is this experience public?"
+msgid "Work experience list"
+msgstr "是否公开此经验?"
+
+#: templates/work_experience_list.html:45 views.py:203
+msgid "Create new experience"
+msgstr "创建新的工作经验"
+
+#: templates/work_experience_list.html:50
+msgid "preview in public mode"
+msgstr "公开模式预览"
+
+#: templates/work_experience_list.html:52
+msgid "show all"
+msgstr ""
+
+#: templates/work_experience_list.html:70
+#: templates/work_experience_translation-list.html:58
+msgid "Edit"
+msgstr "编辑"
+
+#: templates/work_experience_list.html:71
+#: templates/work_experience_translation-list.html:59
+msgid "Delete"
+msgstr "删除"
+
+#: templates/work_experience_list.html:91
+#: templates/work_experience_translation-list.html:35
+msgid "Now"
+msgstr "现在"
+
+#: templates/work_experience_translation-list.html:38
+msgid "Add translation"
+msgstr "添加翻译"
 
 #: validators.py:18
 msgid ""
@@ -231,9 +213,137 @@ msgstr ""
 msgid "You cannot use this reserved namespace."
 msgstr "您无法使用这个预留的命名空间。"
 
-#: views.py:30
+#: views.py:39
+msgid "Start Date"
+msgstr "开始时间"
+
+#: views.py:39
+msgid "End Date"
+msgstr "结束时间"
+
+#: views.py:40
 msgid "Contribution"
 msgstr "贡献"
+
+#: views.py:57 views.py:82
+msgid "Description"
+msgstr "描述"
+
+#: views.py:246
+msgid ""
+"The work experience with following translations will be deleted. Are you "
+"sure?"
+msgstr "以下带有翻译的工作经验将要被删除,是否确认该操作?"
+
+#: views.py:286
+msgid "Work experience translations"
+msgstr "工作经验"
+
+#: views.py:304
+msgid "Create new work experience translation"
+msgstr "创建新的工作经验"
+
+#: views.py:357
+msgid "Update work experience translation"
+msgstr "更新工作经验"
+
+#: views.py:403
+msgid ""
+"The following translation for the related work experience will be deleted. "
+"Are you sure?"
+msgstr ""
+
+#~ msgid "Chinese"
+#~ msgstr "中文"
+
+#~ msgid "Email"
+#~ msgstr "电子邮件"
+
+#, fuzzy
+#~| msgid "Password reset"
+#~ msgid "Password"
+#~ msgstr "重置密码"
+
+#~ msgid ""
+#~ "Please enter a correct %(username)s and password. Note that both fields "
+#~ "may be case-sensitive."
+#~ msgstr "请输入正确的用户名%(username)s和密码。注意区分大小写。"
+
+#~ msgid "This account is inactive."
+#~ msgstr "此帐户处于未激活状态."
+
+#~ msgid "Re-enter password"
+#~ msgstr "再输一遍密码"
+
+#~ msgid "SignUp Now"
+#~ msgstr "立即注册"
+
+#~ msgid "The username already exists."
+#~ msgstr "用户名已存在。"
+
+#~ msgid "A user with this email already exists."
+#~ msgstr "使用该邮箱的用户已经存在。"
+
+#~ msgid "The two password fields didn't match."
+#~ msgstr "两次密码输入不同。"
+
+#~ msgid "Male"
+#~ msgstr "男"
+
+#~ msgid "Female"
+#~ msgstr "女"
+
+#~ msgid "Unknown"
+#~ msgstr "未知"
+
+#~ msgid "Gender"
+#~ msgstr "性别"
+
+#~ msgid "Birthday"
+#~ msgstr "生日"
+
+#~ msgid "A 256x256 image for your profile."
+#~ msgstr "一张256x256大小的档案图片。"
+
+#~ msgid "Original photo name"
+#~ msgstr "原始图片名称"
+
+#~ msgid "Phone"
+#~ msgstr "手机"
+
+#~ msgid "Country/Region"
+#~ msgstr "国家/地区"
+
+#~ msgid "City"
+#~ msgstr "城市"
+
+#~ msgid "namespace"
+#~ msgstr "命名空间"
+
+#~ msgid ""
+#~ "Required before creating any related operation.\n"
+#~ "Lower-case letters, numbers, dots or hyphens allowed only."
+#~ msgstr ""
+#~ "在建立任何操作之前需要。\n"
+#~ "只允许小写字母，数字，点或者横线。"
+
+#~ msgid "LinkedIn"
+#~ msgstr "领英"
+
+#~ msgid "Wechat"
+#~ msgstr "微信"
+
+#~ msgid "Facebook"
+#~ msgstr "脸书"
+
+#~ msgid "Personal Site"
+#~ msgstr "个人网站"
+
+#~ msgid "{}'s profile"
+#~ msgstr "{} 的介绍"
+
+#~ msgid "Profile"
+#~ msgstr "档案"
 
 #~ msgid "SignIn"
 #~ msgstr "登录"

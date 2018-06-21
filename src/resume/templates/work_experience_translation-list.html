@@ -45,7 +45,7 @@
           <div class="tabs tabs-alt clearfix">
             <ul class="tab-nav clearfix">
               {% for translation in work_experience_trans_list %}
-                <li><a href="#tabs-{{ translation.id }}">{{ translation.get_language }}</a></li>
+                <li><a href="#tabs-{{ translation.id }}">{% trans translation.get_language %}</a></li>
               {% endfor %}
             </ul>
 

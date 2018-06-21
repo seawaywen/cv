@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 04:25+0000\n"
+"POT-Creation-Date: 2018-06-21 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,84 +18,127 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:20 forms.py:86
+#: forms.py:26 forms.py:92
 msgid "Email"
 msgstr ""
 
-#: forms.py:25
+#: forms.py:31
 msgid "Password"
 msgstr ""
 
-#: forms.py:31
+#: forms.py:37
 #, python-format
 msgid ""
 "Please enter a correct %(username)s and password. Note that both fields may "
 "be case-sensitive."
 msgstr ""
 
-#: forms.py:33
+#: forms.py:39
 msgid "This account is inactive."
 msgstr ""
 
-#: forms.py:90
+#: forms.py:96
 msgid "Re-enter password"
 msgstr ""
 
-#: forms.py:122
+#: forms.py:127
 msgid "SignUp Now"
 msgstr ""
 
-#: forms.py:132
+#: forms.py:146
 msgid "The username already exists."
 msgstr ""
 
-#: forms.py:143
+#: forms.py:151
+msgid "The username cannot be None value."
+msgstr ""
+
+#: forms.py:160
 msgid "A user with this email already exists."
 msgstr ""
 
-#: forms.py:159
+#: forms.py:186
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: templates/password_reset_complete.html:14
-msgid "Your password has been set.  You may go ahead and log in now."
+#: forms.py:199
+msgid "Email Address"
 msgstr ""
 
-#: templates/password_reset_complete.html:16
-msgid "Log in"
+#: forms.py:211
+msgid "Reset My Password"
 msgstr ""
 
-#: templates/password_reset_confirm.html:16
+#: forms.py:221
+msgid "We don't have user with this email in our database."
+msgstr ""
+
+#: forms.py:234
+msgid "Change my password"
+msgstr ""
+
+#: templates/activation_complete.html:5
+msgid "Activation successful"
+msgstr ""
+
+#: templates/activation_complete.html:9
+#, python-format
+msgid "You can now proceed to <a href=\"%(signin_url)s\">sign in.</a>"
+msgstr ""
+
+#: templates/activation_email.txt:4
+#, python-format
+msgid ""
+"\n"
+"Dear,\n"
+"\n"
+"You have created an account for %(site_name)s, which has to\n"
+"be activated. To do this, please follow the following link:\n"
+"http://%(site_domain)s%(activate_url)s\n"
+"\n"
+"Please do take note that if your activation does not succeed\n"
+"within %(expiration_days)s days, you will have to restart\n"
+"the activation process.\n"
+"\n"
+"Kind regards,\n"
+"The Webmaster\n"
+msgstr ""
+
+#: templates/activation_email_subject.txt:3
+#, python-format
+msgid ""
+"\n"
+"Account activation for %(site_name)s\n"
+msgstr ""
+
+#: templates/password_reset_complete.html:6
+msgid "Your password has been reset.  You can go ahead and signIn now."
+msgstr ""
+
+#: templates/password_reset_complete.html:10 templates/signin.html:11
+#: templates/signin.html:19
+msgid "SignIn"
+msgstr ""
+
+#: templates/password_reset_confirm.html:9
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
 msgstr ""
 
-#: templates/password_reset_confirm.html:22
-msgid "New password:"
-msgstr ""
-
-#: templates/password_reset_confirm.html:27
-msgid "Confirm password:"
-msgstr ""
-
-#: templates/password_reset_confirm.html:30
-msgid "Change my password"
-msgstr ""
-
-#: templates/password_reset_confirm.html:36
+#: templates/password_reset_confirm.html:17
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
 
-#: templates/password_reset_done.html:14
+#: templates/password_reset_done.html:6
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly."
 msgstr ""
 
-#: templates/password_reset_done.html:16
+#: templates/password_reset_done.html:8
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
@@ -125,18 +168,10 @@ msgstr ""
 msgid "The %(site_name)s team"
 msgstr ""
 
-#: templates/password_reset_form.html:13
+#: templates/password_reset_form.html:6
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll email "
 "instructions for setting a new one."
-msgstr ""
-
-#: templates/password_reset_form.html:19
-msgid "Email address:"
-msgstr ""
-
-#: templates/password_reset_form.html:22
-msgid "Reset my password"
 msgstr ""
 
 #: templates/password_reset_subject.txt:2
@@ -144,30 +179,86 @@ msgstr ""
 msgid "Password reset on %(site_name)s"
 msgstr ""
 
-#: templates/signin.html:32 templates/signin.html:40
-msgid "SignIn"
-msgstr ""
-
-#: templates/signin.html:42
+#: templates/signin.html:21
 msgid "Forgot Password?"
 msgstr ""
 
-#: templates/signin.html:48
-msgid "Don't have an account? Signup one now!"
+#: templates/signin.html:28
+msgid "Sign In with third party accounts:"
 msgstr ""
 
-#: templates/signup.html:35
+#: templates/signin.html:47
+msgid ""
+"\n"
+"    Don't have an account? <span class='font-weight-bold'>Sign Up Now!</"
+"span>\n"
+"    "
+msgstr ""
+
+#: templates/signout.html:6
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr ""
+
+#: templates/signout.html:8
+msgid "SignIn again"
+msgstr ""
+
+#: templates/signup.html:11
 msgid "SignUp"
 msgstr ""
 
-#: templates/signup.html:42
-msgid "Already have an account? SignUp HERE"
+#: templates/signup.html:18
+msgid "Already have an account? Sign In here"
 msgstr ""
 
-#: views.py:54
+#: templates/signup_complete.html:6
+msgid "User registration successful"
+msgstr ""
+
+#: templates/signup_complete.html:8
+msgid ""
+"We've e-mailed you instructions for activating your account to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+
+#: validators.py:14
+msgid "This name cannot be registered. Please choose a different name."
+msgstr ""
+
+#: validators.py:16
+msgid ""
+"This email address cannot be registered. Please supply a different email "
+"address."
+msgstr ""
+
+#: validators.py:18
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr ""
+
+#: validators.py:20
+msgid ""
+"Registration using free email addresses is prohibited. Please supply a "
+"different email address."
+msgstr ""
+
+#: validators.py:22
+msgid "This name is reserved and cannot be registered."
+msgstr ""
+
+#: validators.py:23
+msgid "You must agree to the terms to register"
+msgstr ""
+
+#: views.py:61
+msgid "Signed Out"
+msgstr ""
+
+#: views.py:73
 msgid "Password reset"
 msgstr ""
 
-#: views.py:60
+#: views.py:82
 msgid "Password reset sent"
 msgstr ""

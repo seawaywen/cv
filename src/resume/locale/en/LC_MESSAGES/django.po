@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 04:25+0000\n"
+"POT-Creation-Date: 2018-06-21 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,201 +18,167 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:38
+#: admin.py:34
 msgid "User Info"
 msgstr ""
 
-#: admin.py:42 models.py:151 views.py:28
+#: admin.py:38 views.py:38
 msgid "Job Position"
 msgstr ""
 
-#: admin.py:46 models.py:153 views.py:28
+#: admin.py:42 models.py:72 views.py:38
 msgid "Location"
 msgstr ""
 
-#: forms.py:56 forms.py:122
-msgid "Email"
+#: forms.py:50 forms.py:74
+msgid "*Start date"
 msgstr ""
 
-#: forms.py:61
-msgid "Password"
+#: forms.py:54 forms.py:80 models.py:110
+msgid "End date"
 msgstr ""
 
-#: forms.py:67
-#, python-format
-msgid ""
-"Please enter a correct %(username)s and password. Note that both fields may "
-"be case-sensitive."
+#: forms.py:96
+msgid "*Company name"
 msgstr ""
 
-#: forms.py:69
-msgid "This account is inactive."
+#: forms.py:99
+msgid "*Job position"
 msgstr ""
 
-#: forms.py:126
-msgid "Re-enter password"
+#: forms.py:102
+msgid "*Location"
 msgstr ""
 
-#: forms.py:158
-msgid "SignUp Now"
+#: forms.py:122
+msgid "Your selected language currently is not supported in the system!"
 msgstr ""
 
-#: forms.py:168
-msgid "The username already exists."
+#: models.py:63
+msgid "*--- select language ---"
 msgstr ""
 
-#: forms.py:179
-msgid "A user with this email already exists."
-msgstr ""
-
-#: forms.py:195
-msgid "The two password fields didn't match."
-msgstr ""
-
-#: models.py:46
-msgid "Male"
-msgstr ""
-
-#: models.py:47
-msgid "Female"
-msgstr ""
-
-#: models.py:48
-msgid "Unknown"
-msgstr ""
-
-#: models.py:50
-msgid "Gender"
-msgstr ""
-
-#: models.py:53
-msgid "Birthday"
-msgstr ""
-
-#: models.py:57
-msgid "A 256x256 image for your profile."
-msgstr ""
-
-#: models.py:64
-msgid "Original photo name"
-msgstr ""
-
-#: models.py:67
-msgid "Phone"
-msgstr ""
-
-#: models.py:68
-msgid "Country/Region"
-msgstr ""
-
-#: models.py:70
-msgid "City"
-msgstr ""
-
-#: models.py:75
-msgid "namespace"
-msgstr ""
-
-#: models.py:76
-msgid ""
-"Required before creating any related operation.\n"
-"Lower-case letters, numbers, dots or hyphens allowed only."
-msgstr ""
-
-#: models.py:81
-msgid "LinkedIn"
-msgstr ""
-
-#: models.py:83
-msgid "Wechat"
-msgstr ""
-
-#: models.py:85
-msgid "Facebook"
-msgstr ""
-
-#: models.py:87 models.py:199 views.py:46 views.py:71
-msgid "Github"
-msgstr ""
-
-#: models.py:89
-msgid "Personal Site"
-msgstr ""
-
-#: models.py:90 views.py:47 views.py:72
-msgid "Description"
-msgstr ""
-
-#: models.py:100
-msgid "{}'s profile"
-msgstr ""
-
-#: models.py:149 views.py:27
+#: models.py:68 views.py:37
 msgid "Language"
 msgstr ""
 
-#: models.py:152 views.py:27
+#: models.py:70
+msgid "Job position"
+msgstr ""
+
+#: models.py:71 views.py:37
 msgid "Company"
 msgstr ""
 
-#: models.py:154 views.py:29
-msgid "Start Date"
+#: models.py:75
+msgid "Highlighted contribution"
 msgstr ""
 
-#: models.py:156 views.py:29
-msgid "End Date"
-msgstr ""
-
-#: models.py:158
-msgid "Your highlight contribution"
-msgstr ""
-
-#: models.py:160 views.py:31
+#: models.py:77 views.py:41
 msgid "Keywords"
 msgstr ""
 
-#: models.py:161
+#: models.py:78
 msgid "The words that might search for when looking"
 msgstr ""
 
-#: models.py:177 models.py:206
+#: models.py:107
 msgid "Is this experience public?"
 msgstr ""
 
-#: models.py:195 views.py:45 views.py:70
+#: models.py:108
+msgid "Start date"
+msgstr ""
+
+#: models.py:142
+msgid "End date should not be earlier than start date!"
+msgstr ""
+
+#: models.py:156 views.py:55 views.py:80
 msgid "Title"
 msgstr ""
 
-#: models.py:197 views.py:45 views.py:70
+#: models.py:158 views.py:55 views.py:80
 msgid "Download Link"
 msgstr ""
 
-#: models.py:198 views.py:46 views.py:71
+#: models.py:159 views.py:56 views.py:81
 msgid "Live Link"
 msgstr ""
 
-#: models.py:200
+#: models.py:160 views.py:56 views.py:81
+msgid "Github"
+msgstr ""
+
+#: models.py:161
 msgid "Summary"
 msgstr ""
 
-#: models.py:203
+#: models.py:164
 msgid "Project Image"
 msgstr ""
 
-#: models.py:204
+#: models.py:165
 msgid "A 300x300 image for the project"
 msgstr ""
 
-#: templates/index.html:7
+#: models.py:167
+msgid "Is this project public?"
+msgstr ""
+
+#: templates/confirm_delete.html:16
+msgid "Deletion confirmation"
+msgstr ""
+
+#: templates/confirm_delete.html:34
+msgid "Confirm deletion"
+msgstr ""
+
+#: templates/index.html:16
 msgid "Experience"
 msgstr ""
 
-#: templates/index.html:17
+#: templates/index.html:26
 msgid "Projects"
 msgstr ""
 
-#: templates/profile_edit.html:14
-msgid "Profile"
+#: templates/work_experience.html:19
+msgid "Create new work experience"
+msgstr ""
+
+#: templates/work_experience_list.html:43
+msgid "Work experience list"
+msgstr ""
+
+#: templates/work_experience_list.html:45 views.py:203
+msgid "Create new experience"
+msgstr ""
+
+#: templates/work_experience_list.html:50
+msgid "preview in public mode"
+msgstr ""
+
+#: templates/work_experience_list.html:52
+msgid "show all"
+msgstr ""
+
+#: templates/work_experience_list.html:70
+#: templates/work_experience_translation-list.html:58
+msgid "Edit"
+msgstr ""
+
+#: templates/work_experience_list.html:71
+#: templates/work_experience_translation-list.html:59
+msgid "Delete"
+msgstr ""
+
+#: templates/work_experience_list.html:91
+#: templates/work_experience_translation-list.html:35
+msgid "Now"
+msgstr ""
+
+#: templates/work_experience_translation-list.html:38
+msgid "Add translation"
 msgstr ""
 
 #: validators.py:18
@@ -225,6 +191,42 @@ msgstr ""
 msgid "You cannot use this reserved namespace."
 msgstr ""
 
-#: views.py:30
+#: views.py:39
+msgid "Start Date"
+msgstr ""
+
+#: views.py:39
+msgid "End Date"
+msgstr ""
+
+#: views.py:40
 msgid "Contribution"
+msgstr ""
+
+#: views.py:57 views.py:82
+msgid "Description"
+msgstr ""
+
+#: views.py:246
+msgid ""
+"The work experience with following translations will be deleted. Are you "
+"sure?"
+msgstr ""
+
+#: views.py:286
+msgid "Work experience translations"
+msgstr ""
+
+#: views.py:304
+msgid "Create new work experience translation"
+msgstr ""
+
+#: views.py:357
+msgid "Update work experience translation"
+msgstr ""
+
+#: views.py:403
+msgid ""
+"The following translation for the related work experience will be deleted. "
+"Are you sure?"
 msgstr ""

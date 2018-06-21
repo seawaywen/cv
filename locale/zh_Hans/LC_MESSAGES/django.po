@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 03:15+0000\n"
+"POT-Creation-Date: 2018-06-21 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,89 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-#: password_reset_complete.html:14
-msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
 
-#: password_reset_complete.html:16
-msgid "Log in"
-msgstr ""
-
-#: password_reset_confirm.html:16
-msgid ""
-"Please enter your new password twice so we can verify you typed it in "
-"correctly."
-msgstr ""
-
-#: password_reset_confirm.html:22
-msgid "New password:"
-msgstr ""
-
-#: password_reset_confirm.html:27
-msgid "Confirm password:"
-msgstr ""
-
-#: password_reset_confirm.html:30
-msgid "Change my password"
-msgstr ""
-
-#: password_reset_confirm.html:36
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a new password reset."
-msgstr ""
-
-#: password_reset_done.html:14
-msgid ""
-"We've emailed you instructions for setting your password, if an account "
-"exists with the email you entered. You should receive them shortly."
-msgstr ""
-
-#: password_reset_done.html:16
-msgid ""
-"If you don't receive an email, please make sure you've entered the address "
-"you registered with, and check your spam folder."
-msgstr ""
-
-#: password_reset_email.html:2
-#, python-format
-msgid ""
-"You're receiving this email because you requested a password reset for your "
-"user account at %(site_name)s."
-msgstr ""
-
-#: password_reset_email.html:4
-msgid "Please go to the following page and choose a new password:"
-msgstr ""
-
-#: password_reset_email.html:8
-msgid "Your username, in case you've forgotten:"
-msgstr ""
-
-#: password_reset_email.html:10
-msgid "Thanks for using our site!"
-msgstr ""
-
-#: password_reset_email.html:12
-#, python-format
-msgid "The %(site_name)s team"
-msgstr ""
-
-#: password_reset_form.html:13
-msgid ""
-"Forgotten your password? Enter your email address below, and we'll email "
-"instructions for setting a new one."
-msgstr ""
-
-#: password_reset_form.html:19
-msgid "Email address:"
-msgstr ""
-
-#: password_reset_form.html:22
-msgid "Reset my password"
-msgstr ""
-
-#: password_reset_subject.txt:2
-#, python-format
-msgid "Password reset on %(site_name)s"
-msgstr ""
+#: base.html:61
+msgid "Work Experience"
+msgstr "工作经验"
