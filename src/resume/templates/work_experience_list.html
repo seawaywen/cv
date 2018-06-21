@@ -17,6 +17,12 @@
     float: right;
   }
 
+  .card-header .work-experience-language{
+    margin-top: 4px;
+    float: right;
+    margin-right: 10px;
+  }
+
   .card-body .work-experience-duration{
     margin-left: 10px;
     color: grey;
@@ -36,9 +42,13 @@
     <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
       {% if not is_public %}
-        <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
+        <a class="button capitalize float-right leftmargin-lg1" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
+        <br>
       {% endif %}
     </h3>
+    {% if not is_public %}
+    <a class="float-right" style="font-size:16px; font-weight: normal; color: grey;" href="{% url 'work-experience-public-list' user.username %}">{% trans 'preview in public mode' %}</a>
+    {% endif %}
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
 
@@ -50,6 +60,7 @@
 {% for work_experience in work_experience_list %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
   {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
+  <a id="card-{{ work_experience.id }}"></a>
   <div class="col_full card bottommargin-sm">
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
@@ -60,6 +71,13 @@
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
       {% endif %}
+
+      <span class="work-experience-language">
+        {% for lang in work_experience.get_filled_language_list %}
+          {{ lang }}
+        {% endfor %}
+      </span>
+
     </div>
 
     <div class="card-body">
@@ -76,7 +94,7 @@
       </h4>
       <p class="card-text">
         {% autoescape off %}
-          {%  trans work_experience.contribution %}
+          {% trans work_experience.contribution %}
         {% endautoescape %}
       </p>
     </div>

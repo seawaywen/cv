@@ -19,8 +19,7 @@
 {% block sub_content %}
 
   <div class="col_full nomargin">
-    <a href="{% url 'work-experience-list' %}">experience list</a> <
-    <a href="{{ back_url }}">translation list</a>
+    <a href="{% url 'work-experience-list' %}#card-{{ work_experience.id }}">experience list</a>
     <h3 class="topmargin-sm">{{ title }}</h3>
   </div>
 

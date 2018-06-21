@@ -120,6 +120,9 @@ class WorkExperience(MultilingualModel):
                 self.id))
         return _languages
 
+    def get_filled_language_list(self):
+        return list(self.get_filled_languages())
+
     def get_unfilled_languages(self):
         _languages = set(
             self.get_filled_languages())
