@@ -67,9 +67,6 @@ class WorkExperienceTranslation(models.Model):
     position = models.CharField(max_length=255, verbose_name=_('Job position'))
     company = models.CharField(max_length=255, verbose_name=_('Company'))
     location = models.CharField(max_length=255, verbose_name=_('Location'))
-    date_start = models.DateField(verbose_name=_('Start date'))
-    date_end = models.DateField(
-        null=True, blank=True, verbose_name=_('End date'))
 
     contribution = HTMLField(blank=True, default='',
                              verbose_name=_('Highlighted contribution'))
@@ -90,16 +87,6 @@ class WorkExperienceTranslation(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-    def clean(self):
-        if self.date_end and self.date_end and self.date_end <= self.date_start:
-            raise ValidationError({
-                'date_end': _(
-                    'End date should not be earlier than start date!')})
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
-
     def get_absolute_url(self):
         return reverse('work-experience-translation-new', kwargs={
             'work_experience_id': self.related_model.id
@@ -114,11 +101,14 @@ class WorkExperienceTranslation(models.Model):
 class WorkExperience(MultilingualModel):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     is_public = models.BooleanField(
-        _('Is this experience public?'), default=False)
+        verbose_name=_('Is this experience public?'), default=False)
+    date_start = models.DateField(verbose_name=_('Start date'))
+    date_end = models.DateField(
+        null=True, blank=True, verbose_name=_('End date'))
 
     class Meta:
         app_label = 'resume'
-        multilingual = ('position', 'company', 'location', 'contribution',)# 'date_start', 'date_end')
+        multilingual = ('position', 'company', 'location', 'contribution',)
         translation = WorkExperienceTranslation
 
     def get_filled_languages(self):
@@ -133,6 +123,21 @@ class WorkExperience(MultilingualModel):
         available_languages = set([x for x, _ in settings.LANGUAGES])
         unfilled_languages = list(available_languages - _languages)
         return unfilled_languages
+
+    def get_unfilled_language_choices(self):
+        unfilled_languages = self.get_unfilled_languages()
+        return [(x, y) for x, y in settings.LANGUAGES
+                if x in unfilled_languages]
+
+    def clean(self):
+        if self.date_end and self.date_end and self.date_end <= self.date_start:
+            raise ValidationError({
+                'date_end': _(
+                    'End date should not be earlier than start date!')})
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __unicode__(self):
         return '%s@%s in %s' % (self.position, self.company, self.location)

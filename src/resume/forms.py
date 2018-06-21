@@ -37,14 +37,24 @@ class ProjectForm(forms.ModelForm):
 
 
 class WorkExperienceForm(forms.ModelForm):
-    #user = forms.CharField(
-    #    max_length=50, widget=forms.HiddenInput(), required=True)
-
     class Meta:
         model = WorkExperience
-        fields = ['user', ]
+        fields = ['user', 'date_start', 'date_end']
+        labels = {
+            'date_start': '',
+            'date_end': '',
+        }
         widgets = {
             'user': forms.HiddenInput(),
+
+            'date_start': forms.DateInput(attrs={
+                'placeholder': _('*Start date'),
+                'class': 'form-control form-start-date'
+            }),
+            'date_end': forms.DateInput(attrs={
+                'placeholder': _('End date'),
+                'class': 'form-control form-end-date'
+            }),
         }
 
     def __init__(self, *args, **kwargs):
@@ -60,19 +70,31 @@ class WorkExperienceForm(forms.ModelForm):
 class WorkExperienceTranslationForm(forms.ModelForm):
     related_model = forms.IntegerField(
         required=False, widget=forms.HiddenInput())
+    date_start = forms.DateField(label='', widget=forms.DateInput(
+        attrs={
+            'placeholder': _('*Start date'),
+            'class': 'form-control form-start-date'
+        }))
+    date_end = forms.DateField(
+        label='', required=False, widget=forms.DateInput(
+            attrs={
+                'placeholder': _('End date'),
+                'class': 'form-control form-start-date'
+            }))
+
+    LANGUAGES = settings.LANGUAGES.copy()
+    LANGUAGES.insert(0, ('', _('*--- select language from form ---')))
+    language = forms.ChoiceField(label='', choices=LANGUAGES)
 
     class Meta:
         model = WorkExperienceTranslation
         fields = ['language', 'position', 'company', 'location',
-                  'date_start', 'date_end', 'contribution',
-                  'keywords']
+                  'date_start', 'date_end', 'contribution', 'keywords']
         labels = {
             'language': '',
             'company': '',
             'position': '',
             'location': '',
-            'date_start': '',
-            'date_end': '',
         }
         widgets = {
             'company': forms.TextInput(attrs={
@@ -84,18 +106,14 @@ class WorkExperienceTranslationForm(forms.ModelForm):
             'location': forms.TextInput(attrs={
                 'placeholder': _('*Location')
             }),
-            'date_start': forms.DateInput(attrs={
-                'placeholder': _('*Start date'),
-                'class': 'form-control form-start-date'
-            }),
-            'date_end': forms.DateInput(attrs={
-                'placeholder': _('End date'),
-                'class': 'form-control form-end-date'
-            }),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, override_languages=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if override_languages:
+            self.fields['language'].choices = override_languages
+
         self.helper = FormHelper()
         self.helper.form_id = 'id-new-work-experience-translation-form'
         self.helper.form_class = 'blueForms'

@@ -6,7 +6,7 @@
 {% block page_css %}
   {{ block.super }}
   <style>
-    .card-header .work-experience-title{
+    .work-experience-title{
       font-size: 18px;
       font-weight: bold;
     }
@@ -21,6 +21,7 @@
   <div class="col_four_fifth nomargin">
     <a href="{% url 'work-experience-list' %}">experience list</a> <
     <a href="{{ back_url }}">translation list</a>
+    <h3 class="topmargin-sm">{{ title }}</h3>
   </div>
 
   {% if error %}
@@ -28,10 +29,11 @@
       <div class="alert-danger">{{ error }}</div>
     </div>
   {% else %}
-      <div class="col_four_fifth card topmargin-sm">
+      <div class="col_four_fifth card">
         {% url 'work-experience-translation-new' work_experience.id as add_work_experience_trans_url %}
         <div class="card-header">
-          <span class="work-experience-title">{{ title }}</span>
+          <span class="work-experience-title">{{ work_experience.date_start|localize }} -
+            {% if work_experience.date_end %}{{ work_experience.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</span>
           {% if not error and not are_all_languages_created %}
             <span class="float-right">
               <a href="{{ add_work_experience_trans_url }}">{% trans 'Add translation' %}</a>
@@ -58,9 +60,9 @@
                       <a href="{{ delete_translation_url}}">{% trans 'Delete' %}</a>
                     </span>
                     <h3 class="card-title">{% trans translation.company %}</h3>
-                    <h4 class="card-title">{% trans translation.position %}</h4>
-                    <p>{{ translation.date_start|localize }} -
-                      {% if translation.date_end %}{{ translation.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</p>
+                    <span class="work-experience-title">
+                      {% trans translation.position %}
+                    </span>
                     <p class="card-text">
                       {% autoescape off %}
                         {{ translation.contribution }}

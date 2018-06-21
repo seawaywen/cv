@@ -103,7 +103,11 @@ class WorkExperiencesListView(ListView):
     context_object_name = 'work_experience_list'
 
     def get_queryset(self):
-        return WorkExperience.objects.filter(user=self.request.user.profile)
+        work_experience_list = WorkExperience.objects.filter(
+            user=self.request.user.profile).order_by('-date_start')
+        for e in work_experience_list:
+            print(e)
+        return work_experience_list
 
 
 list_work_experience = WorkExperiencesListView.as_view()
@@ -227,9 +231,32 @@ class WorkExperienceTranslationView(CreateView):
     template_name = 'work_experience_translation.html'
     work_experience = None
 
+    def _get_work_experience(self, work_experience_id):
+        if self.work_experience is None:
+            self.work_experience = WorkExperience.objects.filter(
+                id=work_experience_id).first()
+        return self.work_experience
+
     def get_initial(self):
+        initial = super().get_initial()
         work_experience_id = self.kwargs.get('work_experience_id')
-        return {'related_model': work_experience_id}
+        work_experience = self._get_work_experience(work_experience_id)
+        initial.update({
+            'related_model': work_experience_id,
+            'date_start': work_experience.date_start,
+            'date_end': work_experience.date_end,
+        })
+        return initial
+
+    def get_form_kwargs(self):
+        kwargs = super(WorkExperienceTranslationView, self).get_form_kwargs()
+        # Find which translation languages are already created, only send the
+        # languages list that not exists yet!
+        work_experience_id = self.kwargs.get('work_experience_id')
+        work_experience = self._get_work_experience(work_experience_id)
+        language_choices = work_experience.get_unfilled_language_choices()
+        kwargs['override_languages'] = language_choices
+        return kwargs
 
     def form_valid(self, form):
         work_experience_id = self.kwargs.get('work_experience_id')
@@ -246,16 +273,33 @@ class WorkExperienceTranslationUpdateView(UpdateView):
     form_class = WorkExperienceTranslationForm
     template_name = 'work_experience_translation.html'
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial.update({
+            'date_start': self.object.related_model.date_start,
+            'date_end': self.object.related_model.date_end,
+        })
+        return initial
+
+    def form_valid(self, form):
+        self.object.related_model.date_start = form.cleaned_data['date_start']
+        self.object.related_model.date_end = form.cleaned_data['date_end']
+        self.object.related_model.save()
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'title': _('Work experience translation'),
-            'back_url': reverse('work-experience-translation-list', kwargs={
-                'work_experience_id': self.object.related_model.id
-            }),
+            'back_url': self.get_success_url(),
             'type': 'update'
         })
         return context
+
+    def get_success_url(self):
+        return reverse('work-experience-translation-list', kwargs={
+            'work_experience_id': self.object.related_model.id
+        })
 
 
 update_work_experience_translation = \

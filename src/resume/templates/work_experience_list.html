@@ -6,14 +6,26 @@
 
 {% block page_css %}
   {% render_bundle 'portfolio' 'css' %}
+
   <style>
   .card-header .work-experience-title{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
   }
+  .card-header .work-experience-operation{
+    margin-top: 4px;
+    float: right;
+  }
+
+  .card-body .work-experience-duration{
+    margin-left: 10px;
+    color: grey;
+    font-size: 16px;
+    font-weight: normal;
+  }
+
   </style>
 {% endblock %}
-
 
 {% block header_container %} {% endblock header_container %}
 {% block slider %}{% endblock slider %}
@@ -25,7 +37,6 @@
       {% blocktrans %}Work experience list{% endblocktrans %}
       <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
     </h2>
-
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
 
@@ -33,22 +44,27 @@
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
   {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
 
-
   <div class="col_four_fifth card bottommargin-sm">
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
-      <span>{% trans work_experience.position %} </span>
-      <span>{% trans work_experience.date_start %}</span>
-      <span class="float-right">
+      <span class="work-experience-operation">
         <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
     </div>
 
     <div class="card-body">
-      <h4 class="card-title">{% trans work_experience.position %}</h4>
-      <p>{{ translation.date_start|localize }} -
-        {% if translation.date_end %}{{ translation.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</p>
+      <h4 class="card-title">
+        {% trans work_experience.position %}
+        <span class="work-experience-duration">
+        {{ work_experience.date_start|localize }} -
+          {% if work_experience.date_end %}
+            {{ work_experience.date_end|localize }}
+          {% else %}
+            {% trans 'Now' %}
+          {% endif %}
+      </span>
+      </h4>
       <p class="card-text">
         {% autoescape off %}
           {%  trans work_experience.contribution %}
@@ -78,4 +94,3 @@
       });
   </script>
 {% endblock page_js %}
-
