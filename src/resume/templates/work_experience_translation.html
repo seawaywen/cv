@@ -15,16 +15,19 @@
   </div>
 
   {% if error %}
-    <div class="alert-danger">{{ error }}</div>
+  <div class="col_full">
+    <div class="alert-danger" style="font-size:20px; margin: 12px;">{{ error }}</div>
+  </div>
   {% else %}
-      <div class="col_four_fifth nomargin">
-      {% crispy form form.helper %}
-      </div>
-    {% comment %}
-    todo: when the form contains the validation error, it still hide the form by default
-    {% endcomment %}
-
+  <div class="col_four_fifth nomargin">
+  {% crispy form form.helper %}
+  </div>
   {% endif %}
+
+  {% comment %}
+  todo: when the form contains the validation error, it still hide the form by default
+  {% endcomment %}
+
 
 {% endblock sub_content %}
 

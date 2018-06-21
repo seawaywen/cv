@@ -35,11 +35,18 @@
   <div class="col_four_fifth nomargin">
     <h2 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
-      <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
+      {% if not is_public %}
+        <a class="button capitalize float-right leftmargin-lg" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
+      {% endif %}
     </h2>
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
 
+{% if error %}
+<div class="col_full">
+  <div class="alert-danger" style="font-size:20px; margin: 12px;">{{ error }}</div>
+</div>
+{% else %}
 {% for work_experience in work_experience_list %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
   {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
@@ -47,10 +54,13 @@
   <div class="col_four_fifth card bottommargin-sm">
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
+
+      {% if not is_public %}
       <span class="work-experience-operation">
         <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
+      {% endif %}
     </div>
 
     <div class="card-body">
@@ -73,6 +83,8 @@
     </div>
   </div>
 {% endfor %}
+
+{% endif %}
 
 {% endblock sub_content %}
 

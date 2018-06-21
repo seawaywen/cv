@@ -6,6 +6,7 @@ from django.urls import path
 from resume.views import (
     home,
     ProjectView,
+    list_public_work_experience,
     list_work_experience,
     add_work_experience,
     delete_work_experience,
@@ -37,6 +38,9 @@ urlpatterns = [
 
     path('work-experience/add/', add_work_experience,
          name='work-experience-add'),
+
+    path('<str:username>/work-experience/', list_public_work_experience,
+         name='work-experience-public-list'),
 
     path('work-experience/', list_work_experience,
          name='work-experience-list'),

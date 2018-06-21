@@ -4,8 +4,7 @@ import logging
 
 from django import forms
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -68,6 +67,9 @@ class WorkExperienceForm(forms.ModelForm):
 
 
 class WorkExperienceTranslationForm(forms.ModelForm):
+    LANGUAGES = settings.LANGUAGES.copy()
+    LANGUAGES.insert(0, ('', _('*--- select language ---')))
+
     related_model = forms.IntegerField(
         required=False, widget=forms.HiddenInput())
     date_start = forms.DateField(label='', widget=forms.DateInput(
@@ -82,8 +84,6 @@ class WorkExperienceTranslationForm(forms.ModelForm):
                 'class': 'form-control form-start-date'
             }))
 
-    LANGUAGES = settings.LANGUAGES.copy()
-    LANGUAGES.insert(0, ('', _('*--- select language from form ---')))
     language = forms.ChoiceField(label='', choices=LANGUAGES)
 
     class Meta:
@@ -91,7 +91,6 @@ class WorkExperienceTranslationForm(forms.ModelForm):
         fields = ['language', 'position', 'company', 'location',
                   'date_start', 'date_end', 'contribution', 'keywords']
         labels = {
-            'language': '',
             'company': '',
             'position': '',
             'location': '',
