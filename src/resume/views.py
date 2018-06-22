@@ -117,8 +117,7 @@ class WorkExperiencesListView(WorkExperienceBaseMixin, ListView):
 
     def get_queryset(self):
         work_experience_list = WorkExperience.objects.filter(
-            user=self.request.user.profile).order_by(
-            '-date_start', 'translations__company')
+            user=self.request.user.profile).order_by('-date_start')
         return work_experience_list
 
 

@@ -5,7 +5,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block page_css %}
-  {% render_bundle 'portfolio' 'css' %}
+  {% render_bundle 'blog' 'css' %}
 
   <style>
   .card-header .work-experience-title{
@@ -54,6 +54,7 @@
 
 {% block sub_content %}
 
+
   <div class="col_full nomargin">
     <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
@@ -68,18 +69,34 @@
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
 
-{% if error %}
-<div class="col_full">
-  <div class="alert-danger" style="font-size:20px; margin: 12px;">{{ error }}</div>
-</div>
-{% else %}
+<div class="col_full postcontent nobottommargin clearfix">
 {% for work_experience in work_experience_list %}
   {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
   {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
+
+  <div id="post" class="post-timeline clearfix">
+    <div class="timeline-border"></div>
+    <div class="entry clearfix">
+      <div class="entry-timeline">
+        {{ work_experience.date_end|date:'Y'}}
+        <span>
+          {{ work_experience.date_end|date:'M'}}
+        </span>
+        <div class="timeline-divider"></div>
+      </div>
+    </div>
+
   <a id="card-{{ work_experience.id }}"></a>
   <div class="col_full card bottommargin-sm">
+
+
+
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
+
+      <span style="float: right; margin-top:6px; margin-left: 4px;">
+        <input type="checkbox" />
+      </span>
 
       {% if not is_in_public_mode %}
       <span class="work-experience-operation">
@@ -89,9 +106,9 @@
 
       <span class="work-experience-public">
       {% if work_experience.is_public == False %}
-        <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}">{% trans 'Public' %}</a>
+        <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Public' %}</a>
       {% else %}
-        <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}">{% trans 'Un-Public' %}</a>
+        <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Un-Public' %}</a>
       {% endif %}
       </span>
       {% endif %}
@@ -124,10 +141,10 @@
       </p>
     </div>
   </div>
+
+  </div>
 {% endfor %}
-
-{% endif %}
-
+</div>
 {% endblock sub_content %}
 
 

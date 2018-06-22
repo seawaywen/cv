@@ -20,7 +20,8 @@ module.exports = {
 
   entry: {
     portfolio: './src/js/portfolio.js',
-    profile: './src/js/profile.js'
+    profile: './src/js/profile.js',
+    blog: './src/js/blog.js'
   },
 
   output: {
