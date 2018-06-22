@@ -9,6 +9,7 @@ from resume.views import (
     list_public_work_experience,
     list_work_experience,
     add_work_experience,
+    public_work_experience,
     delete_work_experience,
     add_work_experience_translation,
     list_work_experience_translation,
@@ -35,6 +36,9 @@ urlpatterns = [
 
     path('work-experience/<int:pk>/delete/', delete_work_experience,
          name='work-experience-delete'),
+
+    path('work-experience/<int:pk>/public/', public_work_experience,
+         name='change-work-experience-public-status'),
 
     path('work-experience/add/', add_work_experience,
          name='work-experience-add'),

@@ -10,6 +10,11 @@
       font-size: 18px;
       font-weight: bold;
     }
+
+    .card-header .un-public {
+      color: red;
+    }
+
   </style>
 {% endblock %}
 
@@ -32,12 +37,23 @@
         {% url 'work-experience-translation-new' work_experience.id as add_work_experience_trans_url %}
         <div class="card-header">
           <span class="work-experience-title">{{ work_experience.date_start|localize }} -
-            {% if work_experience.date_end %}{{ work_experience.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}</span>
+            {% if work_experience.date_end %}{{ work_experience.date_end|localize }}{% else %}{% trans 'Now' %}{% endif %}
+          </span>
+
           {% if not error and not are_all_languages_created %}
-            <span class="float-right">
+            <span class="float-right leftmargin-sm">
               <a href="{{ add_work_experience_trans_url }}">{% trans 'Add translation' %}</a>
             </span>
           {% endif %}
+
+          <span class="float-right">
+          {% if work_experience.is_public == False %}
+            <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{ request.path }}">{% trans 'Public' %}</a>
+          {% else %}
+            <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{ request.path }}">{% trans 'Un-Public' %}</a>
+          {% endif %}
+          </span>
+
         </div>
 
         <div class="card-body">

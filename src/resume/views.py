@@ -11,7 +11,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _  # noqa
 from django.utils import translation
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-from django.views.generic.base import View
+from django.views.generic.base import View, RedirectView
 
 from resume.models import (
     WorkExperience,
@@ -117,7 +117,8 @@ class WorkExperiencesListView(WorkExperienceBaseMixin, ListView):
 
     def get_queryset(self):
         work_experience_list = WorkExperience.objects.filter(
-            user=self.request.user.profile).order_by('-date_start')
+            user=self.request.user.profile).order_by(
+            '-date_start', 'translations__company')
         return work_experience_list
 
 
@@ -148,7 +149,7 @@ class PublicViewMixin(object):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data.update({
-            'is_public': True
+            'is_in_public_mode': True
         })
         return context_data
 
@@ -165,7 +166,7 @@ class WorkExperiencesPublicListView(PublicViewMixin, ListView):
     def get_queryset(self):
         if self.user:
             work_experience_list = WorkExperience.objects.filter(
-                user=self.user.profile).order_by('-date_start')
+                user=self.user.profile, is_public=True).order_by('-date_start')
             return work_experience_list
         return None
 
@@ -236,6 +237,29 @@ class WorkExperiencesCreateView(WorkExperienceTranslationEditView, CreateView):
 add_work_experience = WorkExperiencesCreateView.as_view()
 
 
+class WorkExperiencePublicView(RedirectView):
+    """After this view changed the is_public status, it will redirect
+    back to the previous page"""
+
+    @staticmethod
+    def change_public_status(work_experience_id):
+        work_experience = WorkExperience.objects.get(pk=work_experience_id)
+        work_experience.is_public = not work_experience.is_public
+        work_experience.save()
+
+    def get_redirect_url(self, *args, **kwargs):
+        redirect_to = self.request.GET.get('next')
+        if redirect_to:
+            redirect_to = reverse('work-experience-list')
+
+        work_experience_id = kwargs.get('pk')
+        self.change_public_status(work_experience_id)
+        return redirect_to
+
+
+public_work_experience = WorkExperiencePublicView.as_view()
+
+
 class WorkExperienceDeleteView(WorkExperienceBaseMixin, DeleteView):
     model = WorkExperience
     template_name = 'confirm_delete.html'
@@ -281,10 +305,14 @@ class WorkExperienceTranslationListView(WorkExperienceBaseMixin, ListView):
             # in the template
             unfilled_languages = work_experience.get_unfilled_languages()
 
+            work_experience_form = WorkExperienceForm(initial={
+                'is_public': work_experience.is_public})
+
             context.update({
                 'are_all_languages_created': len(unfilled_languages) == 0,
                 'title': _('Work experience translations'),
                 'work_experience': work_experience,
+                'work_experience_form': work_experience_form,
             })
 
         except WorkExperience.DoesNotExist:

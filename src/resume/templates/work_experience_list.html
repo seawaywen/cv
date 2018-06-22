@@ -12,11 +12,20 @@
     font-size: 20px;
     font-weight: bold;
   }
-  .card-header .work-experience-operation{
+  .card-header .work-experience-operation {
     margin-top: 4px;
     float: right;
   }
 
+  .card-header .work-experience-public{
+    margin-top: 4px;
+    margin-right: 8px;
+    float: right;
+  }
+
+  .card-header .un-public{
+    color: red;
+  }
   .card-header .work-experience-language{
     margin-top: 4px;
     float: right;
@@ -30,6 +39,13 @@
     font-weight: normal;
   }
 
+  .public-preview {
+    font-size:16px;
+    font-weight: normal;
+    color: grey;
+    float: right;
+  }
+
   </style>
 {% endblock %}
 
@@ -39,15 +55,15 @@
 {% block sub_content %}
 
   <div class="col_full nomargin">
-    <h3 class="topmargin-sm font-song">
+    <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
-      {% if not is_public %}
+      {% if not is_in_public_mode %}
         <a class="button capitalize float-right leftmargin-lg1" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
         <br>
       {% endif %}
     </h3>
-    {% if not is_public %}
-    <a class="float-right" style="font-size:16px; font-weight: normal; color: grey;" href="{% url 'work-experience-public-list' user.username %}">{% trans 'preview in public mode' %}</a>
+    {% if not is_in_public_mode %}
+    <a class="public-preview" target="_blank" href="{% url 'work-experience-public-list' user.username %}">{% trans 'preview in public mode' %}</a>
     {% endif %}
     <!--button id='show-all' class="button button-small button-blue capitalize float-right leftmargin-lg">{%trans 'show all' %}</button-->
   </div>
@@ -65,12 +81,21 @@
     <div class="card-header">
       <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
 
-      {% if not is_public %}
+      {% if not is_in_public_mode %}
       <span class="work-experience-operation">
         <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
         <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
       </span>
+
+      <span class="work-experience-public">
+      {% if work_experience.is_public == False %}
+        <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}">{% trans 'Public' %}</a>
+      {% else %}
+        <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}">{% trans 'Un-Public' %}</a>
       {% endif %}
+      </span>
+      {% endif %}
+
 
       <span class="work-experience-language">
         {% for lang in work_experience.get_filled_language_list %}

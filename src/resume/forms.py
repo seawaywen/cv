@@ -38,7 +38,7 @@ class ProjectForm(forms.ModelForm):
 class WorkExperienceForm(forms.ModelForm):
     class Meta:
         model = WorkExperience
-        fields = ['user', 'date_start', 'date_end']
+        fields = ['user', 'is_public', 'date_start', 'date_end']
         labels = {
             'date_start': '',
             'date_end': '',
