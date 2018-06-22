@@ -39,7 +39,7 @@
 {% block sub_content %}
 
   <div class="col_full nomargin">
-    <h3 class="topmargin-sm">
+    <h3 class="topmargin-sm font-song">
       {% blocktrans %}Work experience list{% endblocktrans %}
       {% if not is_public %}
         <a class="button capitalize float-right leftmargin-lg1" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
@@ -63,7 +63,7 @@
   <a id="card-{{ work_experience.id }}"></a>
   <div class="col_full card bottommargin-sm">
     <div class="card-header">
-      <span class="work-experience-title">{% trans work_experience.company|default:'&nbsp;' %}</span>
+      <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
 
       {% if not is_public %}
       <span class="work-experience-operation">

@@ -101,7 +101,8 @@ compilemessages:
         cd "$(SRC_DIR)/$$app"; \
         $(DJANGO_MANAGE) compilemessages --verbosity 3; \
 		cd -; \
-    done
+		done
+
 
 lint:
 	@$(FLAKE8) --exclude='migrations' --filename='*.py' src/

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 12:10+0000\n"
+"POT-Creation-Date: 2018-06-22 03:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,6 +162,10 @@ msgstr ""
 msgid "show all"
 msgstr ""
 
+#: templates/work_experience_list.html:66
+msgid "N/A"
+msgstr ""
+
 #: templates/work_experience_list.html:70
 #: templates/work_experience_translation-list.html:58
 msgid "Edit"
@@ -175,6 +179,11 @@ msgstr ""
 #: templates/work_experience_list.html:91
 #: templates/work_experience_translation-list.html:35
 msgid "Now"
+msgstr ""
+
+#: templates/work_experience_translation-list.html:22
+#: templates/work_experience_translation.html:12
+msgid "my experience list"
 msgstr ""
 
 #: templates/work_experience_translation-list.html:38

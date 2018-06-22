@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 12:10+0000\n"
+"POT-Creation-Date: 2018-06-22 03:06+0000\n"
 "PO-Revision-Date: 2018-04-09 11:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -31,34 +31,24 @@ msgid "Location"
 msgstr "位置"
 
 #: forms.py:50 forms.py:74
-#, fuzzy
-#| msgid "Start Date"
 msgid "*Start date"
-msgstr "开始时间"
+msgstr "*开始时间"
 
 #: forms.py:54 forms.py:80 models.py:110
-#, fuzzy
-#| msgid "End Date"
 msgid "End date"
 msgstr "结束时间"
 
 #: forms.py:96
-#, fuzzy
-#| msgid "Company"
 msgid "*Company name"
-msgstr "公司"
+msgstr "*公司"
 
 #: forms.py:99
-#, fuzzy
-#| msgid "Job Position"
 msgid "*Job position"
-msgstr "工作职位"
+msgstr "*工作职位"
 
 #: forms.py:102
-#, fuzzy
-#| msgid "Location"
 msgid "*Location"
-msgstr "位置"
+msgstr "*位置"
 
 #: forms.py:122
 msgid "Your selected language currently is not supported in the system!"
@@ -66,15 +56,13 @@ msgstr ""
 
 #: models.py:63
 msgid "*--- select language ---"
-msgstr "*请选择语言"
+msgstr "*--- 请选择语言 ---"
 
 #: models.py:68 views.py:37
 msgid "Language"
 msgstr "语言"
 
 #: models.py:70
-#, fuzzy
-#| msgid "Job Position"
 msgid "Job position"
 msgstr "工作职位"
 
@@ -83,8 +71,6 @@ msgid "Company"
 msgstr "公司"
 
 #: models.py:75
-#, fuzzy
-#| msgid "Your highlight contribution"
 msgid "Highlighted contribution"
 msgstr "突出贡献"
 
@@ -139,8 +125,6 @@ msgid "A 300x300 image for the project"
 msgstr "一张300x300大小的项目图片"
 
 #: models.py:167
-#, fuzzy
-#| msgid "Is this experience public?"
 msgid "Is this project public?"
 msgstr "是否公开此经验?"
 
@@ -165,10 +149,8 @@ msgid "Create new work experience"
 msgstr "创建新的工作经验"
 
 #: templates/work_experience_list.html:43
-#, fuzzy
-#| msgid "Is this experience public?"
 msgid "Work experience list"
-msgstr "是否公开此经验?"
+msgstr "工作经验"
 
 #: templates/work_experience_list.html:45 views.py:203
 msgid "Create new experience"
@@ -181,6 +163,10 @@ msgstr "公开模式预览"
 #: templates/work_experience_list.html:52
 msgid "show all"
 msgstr ""
+
+#: templates/work_experience_list.html:66
+msgid "N/A"
+msgstr "不可用"
 
 #: templates/work_experience_list.html:70
 #: templates/work_experience_translation-list.html:58
@@ -196,6 +182,11 @@ msgstr "删除"
 #: templates/work_experience_translation-list.html:35
 msgid "Now"
 msgstr "现在"
+
+#: templates/work_experience_translation-list.html:22
+#: templates/work_experience_translation.html:12
+msgid "my experience list"
+msgstr "我的工作经验列表"
 
 #: templates/work_experience_translation-list.html:38
 msgid "Add translation"

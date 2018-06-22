@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-22 03:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:23
+msgid "First Name"
+msgstr ""
+
+#: forms.py:28
+msgid "Last Name"
+msgstr ""
+
+#: forms.py:41
+msgid "Public this profile?"
+msgstr ""
+
+#: models.py:34
+msgid "Male"
+msgstr ""
+
+#: models.py:35
+msgid "Female"
+msgstr ""
+
+#: models.py:36
+msgid "Unknown"
+msgstr ""
+
+#: models.py:38
+msgid "Gender"
+msgstr ""
+
+#: models.py:41
+msgid "Birthday"
+msgstr ""
+
+#: models.py:45
+msgid "A 256x256 image for your profile."
+msgstr ""
+
+#: models.py:52
+msgid "Original photo name"
+msgstr ""
+
+#: models.py:55
+msgid "Phone"
+msgstr ""
+
+#: models.py:56
+msgid "Country/Region"
+msgstr ""
+
+#: models.py:58
+msgid "City"
+msgstr ""
+
+#: models.py:63
+msgid "namespace"
+msgstr ""
+
+#: models.py:64
+msgid ""
+"Required before creating any related operation.\n"
+"Lower-case letters, numbers, dots or hyphens allowed only."
+msgstr ""
+
+#: models.py:69
+msgid "LinkedIn"
+msgstr ""
+
+#: models.py:71
+msgid "Wechat"
+msgstr ""
+
+#: models.py:73
+msgid "Facebook"
+msgstr ""
+
+#: models.py:75
+msgid "Github"
+msgstr ""
+
+#: models.py:77
+msgid "Personal Site"
+msgstr ""
+
+#: models.py:78
+msgid "Description"
+msgstr ""
+
+#: models.py:80
+msgid "Public it?"
+msgstr ""
+
+#: models.py:90
+msgid "{}'s profile"
+msgstr ""
+
+#: templates/profile_edit.html:27
+msgid "Profile"
+msgstr ""

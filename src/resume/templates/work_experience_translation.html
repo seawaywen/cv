@@ -9,7 +9,7 @@
 {% block sub_content %}
 
   <div style="margin-top:6px;">
-    <a href="{% url 'work-experience-list' %}">experience list</a>
+    <a href="{% url 'work-experience-list' %}">{% trans 'my experience list' %}</a>
     {% if form_type != 'NEW_FORM' %}
       <
       <a href="{{ back_url }}">translation list</a>
