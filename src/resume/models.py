@@ -27,6 +27,12 @@ class MultilingualModel(models.Model):
         abstract = True
 
     def __getattr__(self, attr):
+        """the logic is that:
+        1. all the subClass of this model could have mulitple languages
+        2. first try to find the translation by the current settings lang
+        3. if it can be found, try to get the first language
+        4. if it still cannot be found, try to search in the __dict__ with the
+           name key"""
         name = self._name_regex.sub('', attr)
         if name not in self._meta.multilingual:
             return super().__getattribute__(attr)
@@ -37,10 +43,15 @@ class MultilingualModel(models.Model):
                 related_model=self, language=lang)
             return getattr(translation, name)
         except self._meta.translation.DoesNotExist:
-            try:
-                return self.__dict__[name]
-            except KeyError:
-                return ''
+            translation = self._meta.translation.objects.filter(
+                related_model=self).first()
+            if translation:
+                return getattr(translation, name)
+            else:
+                try:
+                    return self.__dict__[name]
+                except KeyError:
+                    return ''
 
 
 class WorkExperienceTranslationManager(models.Manager):

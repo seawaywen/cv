@@ -44,6 +44,23 @@
     font-weight: normal;
     color: grey;
     float: right;
+    position: fixed;
+    top: 140px;
+    right: 30px;
+  }
+
+  .timeline-divider {
+    left: 100px !important;
+    top: 34px !important;
+    width: 38px !important;
+  }
+
+  .entry-timeline {
+    border-radius: 8% !important;
+    border: 1px solid #CCC !important;
+    width:100px !important;
+    height:60px !important;
+    margin-left:-20px !important;
   }
 
   </style>
@@ -53,7 +70,6 @@
 {% block slider %}{% endblock slider %}
 
 {% block sub_content %}
-
 
   <div class="col_full nomargin">
     <h3 class="topmargin-sm">
@@ -70,87 +86,83 @@
   </div>
 
 <div class="col_full postcontent nobottommargin clearfix">
-{% for work_experience in work_experience_list %}
-  {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
-  {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
-
-  <div id="post" class="post-timeline clearfix">
+  <div class="post-timeline clearfix">
     <div class="timeline-border"></div>
+    {% for work_experience in work_experience_list %}
+    {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
+    {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
+    <div style="padding-bottom:32px;">
+      <a name="card-{{ work_experience.id }}"></a>
+    </div>
     <div class="entry clearfix">
-      <div class="entry-timeline">
-        {{ work_experience.date_end|date:'Y'}}
-        <span>
-          {{ work_experience.date_end|date:'M'}}
-        </span>
-        <div class="timeline-divider"></div>
+      <a href="#card-{{ work_experience.id }}">
+        <div class="entry-timeline entry-timeline-duration notopmargin" >
+          {{ work_experience.date_end|date:'Y'}}
+          <span>{{ work_experience.date_end|date:'M'}}</span>
+          <div class="timeline-divider"></div>
+        </div>
+      </a>
+
+      <!--div class="float-right work-experience-language">
+        {% for lang in work_experience.get_filled_language_list %} {{ lang }} {% endfor %}
+      </div-->
+      <div class="col_full card bottommargin-sm">
+        <div class="card-header notoppadding1nobottompadding">
+          <div class="row show-grid1">
+            <div class="col-lg-8">
+              <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
+            </div>
+            <div class="col-lg-4">
+                {% if not is_in_public_mode %}
+                <span class="work-experience-operation">
+                  <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
+                  <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
+                  <input type="checkbox" />
+                </span>
+
+                <span class="work-experience-public">
+                {% if work_experience.is_public == False %}
+                  <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Public' %}</a>
+                {% else %}
+                  <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Un-Public' %}</a>
+                {% endif %}
+                </span>
+                {% endif %}
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card-body">
+          <h4 class="card-title">
+            {% trans work_experience.position %}
+            <span class="work-experience-duration">
+              {{ work_experience.date_start|localize }} -
+              {% if work_experience.date_end %}
+                {{ work_experience.date_end|localize }}
+              {% else %}
+                {% trans 'Now' %}
+              {% endif %}
+            </span>
+          </h4>
+          <p class="card-text">
+            {% autoescape off %}
+              {% trans work_experience.contribution %}
+            {% endautoescape %}
+          </p>
+        </div>
       </div>
     </div>
-
-  <a id="card-{{ work_experience.id }}"></a>
-  <div class="col_full card bottommargin-sm">
-
-
-
-    <div class="card-header">
-      <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
-
-      <span style="float: right; margin-top:6px; margin-left: 4px;">
-        <input type="checkbox" />
-      </span>
-
-      {% if not is_in_public_mode %}
-      <span class="work-experience-operation">
-        <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
-        <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
-      </span>
-
-      <span class="work-experience-public">
-      {% if work_experience.is_public == False %}
-        <a href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Public' %}</a>
-      {% else %}
-        <a class="un-public" href="{% url 'change-work-experience-public-status' work_experience.id %}?next={{request.path}}#card-{{ work_experience.id }}">{% trans 'Un-Public' %}</a>
-      {% endif %}
-      </span>
-      {% endif %}
-
-
-      <span class="work-experience-language">
-        {% for lang in work_experience.get_filled_language_list %}
-          {{ lang }}
-        {% endfor %}
-      </span>
-
-    </div>
-
-    <div class="card-body">
-      <h4 class="card-title">
-        {% trans work_experience.position %}
-        <span class="work-experience-duration">
-        {{ work_experience.date_start|localize }} -
-          {% if work_experience.date_end %}
-            {{ work_experience.date_end|localize }}
-          {% else %}
-            {% trans 'Now' %}
-          {% endif %}
-      </span>
-      </h4>
-      <p class="card-text">
-        {% autoescape off %}
-          {% trans work_experience.contribution %}
-        {% endautoescape %}
-      </p>
-    </div>
-  </div>
+    {% endfor %}
 
   </div>
-{% endfor %}
 </div>
 {% endblock sub_content %}
 
 
 {% block page_js %}
   {{ block.super }}
-
   <script>
       $(document).ready(function(){
           /*
