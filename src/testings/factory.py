@@ -164,39 +164,58 @@ class Factory():
 
         return user
 
+    def make_work_experience(self, user=None, is_public=False, date_start=None,
+                             date_end=None):
+        user = self.make_user() if user is None else user
+        date_start = timezone.now() if date_start is None else date_start
+        date_end = timezone.now() if date_end is None else date_end
+        model = WorkExperience.objects.create(
+            user=user.profile, is_public=is_public,
+            date_start=date_start, date_end=date_end)
+        return model
+
     def make_work_experience_translation(
-        self, related_model=None, language=None, position=None, company=None, location=None,
-        date_start=None, date_end=None, contribution=None, keywords=None):
+            self, related_model=None, is_public=False, user=None, language=None, position=None,
+            company=None, location=None, date_start=None, date_end=None,
+            contribution=None, keywords=None):
 
         languages = settings.LANGUAGES
 
+        date_start = timezone.now() if date_start is None else date_start
+        date_end = timezone.now() if date_end is None else date_end
+
+        user = self.make_user() if user is None else user
         if related_model is None:
-            user = self.make_user()
-            related_model = WorkExperience.objects.create(user=user.profile, is_public=True)
+            related_model = self.make_work_experience(
+                user=user, is_public=is_public,
+                date_start=date_start, date_end=date_end)
 
         if language is None or \
                 language not in [x for x, _ in languages]:
             language = languages[0][0]
 
-        position = self.make_unique_string('position-') if position is None else position
-        company = self.make_unique_string('company-') if company is None else company
-        location = self.make_unique_string('location-') if location is None else location
-        date_start = timezone.now() if date_start is None else date_start
-        date_end = timezone.now() if date_end is None else date_end
-        contribution = self.make_unique_string(length=20) if contribution is None else ''
+        position = self.make_unique_string('position-') \
+            if position is None else position
+        company = self.make_unique_string('company-') \
+            if company is None else company
+        location = self.make_unique_string('location-') \
+            if location is None else location
+        contribution = self.make_unique_string(length=20) \
+            if contribution is None else ''
         keywords = self.make_unique_string() if keywords is None else ''
 
         translation = WorkExperienceTranslation.objects.create(
             related_model=related_model, language=language,
             position=position, company=company, location=location,
-            date_start=date_start, date_end=date_end,
             contribution=contribution, keywords=keywords)
         return translation
 
-    def make_multi_work_experience_translations(self, user=None, number=1):
+    def make_multi_work_experience_translations(
+            self, user=None, number=len(settings.LANGUAGES)):
         languages = settings.LANGUAGES
+
         user = self.make_user() if user is None else user
-        work_experience = WorkExperience.objects.create(user=user.profile, is_public=True)
+        work_experience = self.make_work_experience(user=user, is_public=True)
 
         translation_list = []
         if number > len(languages):

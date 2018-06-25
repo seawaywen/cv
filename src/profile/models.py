@@ -5,7 +5,7 @@ import logging
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils.translation import get_language, ugettext_lazy as _
+from django.utils.translation import get_language, gettext_lazy as _
 from django.urls import reverse_lazy
 
 from profile.countries import country_dict, country_list
@@ -144,8 +144,13 @@ class UserProfile(models.Model):
                             kwargs={'username': self.user.username})
 
 
-def post_save_user_handler(sender, instance, created, **kwargs):
+def post_create_profile_handler(sender, instance, created, **kwargs):
     """Ensure the profile table exists."""
     assert sender == User
     if created:
         UserProfile.objects.create(user=instance)
+
+
+def post_update_profile_handler(sender, instance, **kwargs):
+    assert sender == User
+    instance.profile.save()

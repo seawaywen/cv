@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import get_language, ugettext_lazy as _
+from django.utils.translation import get_language, gettext_lazy as _
 
 from tinymce.models import HTMLField
 
@@ -95,8 +95,8 @@ class WorkExperienceTranslation(models.Model):
         unique_together = (('related_model', 'language'),)
 
     def __unicode__(self):
-        return '[{0}]{1}@{2}-{3}'.format(
-            self.language, self.position, self.company, self.location)
+        return '[4]:[{0}]{1}@{2}-{3}'.format(
+            self.language, self.position, self.company, self.location, self.id)
 
     def __str__(self):
         return self.__unicode__()
@@ -135,8 +135,7 @@ class WorkExperience(MultilingualModel):
         return list(self.get_filled_languages())
 
     def get_unfilled_languages(self):
-        _languages = set(
-            self.get_filled_languages())
+        _languages = set(self.get_filled_languages())
         available_languages = set([x for x, _ in settings.LANGUAGES])
         unfilled_languages = list(available_languages - _languages)
         return unfilled_languages

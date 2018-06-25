@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render  #noqa
 from django.http import HttpResponseRedirect  # noqa
 from django.urls import reverse, reverse_lazy
-from django.utils.translation import ugettext_lazy as _  # noqa
+from django.utils.translation import gettext_lazy as _  # noqa
 from django.utils import translation
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.base import View, RedirectView
