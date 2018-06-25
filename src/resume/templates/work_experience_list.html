@@ -26,13 +26,13 @@
   .card-header .un-public{
     color: red;
   }
-  .card-header .work-experience-language{
-    margin-top: 4px;
+  .card-header .work-experience-checkbox{
+    margin-top: 6px;
     float: right;
-    margin-right: 10px;
+    margin-left: 8px;
   }
 
-  .card-body .work-experience-duration{
+  .card-body .work-experience-duration {
     margin-left: 10px;
     color: grey;
     font-size: 16px;
@@ -56,10 +56,10 @@
   }
 
   .entry-timeline {
-    border-radius: 8% !important;
+    border-radius: 6% !important;
     border: 1px solid #CCC !important;
-    width:100px !important;
-    height:60px !important;
+    width: 100px !important;
+    height: 60px !important;
     margin-left:-20px !important;
   }
 
@@ -75,6 +75,10 @@
     <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
       {% if not is_in_public_mode %}
+        <form method="get" class="nomargin nopadding" id="batch-delete-form" action="{% url 'work-experience-batch-delete' %}">
+          <input type="hidden" id="batch_delete_ids" name="batch_delete_ids" >
+          <button class="button capitalize float-right button-red hidden" id="batch-delete-form-button">{% trans 'Batch delete' %}</button>
+        </form>
         <a class="button capitalize float-right leftmargin-lg1" href="{% url 'work-experience-add' %}">{% trans 'Create new experience' %}</a>
         <br>
       {% endif %}
@@ -91,9 +95,7 @@
     {% for work_experience in work_experience_list %}
     {% url 'work-experience-delete' work_experience.id as delete_work_experience_url %}
     {% url 'work-experience-translation-list' work_experience.id as list_work_experience_url %}
-    <div style="padding-bottom:32px;">
-      <a name="card-{{ work_experience.id }}"></a>
-    </div>
+    <div style="padding-bottom:28px;"><a name="card-{{ work_experience.id }}">&nbsp;</a></div>
     <div class="entry clearfix">
       <a href="#card-{{ work_experience.id }}">
         <div class="entry-timeline entry-timeline-duration notopmargin" >
@@ -103,21 +105,27 @@
         </div>
       </a>
 
-      <!--div class="float-right work-experience-language">
+      {% comment %}
+      <div class="float-right work-experience-language">
         {% for lang in work_experience.get_filled_language_list %} {{ lang }} {% endfor %}
-      </div-->
+      </div>
+      {% endcomment %}
       <div class="col_full card bottommargin-sm">
         <div class="card-header notoppadding1nobottompadding">
-          <div class="row show-grid1">
+          <div class="row show-grid">
             <div class="col-lg-8">
               <span class="work-experience-title">{% trans work_experience.company|default:_('N/A') %}</span>
             </div>
             <div class="col-lg-4">
                 {% if not is_in_public_mode %}
+                <span class="work-experience-checkbox">
+                  <input type="checkbox" name="work-experience-delete-checkbox" value="{{ work_experience.id }}" id="wx_check_{{ work_experience.id }}">
+                  <label for="wx_check_{{ work_experience.id }}"></label>
+                </span>
+
                 <span class="work-experience-operation">
                   <a href="{{ list_work_experience_url }}">{% trans 'Edit' %}</a> |
                   <a href="{{ delete_work_experience_url }}">{% trans 'Delete' %}</a>
-                  <input type="checkbox" />
                 </span>
 
                 <span class="work-experience-public">
@@ -128,7 +136,6 @@
                 {% endif %}
                 </span>
                 {% endif %}
-
             </div>
           </div>
 
@@ -174,6 +181,39 @@
               },
           })
           */
+          var batch_delete_checkbox_list = $('input[name="work-experience-delete-checkbox"]');
+          var checked_val_list = [];
+
+          var checkbox_check = function () {
+              // check all the checkbox value
+              $('input[name="work-experience-delete-checkbox"]:checked').each(function(i){
+                  checked_val_list[i] = $(this).val();
+              });
+              if (checked_val_list.length > 0) {
+                  $('#batch-delete-form-button').removeClass('hidden');
+              }
+              else {
+                  $('#batch-delete-form-button').addClass('hidden');
+              }
+              return checked_val_list;
+          };
+
+          checkbox_check();
+
+          batch_delete_checkbox_list.each(function(index, delete_checkbox){
+             $(delete_checkbox).bind({
+                 click: function () {
+                     checked_val_list = [];
+                     checkbox_check();
+                 }
+             })
+          });
+
+          $('#batch-delete-form-button').click(function (e) {
+              $('#batch_delete_ids').attr('value', checked_val_list);
+              $('#batch-delete-form').submit();
+          })
+
       });
   </script>
 {% endblock page_js %}

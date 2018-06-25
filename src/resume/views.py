@@ -281,6 +281,63 @@ class WorkExperienceDeleteView(WorkExperienceBaseMixin, DeleteView):
 delete_work_experience = WorkExperienceDeleteView.as_view()
 
 
+class WorkExperienceBatchDeleteView(WorkExperienceBaseMixin, View):
+    #model = WorkExperience
+    #form_class
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('work-experience-list')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        warning_msg = _('The work experience with following translations '
+                        'will be deleted. Are you sure?')
+
+        context_data.update({
+            #'delete_object_list': to_be_deleted_translations,
+            'warning_msg': warning_msg,
+            'back_url': self.success_url
+        })
+        return context_data
+
+    @staticmethod
+    def get_to_be_deleted_list(request):
+        id_list = []
+        delete_ids = request.GET.get('batch_delete_ids')
+        if delete_ids is not None:
+            id_list = delete_ids.split(',')
+        delete_object_list = WorkExperience.objects.filter(
+            user=request.user.profile, id__in=id_list)
+        return delete_object_list
+
+    def get(self, request, **kwargs):
+        context = {
+            'back_url': self.success_url
+        }
+        delete_object_list = self.get_to_be_deleted_list(request)
+        #todo: check if any object not belong to the current user
+        # step1: get user's all realted objects id
+        # step2: get the Set compare
+        # step3: find out the ones not belong to user
+        # step4: display that corresponding info to user
+        if delete_object_list.exists():
+            context.update({
+                'delete_object_list': delete_object_list,
+            })
+        else:
+            context.update({
+                'warning_msg': 'The items are not permit to delete!',
+            })
+        return render(request, self.template_name, context)
+
+    def post(self, request, **kwargs):
+        delete_object_list = self.get_to_be_deleted_list(request)
+        delete_object_list.delete()
+        return HttpResponseRedirect(self.success_url)
+
+
+batch_delete_work_experience = WorkExperienceBatchDeleteView.as_view()
+
+
 class WorkExperienceTranslationListView(WorkExperienceBaseMixin, ListView):
     template_name = 'work_experience_translation-list.html'
     context_object_name = 'work_experience_trans_list'
