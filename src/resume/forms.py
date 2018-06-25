@@ -5,6 +5,7 @@ import logging
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -118,7 +119,7 @@ class WorkExperienceTranslationForm(forms.ModelForm):
 
     def clean(self):
         super().clean()
-        language = self.cleaned_data['language']
+        language = self.cleaned_data.get('language')
         error_msg = _('Your selected language currently is not supported in '
                       'the system!')
         if language not in [x for x, _ in settings.LANGUAGES]:
