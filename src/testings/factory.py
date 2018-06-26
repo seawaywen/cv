@@ -126,7 +126,7 @@ class Factory():
         if gender is None:
             gender = 'U'
         if birthday is None:
-            birthday = timezone.now()
+            birthday = timezone.now().date()
         if namespace is None:
             namespace = self.make_unique_string(prefix='namespace-')
         if permissions is None:
@@ -172,8 +172,8 @@ class Factory():
     def make_work_experience(self, user=None, is_public=False, date_start=None,
                              date_end=None):
         user = self.make_user() if user is None else user
-        date_start = timezone.now() if date_start is None else date_start
-        date_end = timezone.now() if date_end is None else date_end
+        date_start = timezone.now().date() if date_start is None else date_start
+        date_end = timezone.now().date() if date_end is None else date_end
         model = WorkExperience.objects.create(
             user=user.profile, is_public=is_public,
             date_start=date_start, date_end=date_end)
@@ -186,8 +186,8 @@ class Factory():
 
         languages = settings.LANGUAGES
 
-        date_start = timezone.now() if date_start is None else date_start
-        date_end = timezone.now() if date_end is None else date_end
+        date_start = timezone.now().date() if date_start is None else date_start
+        date_end = timezone.now().date() if date_end is None else date_end
 
         if related_model is None:
             user = self.make_user() if user is None else user

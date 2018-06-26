@@ -24,8 +24,8 @@ class WorkExperienceTestCase(TestCase):
         pass
 
     def test_translation_when_start_date_late_than_end_date(self):
-        start_date = timezone.now()
-        end_date = timezone.now() - timedelta(days=10)
+        start_date = timezone.now().date()
+        end_date = timezone.now().date() - timedelta(days=10)
 
         with self.assertRaises(django.core.exceptions.ValidationError) as context:
             self.factory.make_work_experience_translation(
@@ -62,7 +62,7 @@ class WorkExperienceTestCase(TestCase):
             work_experience.get_unfilled_language_choices(), [('fr', 'French')])
 
     def test_multilingual_field_when_no_any_translation_exist(self):
-        start_date = timezone.now()
+        start_date = timezone.now().date()
         is_public = True
         work_experience = self.factory.make_work_experience(
             self.user, is_public=is_public, date_start=start_date)
@@ -193,8 +193,8 @@ class WorkExperienceTranslationTestCase(TestCase):
         self.assertTrue(_translation.get_absolute_url(), expected_url)
 
     def test_object_unicode_and_str(self):
-        date_start = timezone.now()
-        date_end = timezone.now()
+        date_start = timezone.now().date()
+        date_end = timezone.now().date()
         is_public = True
         work_experience = self.factory.make_work_experience(
             user=self.user, date_start=date_start, date_end=date_end,

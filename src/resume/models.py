@@ -159,9 +159,17 @@ class WorkExperience(MultilingualModel):
         super().save(*args, **kwargs)
 
     def __unicode__(self):
+        date_start = self.date_start
+        if self.date_start is not None:
+            date_start = self.date_start.strftime('%Y-%m-%d')
+
+        date_end = self.date_end
+        if date_end is not None:
+            date_end = self.date_end.strftime('%Y-%m-%d')
+
         obj_str = 'pk:{}-[from:{} to:{}](is_public:{})'.format(
-            self.id, self.date_start.strftime('%Y-%m-%d'),
-            self.date_end.strftime('%Y-%m-%d'), self.is_public)
+            self.id, date_start, date_end, self.is_public)
+
         qs = self._meta.translation.objects.filter(related_model=self)
         if qs.exists():
             translations = [str(obj) for obj in qs.all()]

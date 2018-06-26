@@ -114,6 +114,7 @@ class WorkExperienceBaseMixin(LoginRequiredMixin):
 class WorkExperiencesListView(WorkExperienceBaseMixin, ListView):
     template_name = 'work_experience_list.html'
     context_object_name = 'work_experience_list'
+    paginate_by = 10
 
     def get_queryset(self):
         work_experience_list = WorkExperience.objects.filter(
@@ -142,8 +143,7 @@ class PublicViewMixin(object):
             user = get_object_or_404(User, username=username)
             if hasattr(user, 'profile'):
                 return user
-        else:
-            return None
+        return None
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -161,6 +161,7 @@ class PublicViewMixin(object):
 class WorkExperiencesPublicListView(PublicViewMixin, ListView):
     template_name = 'work_experience_list.html'
     context_object_name = 'work_experience_list'
+    paginate_by = 10
 
     def get_queryset(self):
         if self.user:
@@ -173,7 +174,7 @@ class WorkExperiencesPublicListView(PublicViewMixin, ListView):
 list_public_work_experience = WorkExperiencesPublicListView.as_view()
 
 
-class WorkExperienceTranslationEditView(WorkExperienceBaseMixin):
+class WorkExperienceTranslationEditMixin(WorkExperienceBaseMixin):
     model = WorkExperienceTranslation
     form_class = WorkExperienceTranslationForm
     template_name = 'work_experience_translation.html'
@@ -199,25 +200,16 @@ class WorkExperienceTranslationEditView(WorkExperienceBaseMixin):
         return context
 
 
-class WorkExperiencesCreateView(WorkExperienceTranslationEditView, CreateView):
+class WorkExperiencesCreateView(WorkExperienceTranslationEditMixin, CreateView):
     title = _('Create new experience')
     form_type = 'NEW_FORM'
 
-    def get_related_work_experience_model(self, **params):
-        related_model = self.kwargs.get('related_model')
-        work_experience = None
-        if related_model:
-            work_experience = WorkExperience.objects.get(id=int(related_model))
-        if not related_model:
-            work_experience = WorkExperience.objects.create(
-                user=self.request.user.profile, **params)
-        return work_experience
-
     def form_valid(self, form):
-        related_model = self.get_related_work_experience_model(**{
-            'date_start': form.cleaned_data['date_start'],
-            'date_end': form.cleaned_data['date_end']
-        })
+        related_model = WorkExperience.objects.create(
+            user=self.request.user.profile,
+            date_start=form.cleaned_data['date_start'],
+            date_end=form.cleaned_data['date_end'])
+
         form.instance.related_model = related_model
         form.save()
 
@@ -282,8 +274,6 @@ delete_work_experience = WorkExperienceDeleteView.as_view()
 
 
 class WorkExperienceBatchDeleteView(WorkExperienceBaseMixin, View):
-    #model = WorkExperience
-    #form_class
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('work-experience-list')
 
@@ -382,8 +372,8 @@ class WorkExperienceTranslationListView(WorkExperienceBaseMixin, ListView):
 list_work_experience_translation = WorkExperienceTranslationListView.as_view()
 
 
-class WorkExperienceTranslationView(WorkExperienceTranslationEditView,
-                                    CreateView):
+class WorkExperienceTranslationCreateView(WorkExperienceTranslationEditMixin,
+                                          CreateView):
     work_experience = None
     title = _('Create new work experience translation')
 
@@ -396,8 +386,12 @@ class WorkExperienceTranslationView(WorkExperienceTranslationEditView,
 
     def get(self, request, *args, **kwargs):
         work_experience_id = self.kwargs.get('work_experience_id')
-        if self.work_experience is None:
-            self.work_experience = self._get_work_experience(work_experience_id)
+        if work_experience_id:
+            _work_experience = self._get_work_experience(work_experience_id)
+            if _work_experience is not None:
+                self.work_experience = _work_experience
+            else:
+                return HttpResponseRedirect(reverse('work-experience-add'))
 
         return super().get(request, *args, **kwargs)
 
@@ -423,7 +417,8 @@ class WorkExperienceTranslationView(WorkExperienceTranslationEditView,
         return kwargs
 
     def form_valid(self, form):
-        form.instance.related_model = self.work_experience
+        if self.work_experience:
+            form.instance.related_model = self.work_experience
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -433,10 +428,10 @@ class WorkExperienceTranslationView(WorkExperienceTranslationEditView,
         })
 
 
-add_work_experience_translation = WorkExperienceTranslationView.as_view()
+add_work_experience_translation = WorkExperienceTranslationCreateView.as_view()
 
 
-class WorkExperienceTranslationUpdateView(WorkExperienceTranslationEditView,
+class WorkExperienceTranslationUpdateView(WorkExperienceTranslationEditMixin,
                                           UpdateView):
     title = _('Update work experience translation')
 
