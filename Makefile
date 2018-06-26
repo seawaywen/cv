@@ -3,6 +3,7 @@ ENV = $(CURDIR)/env
 LOCAL_SETTINGS_DIR ?= ../local_config
 LOCAL_SETTINGS_PATH = $(LOCAL_SETTINGS_DIR)/settings.py
 FLAKE8 = $(ENV)/bin/flake8
+COVERAGE = $(ENV)/bin/coverage
 GUNICORN = $(ENV)/bin/talisker
 PYTHON = $(ENV)/bin/python
 PIP = $(PYTHON) $(ENV)/bin/pip
@@ -94,7 +95,6 @@ makemessages:
 		cd -; \
 	done
 
-
 compilemessages:
 	@echo "Compiling translations for django apps."
 	@for app in `ls $(SRC_DIR) | egrep -v '(test|tools)'`; do \
@@ -106,6 +106,20 @@ compilemessages:
 
 lint:
 	@$(FLAKE8) --exclude='migrations' --filename='*.py' src/
+
+
+clean-coverage:
+		@rm -f .coverage
+
+coverage: clean-coverage
+		@$(COVERAGE) run --branch --source=$(shell echo $(ARGS) | sed -e 's/ /,/g') django_project/manage.py test $(ARGS)
+		$(MAKE) coverage-report
+
+coverage-report:
+		@$(COVERAGE) report -m --omit '**/migrations/*'
+
+coverage-report-html:
+		@$(COVERAGE) html --omit '**/migrations/*'
 
 
 test: collectstatic.deps.mk  ## Run unit tests
