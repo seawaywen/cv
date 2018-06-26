@@ -31,7 +31,8 @@ class WorkExperienceTestCase(TestCase):
             self.factory.make_work_experience_translation(
                 date_start=start_date, date_end=end_date)
 
-        expected_error = "{'date_end': ['End date should not be earlier than start date!']}"
+        expected_error = ("{'date_end': ['End date should not be earlier than "
+                          "start date!']}")
         self.assertTrue(expected_error in str(context.exception))
 
     @override_settings(LANGUAGE_CODE='en-US', LANGUAGES=(
@@ -48,16 +49,47 @@ class WorkExperienceTestCase(TestCase):
             self.factory.make_work_experience_translation(
                 related_model=work_experience, language=lang,
                 position='position')
-        self.assertSetEqual(work_experience.get_filled_languages(), expected_langs)
+
+        self.assertSetEqual(
+            work_experience.get_filled_languages(), expected_langs)
+
+        self.assertListEqual(
+            work_experience.get_filled_language_list(), list(expected_langs))
+
         self.assertListEqual(work_experience.get_unfilled_languages(), ['fr'])
 
+        self.assertListEqual(
+            work_experience.get_unfilled_language_choices(), [('fr', 'French')])
+
+    def test_multilingual_field_when_no_any_translation_exist(self):
+        start_date = timezone.now()
+        is_public = True
+        work_experience = self.factory.make_work_experience(
+            self.user, is_public=is_public, date_start=start_date)
+
+        # all the fields in experience model should return its value
+        self.assertEqual(work_experience.date_start, start_date)
+        self.assertEqual(work_experience.is_public, is_public)
+
+        # if no translations exist, all the multilingual field should return ''
+        self.assertEqual(work_experience.company, '')
+        self.assertEqual(work_experience.location, '')
+        self.assertEqual(work_experience.position, '')
+
+        with self.assertRaises(AttributeError) as context:
+            a = work_experience.language
+
+        expected_error = "'WorkExperience' object has no attribute 'language'"
+        self.assertTrue(expected_error in str(context.exception))
 
 
 class WorkExperienceTranslationTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        print('Setup Test Data: Run once to setup un-modified data for all testcases')
+        # print('Setup Test Data: Run once to setup un-modified data for '
+        #      'all testcases')
+        pass
 
     def setUp(self):
         self.factory = Factory()
@@ -136,3 +168,76 @@ class WorkExperienceTranslationTestCase(TestCase):
         self.assertEqual(work_experience.position, position_en)
 
         translation.deactivate_all()
+
+    def test_if_language_exists(self):
+        work_experience = self.factory.make_work_experience(self.user)
+
+        language_list = ['zh-hans', 'en']
+        for language in language_list:
+            self.factory.make_work_experience_translation(
+                related_model=work_experience, language=language)
+
+        self.assertTrue(
+            WorkExperienceTranslation.objects.is_language_exist(
+                work_experience.id, 'en'))
+        self.assertFalse(
+            WorkExperienceTranslation.objects.is_language_exist(
+                work_experience.id, 'NOT-EXISTS'))
+
+    def test_absolute_url(self):
+        work_experience = self.factory.make_work_experience(self.user)
+        _translation = self.factory.make_work_experience_translation(
+            related_model=work_experience, language='en')
+        expected_url = 'work-experience/%s/translation/add/' % \
+                       work_experience.id
+        self.assertTrue(_translation.get_absolute_url(), expected_url)
+
+    def test_object_unicode_and_str(self):
+        date_start = timezone.now()
+        date_end = timezone.now()
+        is_public = True
+        work_experience = self.factory.make_work_experience(
+            user=self.user, date_start=date_start, date_end=date_end,
+            is_public=is_public)
+
+        # test work_experience without translation attached
+        expected_work_expected_obj_str = 'pk:{}-[from:{} to:{}](is_public:{})'.\
+            format(work_experience.id, date_start.strftime('%Y-%m-%d'),
+                   date_end.strftime('%Y-%m-%d'), is_public)
+        self.assertEqual(str(work_experience), expected_work_expected_obj_str)
+
+        position = 'software engineer'
+        company = 'memodir'
+        location = 'beijing'
+
+        _translation_en = self.factory.make_work_experience_translation(
+            related_model=work_experience, language='en',
+            position=position, company=company, location=location)
+
+        # add Chinese translation
+        position = '软件工程师'
+        company = '萌迪科技软件'
+        location = '北京'
+
+        _translation_han = self.factory.make_work_experience_translation(
+            related_model=work_experience, language='zh-hans',
+            position=position, company=company, location=location)
+
+        expected_trans_obj_list = []
+        for tran in [_translation_en, _translation_han]:
+            expected_trans_obj_str = (
+                '[work-experience:{0}]-[pk:{1}]:[lang:{2}]'
+                '[user:{3}]@[company:{4}]-[position:{5}]-[location:{6}]').\
+                format(work_experience.id, tran.id, tran.language,
+                       work_experience.user, tran.company, tran.position,
+                       tran.location)
+            self.assertEqual(str(tran), expected_trans_obj_str)
+
+            expected_trans_obj_list.append(expected_trans_obj_str)
+
+        # now test work_experience WITH multiple translations attached
+        expected_work_expected_obj_str = 'pk:{}-[from:{} to:{}](is_public:{})==>({})'. \
+            format(work_experience.id, date_start.strftime('%Y-%m-%d'),
+                   date_end.strftime('%Y-%m-%d'), is_public, expected_trans_obj_list)
+
+        self.assertEqual(str(work_experience), expected_work_expected_obj_str)

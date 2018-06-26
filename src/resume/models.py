@@ -95,8 +95,11 @@ class WorkExperienceTranslation(models.Model):
         unique_together = (('related_model', 'language'),)
 
     def __unicode__(self):
-        return '[4]:[{0}]{1}@{2}-{3}'.format(
-            self.language, self.position, self.company, self.location, self.id)
+        return ('[work-experience:{0}]-[pk:{1}]:[lang:{2}]'
+                '[user:{3}]@[company:{4}]-[position:{5}]-[location:{6}]').\
+            format(self.related_model.id, self.id, self.language,
+                   self.related_model.user, self.company, self.position,
+                   self.location)
 
     def __str__(self):
         return self.__unicode__()
@@ -146,7 +149,7 @@ class WorkExperience(MultilingualModel):
                 if x in unfilled_languages]
 
     def clean(self):
-        if self.date_end and self.date_end and self.date_end <= self.date_start:
+        if self.date_end and self.date_end and self.date_end < self.date_start:
             raise ValidationError({
                 'date_end': _(
                     'End date should not be earlier than start date!')})
@@ -156,7 +159,15 @@ class WorkExperience(MultilingualModel):
         super().save(*args, **kwargs)
 
     def __unicode__(self):
-        return '%s@%s in %s' % (self.position, self.company, self.location)
+        obj_str = 'pk:{}-[from:{} to:{}](is_public:{})'.format(
+            self.id, self.date_start.strftime('%Y-%m-%d'),
+            self.date_end.strftime('%Y-%m-%d'), self.is_public)
+        qs = self._meta.translation.objects.filter(related_model=self)
+        if qs.exists():
+            translations = [str(obj) for obj in qs.all()]
+            return '{}==>({})'.format(obj_str, translations)
+        else:
+            return obj_str
 
     def __str__(self):
         return self.__unicode__()
