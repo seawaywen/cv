@@ -115,6 +115,7 @@ class Factory():
                   gender=None, birthday=None, phone_number='', country='',
                   city='', namespace=None, is_public=True, photo=None,
                   photo_upload_name=None):
+
         if username is None:
             username = self.make_unique_string(prefix='user-')
         if email is None:
@@ -132,6 +133,11 @@ class Factory():
             permissions = []
         if groups is None:
             groups = []
+
+        users = get_user_model().objects.filter(
+            username=username, email=email, password=password)
+        if users.exists():
+            return users.first()
 
         user = get_user_model().objects.create_user(
              username=username, email=email, password=password
@@ -161,7 +167,6 @@ class Factory():
 
         assert profile == 1, 'Only one profile should associate to user, Got %s' % profile
         user.profile.refresh_from_db()
-
         return user
 
     def make_work_experience(self, user=None, is_public=False, date_start=None,
@@ -175,17 +180,17 @@ class Factory():
         return model
 
     def make_work_experience_translation(
-            self, related_model=None, is_public=False, user=None, language=None, position=None,
-            company=None, location=None, date_start=None, date_end=None,
-            contribution=None, keywords=None):
+            self, related_model=None, is_public=False, user=None,
+            language=None, position=None, company=None, location=None,
+            date_start=None, date_end=None, contribution=None, keywords=None):
 
         languages = settings.LANGUAGES
 
         date_start = timezone.now() if date_start is None else date_start
         date_end = timezone.now() if date_end is None else date_end
 
-        user = self.make_user() if user is None else user
         if related_model is None:
+            user = self.make_user() if user is None else user
             related_model = self.make_work_experience(
                 user=user, is_public=is_public,
                 date_start=date_start, date_end=date_end)
@@ -211,11 +216,12 @@ class Factory():
         return translation
 
     def make_multi_work_experience_translations(
-            self, user=None, number=len(settings.LANGUAGES)):
+            self, user=None, work_experience=None, number=len(settings.LANGUAGES)):
         languages = settings.LANGUAGES
 
-        user = self.make_user() if user is None else user
-        work_experience = self.make_work_experience(user=user, is_public=True)
+        if work_experience is None:
+            user = self.make_user() if user is None else user
+            work_experience = self.make_work_experience(user=user)
 
         translation_list = []
         if number > len(languages):
