@@ -59,6 +59,7 @@ class WorkExperienceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.helper = FormHelper()
         self.helper.form_id = 'id-new-work-experience-form'
         self.helper.form_class = 'blueForms'
@@ -119,8 +120,10 @@ class WorkExperienceTranslationForm(forms.ModelForm):
 
     def clean(self):
         super().clean()
-        language = self.cleaned_data.get('language')
-        error_msg = _('Your selected language currently is not supported in '
-                      'the system!')
-        if language not in [x for x, _ in settings.LANGUAGES]:
-            self.add_error('language', error_msg)
+        _date_start = self.cleaned_data.get('date_start')
+        _date_end = self.cleaned_data.get('date_end')
+        if _date_end and _date_end and _date_end < _date_start:
+            raise ValidationError({
+                'date_end': _(
+                    'End date should not be earlier than start date!')})
+

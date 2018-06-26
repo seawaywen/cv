@@ -19,7 +19,7 @@ class WorkExperienceTranslationFormTest(TestCase):
         form = WorkExperienceTranslationForm()
         self.assertEqual(form.fields['language'].label, '')
 
-    def test_unsuppoted_language_raise_error(self):
+    def test_unsupported_language_raise_error(self):
         data = {
             'date_start': timezone.now(),
             'position': 'position',
@@ -35,12 +35,25 @@ class WorkExperienceTranslationFormTest(TestCase):
         expected_error = _('Select a valid choice. INVALID is not one of the '
                            'available choices.')
 
-        expected_error1 = _('Your selected language currently is not '
-                            'supported in the system!')
-
         self.assertIn(expected_error, form.errors['language'])
-        self.assertIn(expected_error1, form.errors['language'])
 
+    def test_override_language_field(self):
+        data = {
+            'date_start': timezone.now(),
+            'position': 'position',
+            'company': 'company',
+            'location': 'location',
+        }
 
+        related_model = self.factory.make_work_experience()
+        data['related_model'] = related_model.id
 
+        new_languages = [
+            ('en', _('English')),
+        ]
+        form = WorkExperienceTranslationForm(
+            override_languages=new_languages)
+
+        self.assertListEqual(
+            new_languages, form.fields.get('language').choices)
 
