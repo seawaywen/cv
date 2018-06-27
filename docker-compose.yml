@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  db:
+    container_name: 'cv_db'
+    image: 'postgres'
+    restart: always
+    environment:
+      POSTGRES_DB: memodir
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data/'
+
+
+  #redisdata:
+  #  image: redis:latest
+  #  volumes:
+  #    - /var/lib/redis
+  #  command: true
+
+  #redis:
+  #  image: redis:latest
+  #  volumes_from:
+  #    - redisdata
+  #  ports:
+  #    - "6379"
+
+  web:
+    build: .
+    env_file: '.env'
+    volumes:
+      - .:/code
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

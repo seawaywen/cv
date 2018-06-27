@@ -300,7 +300,6 @@ class WorkExperienceTranslationUpdateViewTestCase(TestCase):
         self.client.login(**self.credentials)
 
         resp = self._update_translation()
-        print(resp.content)
 
         self.assertEqual(302, resp.status_code)
 

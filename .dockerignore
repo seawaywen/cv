@@ -1,0 +1,12 @@
+.git
+Dockerfile
+.DS_Store
+.gitignore
+.tox
+README.md
+env
+htmlcov
+tmp
+
+static_src
+staticfiles

@@ -11,6 +11,7 @@ def get_env_var(var_name):
     except KeyError:
         raise ImproperlyConfigured('Must set env variable:{}'.format(var_name))
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -29,15 +30,16 @@ print('SRC_DIR:{}'.format(SRC_DIR))
 print('HOST_DIR:{}'.format(HOST_DIR))
 print('LOG_DIR:{}'.format(_LOG_DIR))
 """
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+DB_HOST = os.environ.get('DB_SERVICE', 'localhost')
+DB_NAME = os.environ.get('DB_NAME', 'memodir')
+DB_USER = os.environ.get('DB_USER', 'postgres')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', 'postgres')
+DB_PORT = os.environ.get('DB_PORT', '')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_m#d24ll8(hxv#wn(+@t3rxw9$3w172l(r_v)anwk(dj8!55b6'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+_SECRET_KEY = '_m#d24ll8(hxv#wn(+@t3rxw9$3w172l(r_v)anwk(dj8!55b6'
+SECRET_KEY = os.environ.get('SECRET_KEY', _SECRET_KEY)
 
 ALLOWED_HOSTS = []
 
@@ -45,7 +47,6 @@ ALLOWED_HOSTS = []
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -121,18 +122,18 @@ DATABASES = {
         'AUTOCOMMIT': True,
         'ATOMIC_REQUESTS': False,
         'CONN_MAX_AGE': 600,
-        'NAME': 'memodir',
         #'TIME_ZONE': 'UTC',
-        'PORT': '',
-        'HOST': 'localhost',
-        'USER': 'postgres',
+        'HOST': DB_HOST,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'PORT': DB_PORT,
         'TEST': {
             'NAME': None,
             'MIRROR': None,
             'CHARSET': None,
             'COLLATION': None,
         },
-        'PASSWORD': '',
         'OPTIONS': {},
     },
 }
