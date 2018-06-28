@@ -52,3 +52,11 @@ $ yarn run watch
 
 A task is defined to run the build with the running server
 $ yarn dev
+
+
+# Use the docker start service
+$ docker-compose up [--build]
+
+## some useful commands:
+$ docker container exec -it cv_web_1 bash
+$ docker rmi `docker images -q -f dangling=true`
