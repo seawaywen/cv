@@ -10,4 +10,4 @@ install:
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
-  - PYTHONPATH=/code/src:/code/ DJANGO_SETTINGS_MODULE=django_project.settings python manage.py test
+  - PYTHONPATH=src:. DJANGO_SETTINGS_MODULE=django_project.settings python django_project/manage.py test
