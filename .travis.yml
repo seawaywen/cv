@@ -1,0 +1,13 @@
+ language: python
+    python:
+      - "3.5"
+    services:
+      - postgresql
+    env:
+      -DJANGO=2.0.4 DB=postgresql
+    install:
+      - pip install -r requirements.txt -r requirements-devel.txt
+    before_script:
+      - psql -c 'create database travis_ci_test;' -U postgres
+    script:
+      - PYTHONPATH=/code/src:/code/ DJANGO_SETTINGS_MODULE=django_project.settings python manage.py test
