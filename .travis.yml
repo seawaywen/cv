@@ -1,4 +1,7 @@
 language: python
+os: linux
+node_js:
+  - 8.9.1
 python:
   - "3.5"
 services:
@@ -9,5 +12,6 @@ install:
   - pip install -r requirements.txt -r requirements-devel.txt
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - cd static_src && yarn && yarn build
 script:
   - PYTHONPATH=src:. DJANGO_SETTINGS_MODULE=django_project.settings python django_project/manage.py test
