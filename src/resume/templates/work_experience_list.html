@@ -75,7 +75,7 @@
     <h3 class="topmargin-sm">
       {% blocktrans %}Work experience list{% endblocktrans %}
       {% if not is_in_public_mode %}
-        <form method="get" class="nomargin nopadding" id="batch-delete-form" action="{% url 'work-experience-batch-delete' %}">
+        <form method="GET" class="nomargin nopadding" id="batch-delete-form" action="{% url 'work-experience-batch-delete' %}">
           <input type="hidden" id="batch_delete_ids" name="batch_delete_ids" >
           <button class="button capitalize float-right button-red hidden" id="batch-delete-form-button">{% trans 'Batch delete' %}</button>
         </form>

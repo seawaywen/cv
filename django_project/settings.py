@@ -6,4 +6,4 @@ from django_project.settings_devel import *
 
 TEMPLATE_DEBUG = True
 
-EMAIL_BACKEND = 'django.core.mail.backend.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

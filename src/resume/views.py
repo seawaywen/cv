@@ -21,7 +21,7 @@ from resume.models import (
 from resume.forms import (
     ProjectForm,
     WorkExperienceForm,
-    WorkExperienceTranslationForm
+    WorkExperienceTranslationForm,
 )
 
 
@@ -228,7 +228,7 @@ class WorkExperiencesCreateView(WorkExperienceTranslationEditMixin, CreateView):
 add_work_experience = WorkExperiencesCreateView.as_view()
 
 
-class WorkExperiencePublicView(RedirectView):
+class WorkExperiencePublicView(WorkExperienceBaseMixin, RedirectView):
     """After this view changed the is_public status, it will redirect
     back to the previous page"""
 
@@ -240,7 +240,7 @@ class WorkExperiencePublicView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         redirect_to = self.request.GET.get('next')
-        if redirect_to:
+        if not redirect_to:
             redirect_to = reverse('work-experience-list')
 
         work_experience_id = kwargs.get('pk')
@@ -276,6 +276,7 @@ delete_work_experience = WorkExperienceDeleteView.as_view()
 class WorkExperienceBatchDeleteView(WorkExperienceBaseMixin, View):
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('work-experience-list')
+    form_class = 'WorkExperienceBatchDeleteForm'
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -283,44 +284,59 @@ class WorkExperienceBatchDeleteView(WorkExperienceBaseMixin, View):
                         'will be deleted. Are you sure?')
 
         context_data.update({
-            #'delete_object_list': to_be_deleted_translations,
             'warning_msg': warning_msg,
             'back_url': self.success_url
         })
         return context_data
 
     @staticmethod
-    def get_to_be_deleted_list(request):
-        id_list = []
-        delete_ids = request.GET.get('batch_delete_ids')
+    def get_to_be_deleted_list(request, method='GET'):
+        delete_ids = getattr(request, method).get('batch_delete_ids')
         if delete_ids is not None:
             id_list = delete_ids.split(',')
-        delete_object_list = WorkExperience.objects.filter(
-            user=request.user.profile, id__in=id_list)
-        return delete_object_list
+
+            all_user_wp_qs = WorkExperience.objects.filter(
+                user=request.user.profile)
+            delete_object_list = all_user_wp_qs.filter(id__in=id_list)
+
+            # Following logic is to check if any object not belong to
+            # the current user:
+            # step1: get user's all related objects id
+            all_user_wp_list = [str(i) for i in list(
+                all_user_wp_qs.values_list('id', flat=True))]
+
+            delete_id_list = [str(i) for i in list(
+                delete_object_list.values_list('id', flat=True))]
+            delete_ids = ','.join(delete_id_list)
+
+            # find out the ones not belong to user
+            forbid_delete_list = list(set(id_list) - set(all_user_wp_list))
+
+            return delete_object_list, delete_ids, forbid_delete_list
+        return WorkExperience.objects.none(), '', []
 
     def get(self, request, **kwargs):
         context = {
             'back_url': self.success_url
         }
-        delete_object_list = self.get_to_be_deleted_list(request)
-        #todo: check if any object not belong to the current user
-        # step1: get user's all realted objects id
-        # step2: get the Set compare
-        # step3: find out the ones not belong to user
-        # step4: display that corresponding info to user
+        delete_object_list, delete_ids, \
+            forbid_delete_list = self.get_to_be_deleted_list(request)
+
         if delete_object_list.exists():
             context.update({
                 'delete_object_list': delete_object_list,
+                'delete_ids': delete_ids,
+                'forbid_delete_list': forbid_delete_list
             })
         else:
             context.update({
                 'warning_msg': 'The items are not permit to delete!',
             })
+
         return render(request, self.template_name, context)
 
     def post(self, request, **kwargs):
-        delete_object_list = self.get_to_be_deleted_list(request)
+        delete_object_list, _, _ = self.get_to_be_deleted_list(request, 'POST')
         delete_object_list.delete()
         return HttpResponseRedirect(self.success_url)
 

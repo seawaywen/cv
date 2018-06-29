@@ -60,3 +60,9 @@ $ docker-compose up [--build]
 ## some useful commands:
 $ docker container exec -it cv_web_1 bash
 $ docker rmi `docker images -q -f dangling=true`
+
+
+# Use the coverage to check the code(testcase) coverage
+$ make coverage ARGS='src'
+$ make coverage-report-html
+Then you can find the generated coverage HTML version report under ROOT/htmlcov/

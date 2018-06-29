@@ -9,4 +9,4 @@ htmlcov
 tmp
 
 static_src
-staticfiles
+#staticfiles

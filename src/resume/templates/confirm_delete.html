@@ -16,6 +16,7 @@
 <h2>{% blocktrans %}Deletion confirmation{% endblocktrans %}</h2>
 
 <form action="" method="post">
+  <input type="hidden" name="batch_delete_ids" value="{{ delete_ids }}">
   <div>
     {% csrf_token %}
     {{ warning_msg }}
@@ -28,6 +29,16 @@
         {% endfor %}
       </ul>
     </div>
+    {% if forbid_delete_list %}
+      <div class="alert-danger">
+      The following work experience ID is not belong to you, so you cannot delete them:
+        <div>
+          {% for id in forbid_delete_list %}
+          <span style="padding-right: 4px;">{{ id }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
   </div>
 
   <div>

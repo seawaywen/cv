@@ -34,10 +34,25 @@ services:
     env_file: '.env'
     volumes:
       - .:/code
+      - /static:/static
     ports:
       - "9000:9000"
     depends_on:
       - db
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./static_src/dist:/static/dist
+      - ./static/dist:/static/dist
+      - .docker/nginx:/etc/nginx/conf.d
+      #- /static:/static
+    depends_on:
+      - web
+
 
 volumes:
   pgdata:

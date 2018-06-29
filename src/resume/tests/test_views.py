@@ -17,10 +17,11 @@ class WorkExperienceMixin(TestCase):
     }
 
     factory = Factory()
+    element_number = 12
 
     def setUp(self):
         self.user = self.factory.make_user(**self.credentials)
-        for i in range(12):
+        for i in range(self.element_number):
             work_experience = self.factory.make_work_experience(user=self.user)
             self.factory.make_multi_work_experience_translations(
                 user=self.user, work_experience=work_experience)
@@ -307,3 +308,194 @@ class WorkExperienceTranslationUpdateViewTestCase(TestCase):
             resp, reverse('work-experience-translation-list',
                           args=(self.work_experience.id,)))
 
+
+class PublicWorkExperienceTestCase(WorkExperienceMixin):
+    def setUp(self):
+        super().setUp()
+        self.public_experience = WorkExperience.objects.filter(
+            user=self.user.profile).first()
+        self.public_experience_id = self.public_experience.id
+
+    def _change_public_status_for_work_experience(self, public_experience_id):
+        _url = reverse(
+            'change-work-experience-public-status',
+            kwargs={'pk': public_experience_id})
+
+        resp = self.client.get(_url)
+        return resp
+
+    def test_public_list_by_switching_public_status_should_redirect_to_signin_without_auth(self):  # noqa
+        resp = self._change_public_status_for_work_experience(
+            self.public_experience_id)
+        expected_url = '/signin?next=/resume/work-experience/{}/public/'.format(
+            self.public_experience_id)
+        self.assertRedirects(resp, expected_url)
+
+    def test_public_list_by_switching_public_status_with_auth(self):
+        self.client.login(**self.credentials)
+
+        # change the is_public to True
+        resp = self._change_public_status_for_work_experience(self.public_experience_id)
+        expected_url = '/resume/work-experience/'
+        self.assertRedirects(resp, expected_url)
+
+        resp = self.client.get(
+            reverse('work-experience-public-list', kwargs={
+                'username': self.user.username
+            }))
+        self.assertEqual(resp.status_code, 200)
+        # we expect one experience object with pk=public_experience.id exists
+        # on public list page
+        self.assertEqual(len(resp.context['object_list']), 1)
+
+        expected_qs = public_experience = WorkExperience.objects.filter(
+            pk=self.public_experience_id)
+        self.assertEqual(list(resp.context['object_list']), list(expected_qs))
+
+        # re-invoke this method to toggle is_public to False
+        self._change_public_status_for_work_experience(self.public_experience_id)
+
+        resp = self.client.get(
+            reverse('work-experience-public-list', kwargs={
+                'username': self.user.username
+            }))
+        self.assertEqual(resp.status_code, 200)
+        # Now we expect nothing display on the public list page
+        self.assertEqual(len(resp.context['object_list']), 0)
+
+
+class WorkExperienceDeleteViewTestCase(WorkExperienceMixin):
+    factory = Factory()
+
+    def setUp(self):
+        self.user = self.factory.make_user(**self.credentials)
+        for i in range(6):
+            work_experience = self.factory.make_work_experience(user=self.user)
+            self.factory.make_multi_work_experience_translations(
+                user=self.user, work_experience=work_experience)
+
+        self.experience = WorkExperience.objects.filter(
+            user=self.user.profile).first()
+        self.experience_id = self.experience.id
+
+    def test_it_should_redirect_to_signin_without_auth(self):  # noqa
+        _url = reverse('work-experience-delete', args=(self.experience_id,))
+        resp = self.client.get(_url)
+        expected_url = '/signin?next=/resume/work-experience/{}/delete/'.format(
+            self.experience_id)
+        self.assertRedirects(resp, expected_url)
+
+    def test_delete_experience_with_auth(self):  # noqa
+        self._login()
+        _url = reverse('work-experience-delete', args=(self.experience_id,))
+        resp = self.client.get(_url)
+        self.assertTemplateUsed(resp, 'confirm_delete.html')
+        self.assertEqual(resp.context['object'], self.experience)
+
+        to_be_deleted_translations = self.experience.translations.all()
+        self.assertEqual(list(resp.context['delete_object_list']),
+                         list(to_be_deleted_translations))
+
+        resp = self.client.post(_url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, reverse('work-experience-list'))
+
+        # we created 6 object with factory method, delete one by DeleteView,
+        # after we redirect to the list page, we should have 5 ones
+        resp = self.client.get(reverse('work-experience-list'))
+        self.assertEqual(len(resp.context['work_experience_list']), 5)
+
+
+class WorkExperienceBatchDeleteViewTestCase(WorkExperienceMixin):
+
+    element_number = 6
+
+    def test_batch_delete_experience_without_auth(self):
+        _url = reverse('work-experience-batch-delete')
+        resp = self.client.get(_url)
+        expected_url = '/signin?next=/resume/work-experience/batch-delete/'
+        self.assertRedirects(resp, expected_url)
+
+    def test_batch_delete_experience_with_auth(self):
+        self._login()
+
+        qs = WorkExperience.objects.filter(user=self.user.profile)[:3]
+        ids = list(qs.values_list('id', flat=True))
+
+        to_be_deleted_ids = {
+            'batch_delete_ids': ','.join([str(i) for i in ids])
+        }
+
+        _url = reverse('work-experience-batch-delete')
+        resp = self.client.get(_url, to_be_deleted_ids)
+
+        self.assertTemplateUsed(resp, 'confirm_delete.html')
+
+        self.assertListEqual(
+            list(resp.context['delete_object_list']), list(qs.all()))
+
+        resp = self.client.post(_url, to_be_deleted_ids)
+        self.assertEqual(resp.status_code, 302)
+        self.assertRedirects(resp, reverse('work-experience-list'))
+
+        # we created 6 object with factory method, after call BatchDeleteView,
+        # to delete 3 objects, we should have 9 ones
+        resp = self.client.get(reverse('work-experience-list'))
+        self.assertEqual(len(resp.context['work_experience_list']), 3)
+
+    def test_batch_delete_invalid_experience_ids_with_auth(self):
+        self._login()
+
+        qs = WorkExperience.objects.filter(user=self.user.profile)[:3]
+        ids = list(qs.values_list('id', flat=True))
+        invalid_ids = [999, 888, 777]
+        ids_with_invalid_ones = ids + invalid_ids
+
+        to_be_deleted_ids = {
+            'batch_delete_ids': ','.join([str(i) for i in ids_with_invalid_ones])
+        }
+
+        _url = reverse('work-experience-batch-delete')
+        resp = self.client.get(_url, to_be_deleted_ids)
+        self.assertTemplateUsed(resp, 'confirm_delete.html')
+
+        self.assertListEqual(sorted(list(resp.context['forbid_delete_list'])),
+                             sorted([str(i) for i in invalid_ids]))
+
+
+class WorkExperienceTranslationDeleteViewTestCase(WorkExperienceMixin):
+
+    def setUp(self):
+        self.user = self.factory.make_user(**self.credentials)
+        self.work_experience = self.factory.make_work_experience(user=self.user)
+        self.translations = self.factory.make_multi_work_experience_translations(
+            user=self.user, work_experience=self.work_experience, number=2)
+
+    def test_it_should_redirect_to_signin_without_auth(self):  # noqa
+        _url = reverse('work-experience-translation-delete',
+                       args=(self.work_experience.id,))
+        resp = self.client.get(_url)
+        expected_url = '/signin?next=/resume/work-experience/translation/{}/delete/'.format(
+            self.work_experience.id)
+        self.assertRedirects(resp, expected_url)
+
+    def test_delete_experience_translation_with_auth(self):  # noqa
+        self._login()
+
+        to_be_deleted_translations = self.translations[0]
+
+        _url = reverse('work-experience-translation-delete',
+                       args=(to_be_deleted_translations.id,))
+        resp = self.client.get(_url)
+        self.assertTemplateUsed(resp, 'confirm_delete.html')
+        self.assertEqual(resp.context['object'], to_be_deleted_translations)
+
+        resp = self.client.post(_url)
+        self.assertEqual(resp.status_code, 302)
+
+        translation_list_url = reverse(
+            'work-experience-translation-list', args=(self.work_experience.id,))
+        self.assertRedirects(resp, translation_list_url)
+
+        resp = self.client.get(translation_list_url)
+        self.assertEqual(len(resp.context['work_experience_trans_list']), 1)
