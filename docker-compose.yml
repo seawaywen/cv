@@ -34,7 +34,6 @@ services:
     env_file: '.env'
     volumes:
       - .:/code
-      - /static:/static
     ports:
       - "9000:9000"
     depends_on:
@@ -46,10 +45,10 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./static_src/dist:/static/dist
-      - ./static/dist:/static/dist
+      - ./static:/code/static  # put the static file into container
+      - ./static_src/dist:/static/dist # put the vue related static file into container
+      - ./staticfiles:/static # this is important, since it will create the symbolinks
       - .docker/nginx:/etc/nginx/conf.d
-      #- /static:/static
     depends_on:
       - web
 

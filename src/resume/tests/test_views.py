@@ -452,7 +452,8 @@ class WorkExperienceBatchDeleteViewTestCase(WorkExperienceMixin):
         ids_with_invalid_ones = ids + invalid_ids
 
         to_be_deleted_ids = {
-            'batch_delete_ids': ','.join([str(i) for i in ids_with_invalid_ones])
+            'batch_delete_ids': ','.join(
+                [str(i) for i in ids_with_invalid_ones])
         }
 
         _url = reverse('work-experience-batch-delete')
