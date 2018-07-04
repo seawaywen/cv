@@ -2,7 +2,7 @@
 set -e
 echo "PWD=$PWD"
 
-DJANGO_SETTINGS_MODULE=django_project.settings_build python3 django_project/manage.py collectstatic --noinput --link \
+DJANGO_SETTINGS_MODULE=django_project.settings_build python3 django_project/manage.py collectstatic --noinput \
     > logs/collectstatic.log 2>&1 || (cat logs/collectstatic.log && false)
 
 

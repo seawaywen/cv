@@ -1,6 +1,6 @@
 FROM python:3-slim
 MAINTAINER Kelvin Li
-#EXPOSE 9000
+EXPOSE 9000
 
 RUN mkdir /code
 WORKDIR /code
@@ -17,4 +17,4 @@ ENV DJANGO_SETTINGS_MODULE django_project.settings
 ADD . /code/
 
 #CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["/code/.docker/app/docker-entrypoint.sh"]

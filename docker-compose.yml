@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   db:
     container_name: 'cv_db'
     image: 'postgres'
@@ -30,8 +29,13 @@ services:
   #    - "6379"
 
   web:
-    build: .
-    env_file: '.env'
+    build:
+      context: .
+      dockerfile: ./.docker/app/Dockerfile
+      #args:
+        #buildno: 1
+        #gitcommithash: cdc3b19
+    env_file: ./.docker/app/.env
     volumes:
       - .:/code
     ports:

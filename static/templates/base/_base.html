@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="{% static 'css/font-icons.css' %}" type="text/css" /> 
     <link rel="stylesheet" href="{% static 'css/animate.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{%static 'css/responsive.css' %}" type="text/css" />
-
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
     {% endblock %}
 
     {% block page_css %}{% endblock %}
+
     <link rel="shortcut icon" href="{% static 'dist/img/favicon.ico' %}">
   </head>
   
@@ -47,7 +47,6 @@
     {% block core_js %}
       <script src="{% static 'js/jquery.js' %}"></script>
       <script src="{% static 'js/plugins.js' %}"></script>
-
       <script src="{% static 'js/functions.js' %}"></script>
     {% endblock core_js %}
     
