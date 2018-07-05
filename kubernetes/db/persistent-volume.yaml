@@ -1,0 +1,17 @@
+---
+#persistent-volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: memodir-data-disk
+  labels:
+    name: memodir-data-disk
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  #hostPath:
+  #  path: /data/memodir-pv
+  #persistentVolumeReclaimPolicy: Retain
+

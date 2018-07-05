@@ -1,0 +1,107 @@
+#Django deployment
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  name: memodir-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memodir-app-container
+  template:
+    metadata:
+      labels:
+        app: memodir-app-container
+        tier: backend
+    spec:
+      volumes:
+      - name: memodir-db-volume-mount
+        persistentVolumeClaim:
+          claimName: memodir-data-claim
+      containers:
+      - name: memodir-app
+        image: memodir.azurecr.io/cv_web:0.1
+        ports:
+        - containerPort: 9000
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: memodir-db-volume-mount
+          mountPath: /var/lib/busybox
+        env:
+        - name: DB_NAME
+          value: memodir
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: memodir-db-credentials
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memodir-db-credentials
+              key: password
+        - name: DB_SERVICE
+          value: memodir-db-service
+        - name: DB_PORT
+          value: "5432"
+        - name: DEBUG
+          value: "False"
+
+---
+#Django service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memodir-app-service
+spec:
+  ports:
+  - port: 9000
+  selector:
+    app: memodir-app-container
+
+
+---
+# Nginx Deployment
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: memodir-nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memodir-nginx-container
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: memodir-nginx-container
+    spec:
+      containers:
+      - name: memodir-nginx
+        image: memodir.azurecr.io/cv_nginx:0.1
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+
+---
+# Nginx Service
+kind: Service
+apiVersion: v1
+metadata:
+  name: memodir-nginx-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: memodir-nginx-container
