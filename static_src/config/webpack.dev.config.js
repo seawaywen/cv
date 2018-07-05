@@ -72,6 +72,7 @@ let buildEntryPoint = (entryPoint) =>{
 
 devWebpackConfig.entry.portfolio = buildEntryPoint(baseWebpackConfig.entry.portfolio);
 devWebpackConfig.entry.profile= buildEntryPoint(baseWebpackConfig.entry.profile);
-console.log(devWebpackConfig);
+devWebpackConfig.entry.blog= buildEntryPoint(baseWebpackConfig.entry.blog);
+//console.log(devWebpackConfig);
 
 module.exports = devWebpackConfig;

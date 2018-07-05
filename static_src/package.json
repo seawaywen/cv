@@ -7,7 +7,7 @@
     "build": "webpack --config config/webpack.dev.config.js",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --progress --config config/webpack.dev.config.js --mode=development",
-    "prod-build": "webpack --config config/webpack.prod.config.js --mode=production",
+    "prod-build": "NODE_ENV=production webpack --config config/webpack.prod.config.js --mode=production",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

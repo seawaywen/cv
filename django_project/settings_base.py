@@ -56,8 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    'crispy_forms',
     'webpack_loader',
+    'crispy_forms',
     'tinymce',
 
     'allauth',
@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'profile',
     'resume',
 ]
+
+
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -213,13 +215,22 @@ TEMPLATES = [
         }
     },
 ]
+
 #AUTH_USER_MODEL = "profile.UserProfile"
+
 WEBPACK_LOADER = {
     'DEFAULT': {
+        'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': '',
-        'STATS_FILE': os.path.join(BASE_DIR, 'static_src/webpack-stats.json'),
+        'STATS_FILE': os.path.join(
+            BASE_DIR, 'static_src/dist/webpack-stats.json'),
     }
 }
+
+if not DEBUG:
+    WEBPACK_LOADER['DEFAULT']['STATS_FILE'] = os.path.join(
+        BASE_DIR, 'staticfiles/dist/webpack-stats.json')
+
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),

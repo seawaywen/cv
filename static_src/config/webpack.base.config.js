@@ -10,6 +10,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const sourceMapEnabled = isProduction ? settings.prod.sourceMap
   : settings.dev.sourceMap;
 
+//console.log(process.env)
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -152,7 +153,7 @@ module.exports = {
 
     new webpack.BannerPlugin('memodir.com Copyright reserves@2018'),
 
-    new BundleTracker({filename: './webpack-stats.json'}) ,
+    new BundleTracker({filename: './dist/webpack-stats.json'}) ,
 
     new ExtractTextPlugin({
       filename: isProduction

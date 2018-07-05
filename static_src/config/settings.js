@@ -4,7 +4,7 @@ module.exports = {
     publicPath: 'http://localhost:8080/static/dist/', //!!! point to the dev server
     //publicPath: '/static/dist/',
     assetsSubDirectory: 'static',
-    sourceMap: false,
+    sourceMap: true,
     cssFilename: '[name].css'
 
   },
@@ -13,8 +13,7 @@ module.exports = {
     filename: '[name]-bundle-[hash].js',
     publicPath: '/static/dist/',
     assetsSubDirectory: '',
-    sourceMap: true,
-    cssFilename: '[name]-[contenthash].css'
-
+    sourceMap: false,
+    cssFilename: '[name]-bundle-[hash].css',
   }
 };
