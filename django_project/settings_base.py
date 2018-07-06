@@ -37,6 +37,7 @@ DB_NAME = os.environ.get('DB_NAME', 'memodir')
 DB_USER = os.environ.get('DB_USER', 'postgres')
 DB_PASSWORD = os.environ.get('DB_PASSWORD', 'postgres')
 DB_PORT = os.environ.get('DB_PORT', '')
+GOOGLE_TAG_MANAGER_ID = os.environ.get('GOOGLE_TAG_MANAGER_ID', None)
 
 _SECRET_KEY = '_m#d24ll8(hxv#wn(+@t3rxw9$3w172l(r_v)anwk(dj8!55b6'
 SECRET_KEY = os.environ.get('SECRET_KEY', _SECRET_KEY)
@@ -111,6 +112,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'resume.context_processors.google_tag_manager_setup',
             ],
         },
     },
