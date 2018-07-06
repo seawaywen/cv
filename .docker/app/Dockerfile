@@ -3,18 +3,17 @@ MAINTAINER Kelvin Li
 EXPOSE 9000
 
 RUN mkdir /code
+
 WORKDIR /code
 
-ADD requirements*.txt /code/
+COPY requirements*.txt /code/
+
 RUN pip install -r requirements.txt -r requirements-devel.txt
 
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/code/src:/code/ \
+    DJANGO_SETTINGS_MODULE=django_project.settings
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH /code/src:/code/
-ENV DJANGO_SETTINGS_MODULE django_project.settings
-#ENV DATABASE_URL postgres://postgres@db/postgres
+COPY . /code/
 
-ADD . /code/
-
-#CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
 ENTRYPOINT ["/code/.docker/app/docker-entrypoint.sh"]
