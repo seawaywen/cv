@@ -24,14 +24,14 @@ def find_packages_data(start_dir):
 
 
 setup(
-    name = "memodir.cv",
-    version = "0.01",
+    name="memodir.cv",
+    version="0.0.1",
 
-    author = "memodir.com",
-    author_email = "kelvin@memodir.com",
-    zip_safe = False,
+    author="memodir.com",
+    author_email="kelvin@memodir.com",
+    zip_safe=False,
 
-    packages = find_packages('src'),
-    package_dir = {'': 'src'},
-    package_data = find_packages_data('src'),
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    package_data=find_packages_data('src'),
 )
