@@ -34,7 +34,7 @@ collectstatic.deps.mk collectstatic:
 # out the redirection to debug.
 	@echo "Collecting assets..."
 	rm -rf staticfiles
-	DJANGO_SETTINGS_MODULE=django_project.settings_build $(DJANGO_MANAGE) collectstatic --noinput --link \
+	DJANGO_SETTINGS_MODULE=django_project.settings_build $(DJANGO_MANAGE) collectstatic --noinput \
 		> logs/collectstatic.log 2>&1 || (cat logs/collectstatic.log && false)
 
 # Asset collection depends on any file or folder in one of the asset
