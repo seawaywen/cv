@@ -8,5 +8,7 @@ env
 htmlcov
 tmp
 
+geckodriver.log
+env
 static_src
 #staticfiles

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    container_name: 'memodir_db-service'
+    container_name: memodir-db-service
     image: 'postgres:10.4'
     restart: always
     environment:

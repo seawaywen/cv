@@ -6,7 +6,7 @@ RUN mkdir /code
 
 WORKDIR /code
 
-COPY requirements*.txt /code/
+ADD requirements*.txt /code/
 
 RUN pip install -r requirements.txt -r requirements-devel.txt
 
@@ -14,6 +14,6 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONPATH=/code/src:/code/ \
     DJANGO_SETTINGS_MODULE=django_project.settings
 
-COPY . /code/
+ADD . /code/
 
 ENTRYPOINT ["/code/.docker/app/docker-entrypoint.sh"]

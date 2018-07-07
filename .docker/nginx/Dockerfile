@@ -2,12 +2,14 @@ FROM nginx
 MAINTAINER Kelvin Li
 EXPOSE 80
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/conf.d/default.conf; \
+    rm /etc/nginx/nginx.conf; \
+    mkdir /static
 
-RUN mkdir /static
-
-ADD .docker/nginx/memodir.conf /static/
+COPY .docker/nginx/* /static/
 COPY staticfiles/ /static/
 
-RUN cp /static/memodir.conf /etc/nginx/conf.d/
-RUN rm /static/memodir.conf
+RUN cp /static/memodir.conf /etc/nginx/conf.d/; \
+    cp /static/nginx.conf /etc/nginx/; \
+    rm /static/memodir.conf; \
+    rm /static/nginx.conf
