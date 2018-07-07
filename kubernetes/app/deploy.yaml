@@ -17,7 +17,7 @@ spec:
       volumes:
       - name: memodir-db-volume-mount
         persistentVolumeClaim:
-          claimName: memodir-data-claim
+          claimName: memodir-disk-volume-claim
       containers:
       - name: memodir-app
         image: memodir.azurecr.io/cv_web:0.1
@@ -33,32 +33,24 @@ spec:
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: memodir-db-credentials
-              key: user
+              name: memodir-credentials
+              key: db_user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: memodir-db-credentials
-              key: password
+              name: memodir-credentials
+              key: db_password
+        - name: GOOGLE_TAG_MANAGER_ID
+          valueFrom:
+            secretKeyRef:
+              name: memodir-credentials
+              key: google_tag_manager_id
         - name: DB_SERVICE
           value: memodir-db-service
         - name: DB_PORT
           value: "5432"
         - name: DEBUG
           value: "False"
-
----
-#Django service
-apiVersion: v1
-kind: Service
-metadata:
-  name: memodir-app-service
-spec:
-  ports:
-  - port: 9000
-  selector:
-    app: memodir-app-container
-
 
 ---
 # Nginx Deployment
@@ -92,16 +84,3 @@ spec:
             cpu: 250m
           limits:
             cpu: 500m
-
----
-# Nginx Service
-kind: Service
-apiVersion: v1
-metadata:
-  name: memodir-nginx-service
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-  selector:
-    app: memodir-nginx-container

@@ -17,7 +17,7 @@ spec:
       volumes:
       - name: memodir-db-volume-mount
         persistentVolumeClaim:
-          claimName: memodir-data-claim
+          claimName: memodir-disk-volume-claim
       containers:
       - name: memodir-db
         image: postgres:10.4
@@ -30,22 +30,20 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: memodir-db-credentials
-                key: user
+                name: memodir-credentials
+                key: db_user
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: memodir-db-credentials
-                key: password
+                name: memodir-credentials
+                key: db_password
           - name: POSTGRES_DB
             value: memodir
           - name: PGDATA
             value: /var/lib/postgresql/data/pgdata
 
-
 ---
-
-# db service
+# DB service
 kind: Service
 apiVersion: v1
 metadata:

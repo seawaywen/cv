@@ -1,0 +1,54 @@
+#Storage class
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: memodir-file-storage
+provisioner: kubernetes.io/azure-file
+parameters:
+  storageAccount: memodir
+
+---
+#Secret for storage
+kind: Secret
+apiVersion: v1
+metadata:
+  name: static-persistence-secret
+type: Opaque
+data:
+  azurestorageaccountname: bWVtb2Rpcg==
+  azurestorageaccountkey: RDlPY2orb3AzcUZDbGpKSW5JVy9qVmtJdmt2ZDdiMnJCbk5sbysrQ1hVdW8yZ3lMbWIxNHdMUjJlb0ptdlc3cDdaYmFqMHdtYklJNEZZT1hBZm9laVE9PQ==
+
+---
+#Persistent volume
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: memodir-file-volume
+  labels:
+    name: memodir-file-volume
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    #- ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: memodir-file-storage
+  azureFile:
+    secretName: static-persistence-secret
+    shareName: memodir
+    readOnly: false
+
+---
+#Persistent volume claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: memodir-file-volume-claim
+spec:
+  accessModes:
+    #- ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: memodir-file-storage
+  resources:
+    requests:
+      storage: 10Gi
