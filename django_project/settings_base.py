@@ -24,14 +24,8 @@ LOG_DIR = os.path.abspath(os.getenv('MEMODIR_LOG_DIR', _LOG_DIR))
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
 
-"""
-print('BASE_DIR:{}'.format(BASE_DIR))
-print('SRC_DIR:{}'.format(SRC_DIR))
-print('HOST_DIR:{}'.format(HOST_DIR))
-print('LOG_DIR:{}'.format(_LOG_DIR))
-"""
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 DB_HOST = os.environ.get('DB_SERVICE', 'localhost')
 DB_NAME = os.environ.get('DB_NAME', 'memodir')
 DB_USER = os.environ.get('DB_USER', 'postgres')
@@ -100,23 +94,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'resume.context_processors.google_tag_manager_setup',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
@@ -213,7 +190,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages']
+                'django.contrib.messages.context_processors.messages',
+                'resume.context_processors.google_tag_manager_setup',
+            ]
         }
     },
 ]
