@@ -1,0 +1,25 @@
+---
+#Django service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memodir-app-service
+spec:
+  ports:
+  - port: 9000
+  selector:
+    app: memodir-app-container
+
+---
+# Nginx Service
+kind: Service
+apiVersion: v1
+metadata:
+  name: memodir-nginx-service
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local  #important to track the users' real IP
+  ports:
+  - port: 80
+  selector:
+    app: memodir-nginx-container
