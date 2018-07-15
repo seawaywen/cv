@@ -164,7 +164,7 @@ class SignUpView(BaseSignUpView):
         context = {
             'scheme': 'https' if self.request.is_secure else 'http',
             'activation_key': activation_key,
-            'expiration_days': settings.ACCOUNT_ACTIVATION_HOURS,
+            'expiration_hours': settings.ACCOUNT_ACTIVATION_HOURS,
             'site': get_current_site(self.request),
             'user': user
         }
@@ -242,7 +242,6 @@ class ActivationView(TemplateView):
 
             user.is_active = True
             user.save()
-            UserProfile.objects.create(user=user, gender='U')
             return user
         except signing.BadSignature:
             return False
