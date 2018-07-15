@@ -45,6 +45,22 @@ spec:
             secretKeyRef:
               name: memodir-credentials
               key: google_tag_manager_id
+        - name: EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: memodir-credentials
+              key: email_host
+        - name: EMAIL_HOST_USER
+          valueFrom:
+            secretKeyRef:
+              name: memodir-credentials
+              key: email_host_user
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memodir-credentials
+              key: email_host_password
+
         - name: DB_SERVICE
           value: memodir-db-service
         - name: DB_PORT

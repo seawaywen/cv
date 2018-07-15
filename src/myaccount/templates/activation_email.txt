@@ -9,7 +9,7 @@ be activated. To do this, please follow the following link:
 http://{{ site_domain }}{{ activate_url }}
 
 Please do take note that if your activation does not succeed
-within {{ expiration_days }} days, you will have to restart
+within {{ expiration_hours }} hours, you will have to restart
 the activation process.
 
 Kind regards,
