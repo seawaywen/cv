@@ -1,0 +1,31 @@
+# Nginx Deployment
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: memodir-nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memodir-nginx-container
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: memodir-nginx-container
+    spec:
+      containers:
+      - name: memodir-nginx
+        image: memodir.azurecr.io/cv_nginx:0.1
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m

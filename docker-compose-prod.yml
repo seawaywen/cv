@@ -14,29 +14,11 @@ services:
     volumes:
       - 'pgdata:/var/lib/postgresql/data/'
 
-
-  #redisdata:
-  #  image: redis:latest
-  #  volumes:
-  #    - /var/lib/redis
-  #  command: true
-
-  #redis:
-  #  image: redis:latest
-  #  volumes_from:
-  #    - redisdata
-  #  ports:
-  #    - "6379"
-
   web:
     container_name: memodir-app-service
     build:
       context: .
-      #dockerfile: ./.docker/app/Dockerfile
       dockerfile: ./.docker/app/Dockerfile_prod
-      #args:
-        #buildno: 1
-        #gitcommithash: cdc3b19
     env_file: ./.docker/app/.env
     volumes:
       - .:/code
@@ -54,11 +36,6 @@ services:
       - .:/code
     ports:
       - "80:80"
-    #volumes:
-    #  - ./static:/code/static  # put the static file into container
-    #  - ./static_src/dist:/static/dist # put the vue related static file into container
-    #  - ./staticfiles:/static # this is important, since it will create the symbolinks
-    #  - .docker/nginx:/etc/nginx/conf.d
     depends_on:
       - web
 
