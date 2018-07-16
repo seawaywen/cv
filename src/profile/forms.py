@@ -1,42 +1,47 @@
 # -*- coding: utf-8 -*-
 
-import logging 
+import logging
+import warnings
 
+from allauth.account.forms import BaseSignupForm, _base_signup_form_class
+from allauth.socialaccount.adapter import get_adapter
+from allauth.utils import set_form_field_order
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
-from django.urls import reverse
+from django.contrib.auth import get_user_model
+from django.contrib.auth import forms as adminForms
 from django.utils.translation import gettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from profile.models import UserProfile
+from profile.models import Profile
 
 
 logger = logging.getLogger(__name__)
+
 
 UserModel = get_user_model()
 
 
 class ProfileForm(forms.ModelForm):
-    first_name = forms.CharField(label=_('First Name'),
-                                 required=False,
-                                 widget=forms.TextInput(attrs={
-                                     'class': 'form-control not-dark'
-                                }))
-    last_name = forms.CharField(label=_('Last Name'),
+    full_name = forms.CharField(label=_('Full Name'),
                                 required=False,
                                 widget=forms.TextInput(attrs={
                                     'class': 'form-control not-dark'
                                 }))
+    mobile = forms.CharField(label=_('Mobile'),
+                             required=False,
+                             widget=forms.TextInput(attrs={
+                                 'class': 'form-control not-dark'
+                             }))
 
     class Meta:
-        model = UserProfile
-        fields = ['user', 'is_public', 'first_name', 'last_name', 'gender', 'birthday', 'photo',
-                  'phone_number', 'country', 'city', 'namespace',
-                  'linkedin', 'wechat', 'facebook', 'github',
-                  'personal_site', 'description']
+        model = Profile
+        fields = ['user', 'is_public', 'full_name', 'gender', 'birthday',
+                  'avatar', 'mobile', 'country', 'city', 'linkedin',
+                  'wechat', 'facebook', 'github', 'personal_site',
+                  'description']
+
         labels = {
             'is_public': _('Public this profile?')
         }
@@ -45,7 +50,7 @@ class ProfileForm(forms.ModelForm):
             'birthday': forms.DateInput(attrs={
                 'class': 'form-control form-birthday'
             }),
-            'photo': forms.FileInput(attrs={
+            'avatar': forms.FileInput(attrs={
                 'class': 'file-loading'
             }),
         }
@@ -54,8 +59,8 @@ class ProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         instance = kwargs.get('instance')
         self.initial.update({
-            'first_name': instance.user.first_name,
-            'last_name': instance.user.last_name,
+            'full_name': instance.user.full_name,
+            'mobile': instance.user.mobile,
         })
 
         self.helper = FormHelper()
@@ -63,4 +68,23 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
+
+
+### For Admin
+class UserChangeForm(adminForms.UserChangeForm):
+    class Meta:
+        model = UserModel
+        fields = '__all__'
+        field_classes = {'email': adminForms.UsernameField}
+
+
+class UserCreationForm(adminForms.UserCreationForm):
+    class Meta:
+        model = UserModel
+        fields = ("email",)
+        field_classes = {'email': adminForms.UsernameField}
+
+
+class AdminPasswordChangeForm(adminForms.AdminPasswordChangeForm):
+    pass
 
