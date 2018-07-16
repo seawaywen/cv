@@ -15,7 +15,7 @@ from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
 from requests import Response
 
-from profile.models import UserProfile
+from profile.models import Profile
 from resume.models import (
     WorkExperience,
     WorkExperienceTranslation,
@@ -111,39 +111,34 @@ class Factory():
         return group
 
     def make_user(self, username=None, password=None, email=None, is_admin=False,
-                  permissions=None, groups=None, first_name='', last_name='',
-                  gender=None, birthday=None, phone_number='', country='',
-                  city='', namespace=None, is_public=True, photo=None,
-                  photo_upload_name=None):
+                  permissions=None, groups=None, full_name='', mobile='',
+                  gender=None, birthday=None, country='', city='',
+                  is_public=True, avatar=None, avatar_upload_name=None):
 
-        if username is None:
-            username = self.make_unique_string(prefix='user-')
         if email is None:
             username = self.make_unique_string(prefix='email-')
             email = self.make_email(username)
         if password is None:
             password = self.default_password
+        if full_name == '':
+            full_name = self.make_unique_string(prefix='name-')
         if gender is None:
             gender = 'U'
         if birthday is None:
             birthday = timezone.now().date()
-        if namespace is None:
-            namespace = self.make_unique_string(prefix='namespace-')
         if permissions is None:
             permissions = []
         if groups is None:
             groups = []
 
         users = get_user_model().objects.filter(
-            username=username, email=email, password=password)
+            email=email, password=password)
         if users.exists():
             return users.first()
 
         user = get_user_model().objects.create_user(
-             username=username, email=email, password=password
-        )
-        user.first_name = first_name
-        user.last_name = last_name
+            email=email, password=password)
+        user.full_name = full_name
         if is_admin:
             user.is_staff = True
             user.is_superuser = True
@@ -159,13 +154,13 @@ class Factory():
                 group = Group.objects.get(name=group)
             user.groups.add(group)
 
-        profile = UserProfile.objects.filter(user=user).update(
-            gender=gender, birthday=birthday, photo=photo,
-            photo_upload_name=photo_upload_name,
-            phone_number=phone_number, country=country,
-            city=city, namespace=namespace, is_public=is_public)
+        profile = Profile.objects.filter(user=user).update(
+            gender=gender, birthday=birthday, avatar=avatar,
+            avatar_upload_name=avatar_upload_name, country=country,
+            city=city, is_public=is_public)
 
-        assert profile == 1, 'Only one profile should associate to user, Got %s' % profile
+        assert profile == 1, \
+            'Only one profile should associate to user, Got %s' % profile
         user.profile.refresh_from_db()
         return user
 
@@ -175,7 +170,7 @@ class Factory():
         date_start = timezone.now().date() if date_start is None else date_start
         date_end = timezone.now().date() if date_end is None else date_end
         model = WorkExperience.objects.create(
-            user=user.profile, is_public=is_public,
+            user=user, is_public=is_public,
             date_start=date_start, date_end=date_end)
         return model
 

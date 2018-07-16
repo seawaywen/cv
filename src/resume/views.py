@@ -3,8 +3,8 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render  #noqa
 from django.http import HttpResponseRedirect  # noqa
 from django.urls import reverse, reverse_lazy
@@ -26,6 +26,9 @@ from resume.forms import (
 
 
 logger = logging.getLogger(__name__)
+
+
+User = get_user_model()
 
 
 def home(request):
@@ -118,7 +121,7 @@ class WorkExperiencesListView(WorkExperienceBaseMixin, ListView):
 
     def get_queryset(self):
         work_experience_list = WorkExperience.objects.filter(
-            user=self.request.user.profile).order_by('-date_start')
+            user=self.request.user).order_by('-date_start')
         return work_experience_list
 
 
@@ -140,7 +143,7 @@ class PublicViewMixin(object):
     def find_user_by_username(username):
         """get the user instance from the username"""
         if username:
-            user = get_object_or_404(User, username=username)
+            user = get_object_or_404(User, email=username)
             if hasattr(user, 'profile'):
                 return user
         return None
@@ -166,7 +169,7 @@ class WorkExperiencesPublicListView(PublicViewMixin, ListView):
     def get_queryset(self):
         if self.user:
             work_experience_list = WorkExperience.objects.filter(
-                user=self.user.profile, is_public=True).order_by('-date_start')
+                user=self.user, is_public=True).order_by('-date_start')
             return work_experience_list
         return None
 
@@ -206,7 +209,7 @@ class WorkExperiencesCreateView(WorkExperienceTranslationEditMixin, CreateView):
 
     def form_valid(self, form):
         related_model = WorkExperience.objects.create(
-            user=self.request.user.profile,
+            user=self.request.user,
             date_start=form.cleaned_data['date_start'],
             date_end=form.cleaned_data['date_end'])
 
@@ -295,8 +298,7 @@ class WorkExperienceBatchDeleteView(WorkExperienceBaseMixin, View):
         if delete_ids is not None:
             id_list = delete_ids.split(',')
 
-            all_user_wp_qs = WorkExperience.objects.filter(
-                user=request.user.profile)
+            all_user_wp_qs = WorkExperience.objects.filter(user=request.user)
             delete_object_list = all_user_wp_qs.filter(id__in=id_list)
 
             # Following logic is to check if any object not belong to
