@@ -30,7 +30,6 @@ from myaccount.forms import (
     PasswordChangeForm,
 )
 from myaccount import signals
-from profile.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
