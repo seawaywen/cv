@@ -2,13 +2,17 @@
 
 import logging
 
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.core.mail import send_mail
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
-from django.utils.translation import get_language, gettext_lazy as _
+from django.contrib.auth.models import User, PermissionsMixin
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 from profile.countries import country_dict, country_list
+from profile.manager import UserManager
 from resume.validators import validate_namespace
 from resume.utils import (
     create_thumbnail,
@@ -27,66 +31,119 @@ def str_contain_chinese(check_str):
     return False
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+class User(AbstractBaseUser, PermissionsMixin):
+    """
+    An abstract base class implementing a fully featured User model with
+    admin-compliant permissions.
+
+    email/mobile and password are required. Other fields are optional.
+    """
+
+    email = models.EmailField(_('email'), blank=True, unique=True)
+
+    mobile = models.CharField(_('mobile'), max_length=32, blank=True)
+
+    username = models.CharField(
+        _('namespace'), max_length=256, blank=True, null=True,
+        validators=[validate_namespace],
+        help_text=_('Required before creating any related operation.\n'
+                    'Lower-case letters, numbers, dots or hyphens '
+                    'allowed only.'))
+
+    full_name = models.CharField(_('full name'), max_length=300, blank=True)
+
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_full_name(self):
+        return self.full_name.strip()
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, related_name='profile')
 
     GENDER_CHOICES = (
         ('M', _('Male')),
         ('F', _('Female')),
         ('U', _('Unknown'))
     )
-    gender = models.CharField(max_length=1, verbose_name=_('Gender'),
-                              choices=GENDER_CHOICES, default='U')
-    birthday = models.DateField(
-        null=True, blank=True, verbose_name=_(u'Birthday'))
+    gender = models.CharField(
+        _('Gender'), max_length=1, choices=GENDER_CHOICES, default='U')
+    birthday = models.DateField(_('Birthday'), null=True, blank=True)
 
-    photo = models.ImageField(
+    avatar = models.ImageField(
+        _('Avatar'),
         upload_to=settings.PROFILE_PHOTO_UPLOAD_TO, blank=True, null=True,
         help_text=_('A 256x256 image for your profile.'))
 
-    photo_crop = models.ImageField(
+    avatar_crop = models.ImageField(
         upload_to=settings.THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO,
         blank=True, null=True)
-    photo_upload_name = models.CharField(
-        max_length=256, blank=True, null=True,
-        verbose_name=_('Original photo name'))
+    avatar_upload_name = models.CharField(
+        _('Original photo name'), max_length=256, blank=True, null=True)
 
-    phone_number = models.CharField(max_length=32, blank=True,
-                                    verbose_name=_('Phone'))
-    country = models.CharField(max_length=2, verbose_name=_('Country/Region'),
-                               choices=country_list, null=True)
-    city = models.CharField(max_length=80, verbose_name=_('City'), blank=True,
-                            null=True)
-    namespace = models.CharField(
-        max_length=256, blank=True, null=True,
-        unique=True, validators=[validate_namespace],
-        verbose_name=_('namespace'),
-        help_text=_('Required before creating any related operation.\n'
-                    'Lower-case letters, numbers, dots or hyphens '
-                    'allowed only.'))
+    cover_image = models.ImageField(
+        _('Cover image'),
+        upload_to=settings.COVER_IMAGE_UPLOAD_TO, blank=True, null=True,
+        help_text=_('An image for your public showing site.'))
+    cover_image_crop = models.ImageField(
+        upload_to=settings.THUMBNAIL_COVER_IMAGE_UPLOAD_TO,
+        blank=True, null=True)
 
-    linkedin = models.CharField(max_length=255, blank=True,
-                                verbose_name=_('LinkedIn'))
-    wechat = models.CharField(max_length=255, blank=True,
-                              verbose_name=_('Wechat'))
-    facebook = models.CharField(max_length=255, blank=True,
-                                verbose_name=_('Facebook'))
-    github = models.CharField(max_length=255, blank=True,
-                              verbose_name=_('Github'))
-    personal_site = models.CharField(max_length=255, blank=True,
-                                     verbose_name=_('Personal Site'))
-    description = models.TextField(blank=True, verbose_name=_('Description'))
+    country = models.CharField(
+        _('Country/Region'), max_length=2, choices=country_list, null=True)
 
-    is_public = models.BooleanField(default=True, verbose_name=_('Public it?'))
+    city = models.CharField(_('City'), max_length=80, blank=True, null=True)
+
+    linkedin = models.CharField(_('LinkedIn'), max_length=255, blank=True)
+    wechat = models.CharField(_('Wechat'), max_length=255, blank=True)
+    facebook = models.CharField(_('Facebook'), max_length=255, blank=True)
+    github = models.CharField(_('Github'), max_length=255, blank=True)
+    personal_site = models.CharField(
+        _('Personal Site'), max_length=255, blank=True)
+    description = models.TextField(_('Description'), blank=True)
+
+    is_public = models.BooleanField(_('Public it?'), default=False)
 
     class Meta:
         app_label = 'resume'
         ordering = ['id']
 
     def __unicode__(self):
-        full_name = self.user.get_full_name()
+        full_name = self.full_user_name()
         if not full_name:
-            full_name = self.user.username
+            full_name = self.user.email
         msg = _("{}'s profile").format(full_name)
         return msg
 
@@ -99,16 +156,7 @@ class UserProfile(models.Model):
         return self.country
 
     def full_user_name(self):
-        if not self.user.first_name and not self.user.last_name:
-            return ''
-        # if country is China and the name is Chinese, use the Chinese
-        # traditional name convention
-        if self.country == 'CN' and \
-            str_contain_chinese(self.user.last_name) and \
-            str_contain_chinese(self.user.first_name):
-            return '{}{}'.format(self.user.last_name, self.user.first_name)
-        else:
-            return '{} {}'.format(self.user.first_name, self.user.last_name)
+        return self.user.get_full_name()
 
     def _check_upload_file_exist(self, file_field_name):
         _file_field = getattr(self, file_field_name)
@@ -116,23 +164,23 @@ class UserProfile(models.Model):
 
     def _convert_to_png_photo(self):
         # save the uploaed file's original name to the field
-        self.photo_upload_name = self.photo.name
+        self.avatar_upload_name = self.avatar.name
         # convert to png file
-        file_upload_handler = convert_to_png_uploaded_file(self.photo)
+        file_upload_handler = convert_to_png_uploaded_file(self.avatar)
         converted_png_name = '{}.png'.format(generate_uuid())
-        self.photo.save(
+        self.avatar.save(
             converted_png_name, file_upload_handler, save=False)
 
     def _generate_thumbnail(self):
         # generate thumbnail image
-        thumbnail_upload_handler = create_thumbnail(self.photo)
+        thumbnail_upload_handler = create_thumbnail(self.avatar)
         thumbnail_file_name = 'thumbnail_{}'.format(
             thumbnail_upload_handler.name)
-        self.photo_crop.save(
+        self.avatar_crop.save(
             thumbnail_file_name, thumbnail_upload_handler, save=False)
 
     def save(self, *args, **kwargs):
-        if self._check_upload_file_exist('photo'):
+        if self._check_upload_file_exist('avatar'):
             self._convert_to_png_photo()
             self._generate_thumbnail()
         else:
@@ -141,14 +189,14 @@ class UserProfile(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('profile-edit',
-                            kwargs={'username': self.user.username})
+                            kwargs={'username': self.user.email})
 
 
 def post_create_profile_handler(sender, instance, created, **kwargs):
     """Ensure the profile table exists."""
     assert sender == User
     if created:
-        UserProfile.objects.create(user=instance)
+        Profile.objects.create(user=instance)
 
 
 def post_update_profile_handler(sender, instance, **kwargs):

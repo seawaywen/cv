@@ -197,7 +197,7 @@ TEMPLATES = [
     },
 ]
 
-#AUTH_USER_MODEL = "profile.UserProfile"
+AUTH_USER_MODEL = "profile.User"
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -223,8 +223,10 @@ RESERVED_PROFILE_NAMESPACE_LIST = (
 
 IMAGE_UPLOAD_TO = 'images/%Y/%m'
 PROFILE_PHOTO_UPLOAD_TO = 'profile_photo/%Y/%m'
+COVER_IMAGE_UPLOAD_TO = 'cover_image/%Y/%m'
 THUMBNAIL_UPLOAD_TO = 'thumbnails/%Y/%m'
 THUMBNAIL_PROFILE_PHOTO_UPLOAD_TO = 'thumbnails/profile_photo/%Y/%m'
+THUMBNAIL_COVER_IMAGE_UPLOAD_TO = 'thumbnails/cover_image/%Y/%m'
 
 
 class LevelFilter(object):
@@ -359,3 +361,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '100%',
     'height': 300
 }
+
+

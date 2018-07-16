@@ -148,7 +148,7 @@ drop-db:
 	dropdb --host=$(PG_HOST) --username=$(PG_USER) $(PG_NAME)
 
 createsuperuser:
-	$(DJANGO_MANAGE) createsuperuser --email=kelvin@memodir.com --username=kelvin
+	$(DJANGO_MANAGE) createsuperuser --email=one@memodir.com
 
 setup-db: $(PG_DATA_DIR)
 
