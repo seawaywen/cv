@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, get_user_model, \
     password_validation
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -78,7 +77,8 @@ class SignInForm(forms.Form):
         self.user_cache = None
         super().__init__(*args, **kwargs)
 
-        self.username_field = UserModel._meta.get_field(UserModel.EMAIL_FIELD)
+        self.username_field = UserModel._meta.get_field(
+            UserModel.USERNAME_FIELD)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -99,9 +99,9 @@ class SignUpForm(forms.ModelForm):
                                 }))
 
     class Meta:
-        model = User
+        model = UserModel
         fields = [
-            'email', 'username', 'password'
+            'email', 'password'
         ]
         labels = {
         }
@@ -127,32 +127,9 @@ class SignUpForm(forms.ModelForm):
             'sign-up', _('SignUp Now'),
             css_class='button button-3d button-green nomargin'))
 
-    def clean_username(self):
-        username_val = self.cleaned_data.get('username')
-
-        if username_val is not None:
-            reserved_validator = validators.ReservedNameValidator(
-                reserved_names=validators.DEFAULT_RESERVED_NAMES
-            )
-            reserved_validator(username_val)
-
-            validators.validate_confusables(username_val)
-
-            existing = User.objects.filter(
-                username__iexact=self.cleaned_data['username'])
-
-            if existing.exists():
-                raise forms.ValidationError(
-                    _("The username already exists."))
-
-            return self.cleaned_data['username']
-        else:
-            raise forms.ValidationError(
-                _("The username cannot be None value."))
-
     def clean_email(self):
 
-        existing = User.objects.filter(
+        existing = UserModel.objects.filter(
             email__iexact=self.cleaned_data['email'])
 
         if existing.exists():
@@ -213,7 +190,7 @@ class ResetPasswordForm(PasswordResetForm):
 
     def clean_email(self):
 
-        existing = User.objects.filter(
+        existing = UserModel.objects.filter(
             email__iexact=self.cleaned_data['email'])
 
         if not existing.exists():

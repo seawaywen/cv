@@ -13,7 +13,7 @@ from allauth.account.signals import user_signed_up
 from allauth.socialaccount.models import SocialLogin
 from allauth.socialaccount.signals import social_account_added
 
-from profile.models import UserProfile
+from profile.models import Profile
 from profile.forms import ProfileForm
 
 
@@ -21,23 +21,23 @@ logger = logging.getLogger(__name__)
 
 
 class ProfileUpdateView(UpdateView):
-    model = UserProfile
+    model = Profile
     form_class = ProfileForm
 
     def get_success_url(self):
         return reverse(
-            'profile-detail', kwargs={'username': self.request.user.username})
+            'profile-detail', kwargs={'username': self.request.user.email})
 
     def get_object(self, queryset=None):
         username = self.kwargs.get('username')
         logger.info(username)
         if username:
             try:
-                profile_obj = UserProfile.objects.get(user__username=username)
+                profile_obj = Profile.objects.get(user__email=username)
                 # You can only edit yourself
                 if profile_obj.user == self.request.user:
                     return profile_obj
-            except UserProfile.DoesNotExist:
+            except Profile.DoesNotExist:
                 return None
         return None
 
@@ -65,7 +65,7 @@ edit_profile = login_required(ProfileUpdateView.as_view())
 
 
 class ProfileDetailView(DetailView):
-    model = UserProfile
+    model = Profile
 
     context_object_name = 'profile_obj'
 
@@ -74,14 +74,13 @@ class ProfileDetailView(DetailView):
 
     def get_object(self, queryset=None):
         username = self.kwargs.get('username')
-        logger.info(username)
         if username:
             try:
-                profile_obj = UserProfile.objects.get(user__username=username)
+                profile_obj = Profile.objects.get(user__email=username)
                 if profile_obj.user == self.request.user or \
                         profile_obj.is_public:
                     return profile_obj
-            except UserProfile.DoesNotExist:
+            except Profile.DoesNotExist:
                 return None
         return None
 
@@ -105,7 +104,7 @@ class ProfileRedirectView(RedirectView):
     pattern_name = 'profile-detail'
 
     def get_redirect_url(self, *args, **kwargs):
-        kwargs.update({'username': self.request.user.username})
+        kwargs.update({'username': self.request.user.email})
         return super().get_redirect_url(*args, **kwargs)
 
 
@@ -114,8 +113,8 @@ direct_to_detail = login_required(ProfileRedirectView.as_view())
 
 @receiver(user_signed_up, sender=User)
 def save_profile(sender, request, user, **kwargs):
-    if not UserProfile.objects.filter(user=user).exists():
-        UserProfile.objects.create(user=user)
+    if not Profile.objects.filter(user=user).exists():
+        Profile.objects.create(user=user)
 
 
 @receiver(social_account_added, sender=SocialLogin)
@@ -124,7 +123,7 @@ def update_profile_info(sender, request, sociallogin, **kwargs):
     print(sociallogin.account.get_profile_url())
     print(sociallogin.account.provider)
 
-    profiles = UserProfile.objects.filter(user=sociallogin.user)
+    profiles = Profile.objects.filter(user=sociallogin.user)
     if profiles.exists():
         for profile in profiles:
             if hasattr(profile, sociallogin.account.provider):

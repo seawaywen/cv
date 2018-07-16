@@ -11,9 +11,8 @@ from testings.factory import Factory
 
 class WorkExperienceMixin(TestCase):
     credentials = {
-        'username': 'test',
-        'password': 'abc123',
         'email': 'test@test.com',
+        'password': 'abc123',
     }
 
     factory = Factory()
@@ -60,7 +59,7 @@ class WorkExperiencePublicListViewTestCase(WorkExperienceMixin):
     def test_view_url_anonymous_with_correct_username(self):
         resp = self.client.get(
             reverse('work-experience-public-list', kwargs={
-                'username': self.user.username})
+                'username': self.user.email})
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(resp.context['is_in_public_mode'])
@@ -74,14 +73,14 @@ class WorkExperiencePublicListViewTestCase(WorkExperienceMixin):
 
     def test_public_list_view_with_2_public_experience(self):
         ids = WorkExperience.objects.filter(
-            user=self.user.profile).values_list('id', flat=True)[:2]
+            user=self.user).values_list('id', flat=True)[:2]
 
         WorkExperience.objects.filter(
-            user=self.user.profile, id__in=ids).update(is_public=True)
+            user=self.user, id__in=ids).update(is_public=True)
 
         resp = self.client.get(
             reverse('work-experience-public-list', kwargs={
-                'username': self.user.username
+                'username': self.user.email
             }))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.context['object_list']), 2)
@@ -89,7 +88,6 @@ class WorkExperiencePublicListViewTestCase(WorkExperienceMixin):
 
 class WorkExperienceTranslationListTestCase(TestCase):
     credentials = {
-        'username': 'test',
         'password': 'abc123',
         'email': 'test@test.com',
     }
@@ -135,7 +133,6 @@ class WorkExperienceTranslationListTestCase(TestCase):
 
 class WorkExperienceCreateTestCase(TestCase):
     credentials = {
-        'username': 'test',
         'password': 'abc123',
         'email': 'test@test.com',
     }
@@ -185,7 +182,6 @@ class WorkExperienceCreateTestCase(TestCase):
 class WorkExperienceTranslationCreateViewTestCase(TestCase):
 
     credentials = {
-        'username': 'test',
         'password': 'abc123',
         'email': 'test@test.com',
     }
@@ -254,7 +250,6 @@ class WorkExperienceTranslationCreateViewTestCase(TestCase):
 class WorkExperienceTranslationUpdateViewTestCase(TestCase):
 
     credentials = {
-        'username': 'test',
         'password': 'abc123',
         'email': 'test@test.com',
     }
@@ -313,7 +308,7 @@ class PublicWorkExperienceTestCase(WorkExperienceMixin):
     def setUp(self):
         super().setUp()
         self.public_experience = WorkExperience.objects.filter(
-            user=self.user.profile).first()
+            user=self.user).first()
         self.public_experience_id = self.public_experience.id
 
     def _change_public_status_for_work_experience(self, public_experience_id):
@@ -341,7 +336,7 @@ class PublicWorkExperienceTestCase(WorkExperienceMixin):
 
         resp = self.client.get(
             reverse('work-experience-public-list', kwargs={
-                'username': self.user.username
+                'username': self.user.email
             }))
         self.assertEqual(resp.status_code, 200)
         # we expect one experience object with pk=public_experience.id exists
@@ -357,7 +352,7 @@ class PublicWorkExperienceTestCase(WorkExperienceMixin):
 
         resp = self.client.get(
             reverse('work-experience-public-list', kwargs={
-                'username': self.user.username
+                'username': self.user.email
             }))
         self.assertEqual(resp.status_code, 200)
         # Now we expect nothing display on the public list page
@@ -375,7 +370,7 @@ class WorkExperienceDeleteViewTestCase(WorkExperienceMixin):
                 user=self.user, work_experience=work_experience)
 
         self.experience = WorkExperience.objects.filter(
-            user=self.user.profile).first()
+            user=self.user).first()
         self.experience_id = self.experience.id
 
     def test_it_should_redirect_to_signin_without_auth(self):  # noqa
@@ -419,7 +414,7 @@ class WorkExperienceBatchDeleteViewTestCase(WorkExperienceMixin):
     def test_batch_delete_experience_with_auth(self):
         self._login()
 
-        qs = WorkExperience.objects.filter(user=self.user.profile)[:3]
+        qs = WorkExperience.objects.filter(user=self.user)[:3]
         ids = list(qs.values_list('id', flat=True))
 
         to_be_deleted_ids = {
@@ -446,7 +441,7 @@ class WorkExperienceBatchDeleteViewTestCase(WorkExperienceMixin):
     def test_batch_delete_invalid_experience_ids_with_auth(self):
         self._login()
 
-        qs = WorkExperience.objects.filter(user=self.user.profile)[:3]
+        qs = WorkExperience.objects.filter(user=self.user)[:3]
         ids = list(qs.values_list('id', flat=True))
         invalid_ids = [999, 888, 777]
         ids_with_invalid_ones = ids + invalid_ids

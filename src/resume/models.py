@@ -5,17 +5,16 @@ import re
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import get_language, gettext_lazy as _
 
 from tinymce.models import HTMLField
 
-from profile.models import UserProfile
-
 
 logger = logging.getLogger(__name__)
-
+User = get_user_model()
 models.options.DEFAULT_NAMES += ('translation', 'multilingual')
 
 
@@ -116,16 +115,15 @@ class WorkExperienceTranslation(models.Model):
 
 
 class WorkExperience(MultilingualModel):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_public = models.BooleanField(
-        verbose_name=_('Is this experience public?'), default=False)
-    date_start = models.DateField(verbose_name=_('Start date'))
-    date_end = models.DateField(
-        null=True, blank=True, verbose_name=_('End date'))
+        _('Is this experience public?'), default=False)
+    date_start = models.DateField(_('Start date'))
+    date_end = models.DateField(_('End date'), null=True, blank=True)
 
     class Meta:
         app_label = 'resume'
-        multilingual = ('position', 'company', 'location', 'contribution',)
+        multilingual = ('position', 'company', 'location', 'contribution')
         translation = WorkExperienceTranslation
 
     def get_filled_languages(self):
@@ -195,7 +193,7 @@ class Project(models.Model):
     is_public = models.BooleanField(
         _('Is this project public?'), default=False)
 
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'resume'
