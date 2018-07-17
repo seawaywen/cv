@@ -70,21 +70,3 @@ class ProfileForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
 
-### For Admin
-class UserChangeForm(adminForms.UserChangeForm):
-    class Meta:
-        model = UserModel
-        fields = '__all__'
-        field_classes = {'email': adminForms.UsernameField}
-
-
-class UserCreationForm(adminForms.UserCreationForm):
-    class Meta:
-        model = UserModel
-        fields = ("email",)
-        field_classes = {'email': adminForms.UsernameField}
-
-
-class AdminPasswordChangeForm(adminForms.AdminPasswordChangeForm):
-    pass
-

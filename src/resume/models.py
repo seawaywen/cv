@@ -205,6 +205,6 @@ class Project(models.Model):
         return self.__unicode__()
 
 
-def pre_save_workexperience_translation_handler(sender, instance, created, **kwargs):
+def pre_save_workexperience_translation_handler(sender, instance, **kwargs):
     assert sender == WorkExperienceTranslation
     #instance.clean()

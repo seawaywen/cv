@@ -3,12 +3,16 @@
 import logging 
 
 from django import forms
-from django.contrib.auth import authenticate, get_user_model, \
-    password_validation
+from django.contrib.auth import (
+    authenticate,
+    get_user_model,
+    password_validation,
+    forms as adminForms
+)
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -43,7 +47,8 @@ class SignInForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         if email is not None and password:
-            self.user_cache = authenticate(self.request, username=email, password=password)
+            self.user_cache = authenticate(
+                self.request, email=email, password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(
                     self.error_messages['invalid_login'],
@@ -212,3 +217,23 @@ class PasswordChangeForm(BasePasswordChangeForm):
             css_class='button button-3d button-green nomargin'))
 
         super().__init__(user, *args, **kwargs)
+
+
+### For Admin
+class UserChangeForm(adminForms.UserChangeForm):
+    class Meta:
+        model = UserModel
+        fields = '__all__'
+        field_classes = {'email': adminForms.UsernameField}
+
+
+class UserCreationForm(adminForms.UserCreationForm):
+    class Meta:
+        model = UserModel
+        fields = ("email",)
+        field_classes = {'email': adminForms.UsernameField}
+
+
+class AdminPasswordChangeForm(adminForms.AdminPasswordChangeForm):
+    pass
+

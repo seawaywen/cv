@@ -68,9 +68,9 @@ INSTALLED_APPS = [
 
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
     'myaccount.authentication.EmailAuthBackend',
     "allauth.account.auth_backends.AuthenticationBackend",
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 SIGNUP_OPEN = True
@@ -197,7 +197,7 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = "profile.User"
+AUTH_USER_MODEL = "myaccount.User"
 
 WEBPACK_LOADER = {
     'DEFAULT': {

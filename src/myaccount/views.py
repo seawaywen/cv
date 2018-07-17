@@ -141,9 +141,10 @@ class SignUpView(BaseSignUpView):
 
     def signup(self, form):
         user = self.create_inactive_user(form)
-        signals.user_signup.send(sender=self.__class__,
-                                 user=user,
-                                 request=self.request)
+
+        signals.user_signup.send(
+            sender=self.__class__, user=user, request=self.request)
+
         return user
 
     def get_success_url(self, user):
@@ -249,3 +250,9 @@ class ActivationView(TemplateView):
 
 
 activate = ActivationView.as_view()
+
+
+def post_signup_handler(sender, **kwargs):
+    pass
+
+

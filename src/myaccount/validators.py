@@ -4,7 +4,11 @@
 Error messages, data and custom validation code used in
 django-registration's various user-registration form classes.
 """
+import re
+
+from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
@@ -226,3 +230,21 @@ def validate_confusables_email(value):
     if confusables.is_dangerous(local_part) or \
             confusables.is_dangerous(domain):
         raise ValidationError(CONFUSABLE_EMAIL, code='invalid')
+
+
+namespace_regex = re.compile(r'[a-z0-9]+[a-z0-9-]*[a-z0-9]+$')
+
+LOWERCASE_NUMBERS_HYPHENS_HELP = _(
+    "Enter a value consisting of lower-case letters, numbers or hyphens. "
+    "Hyphens can not occur at the start or end of the chosen value."
+)
+
+
+def validate_namespace(namespace_value):
+    if namespace_value in getattr(settings, 'RESERVED_PROFILE_NAMESPACE_LIST'):
+        raise ValidationError(
+            _('You cannot use this reserved namespace.'))
+
+    RegexValidator(regex=namespace_regex,
+                   message=LOWERCASE_NUMBERS_HYPHENS_HELP,
+                   code='invalid')(namespace_value)
