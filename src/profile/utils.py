@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import random
-
 import os
 import uuid
+
 from tempfile import NamedTemporaryFile
 try:
     from cStringIO import StringIO

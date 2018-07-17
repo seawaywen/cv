@@ -2,19 +2,16 @@
 
 import logging
 
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.core.mail import send_mail
-from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User, PermissionsMixin
-from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
-from profile.countries import country_dict, country_list
-from profile.manager import UserManager
-from resume.validators import validate_namespace
-from resume.utils import (
+from .countries import country_dict, country_list
+from .utils import (
     create_thumbnail,
     convert_to_png_uploaded_file,
     generate_uuid
@@ -22,6 +19,8 @@ from resume.utils import (
 
 
 logger = logging.getLogger(__name__)
+
+User = get_user_model()
 
 
 def str_contain_chinese(check_str):
@@ -31,67 +30,9 @@ def str_contain_chinese(check_str):
     return False
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    """
-    An abstract base class implementing a fully featured User model with
-    admin-compliant permissions.
-
-    email/mobile and password are required. Other fields are optional.
-    """
-
-    email = models.EmailField(_('email'), blank=True, unique=True)
-
-    mobile = models.CharField(_('mobile'), max_length=32, blank=True)
-
-    username = models.CharField(
-        _('namespace'), max_length=256, blank=True, null=True,
-        validators=[validate_namespace],
-        help_text=_('Required before creating any related operation.\n'
-                    'Lower-case letters, numbers, dots or hyphens '
-                    'allowed only.'))
-
-    full_name = models.CharField(_('full name'), max_length=300, blank=True)
-
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        _('active'),
-        default=True,
-        help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
-
-    def clean(self):
-        super().clean()
-        self.email = self.__class__.objects.normalize_email(self.email)
-
-    def get_full_name(self):
-        return self.full_name.strip()
-
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email], **kwargs)
-
-
 class Profile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE, related_name='profile')
+        User, on_delete=models.CASCADE, related_name='profile')
 
     GENDER_CHOICES = (
         ('M', _('Male')),
@@ -137,7 +78,7 @@ class Profile(models.Model):
     is_public = models.BooleanField(_('Public it?'), default=False)
 
     class Meta:
-        app_label = 'resume'
+        app_label = 'profile'
         ordering = ['id']
 
     def __unicode__(self):
