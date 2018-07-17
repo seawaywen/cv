@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import warnings
 
-from allauth.account.forms import BaseSignupForm, _base_signup_form_class
-from allauth.socialaccount.adapter import get_adapter
-from allauth.utils import set_form_field_order
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth import forms as adminForms
 from django.utils.translation import gettext_lazy as _
 
 from crispy_forms.helper import FormHelper
@@ -68,5 +63,4 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
-
 
