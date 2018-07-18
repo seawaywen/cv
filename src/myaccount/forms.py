@@ -94,14 +94,20 @@ class SignInForm(forms.Form):
 
 class SignUpForm(forms.ModelForm):
 
-    email = forms.EmailField(label=_('Email'),
-                             widget=forms.EmailInput(attrs={
-                                'class': 'form-control not-dark',
-                            }))
-    password2 = forms.CharField(label=_('Re-enter password'),
-                                widget=forms.PasswordInput(attrs={
-                                    'class': 'form-control not-dark'
-                                }))
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+
+    email = forms.EmailField(
+        label=_('Email'),
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control not-dark',
+        }))
+    password2 = forms.CharField(
+        label=_('Re-enter password'),
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control not-dark'
+        }))
 
     class Meta:
         model = UserModel
@@ -157,7 +163,7 @@ class SignUpForm(forms.ModelForm):
 
     def clean(self):
         """
-        Verifiy that the values entered into the two password fields
+        Verify that the values entered into the two password fields
         match. Note that an error here will end up in
         ``non_field_errors()`` because it doesn't apply to a single
         field.
@@ -165,7 +171,7 @@ class SignUpForm(forms.ModelForm):
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(
-                    _("The two password fields didn't match."),
+                    self.error_messages['password_mismatch'],
                     code='password_mismatch')
         return self.cleaned_data
 
