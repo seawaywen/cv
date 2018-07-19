@@ -3,52 +3,49 @@
 {% load crispy_forms_tags %}
 {% load socialaccount %}
 
-{% block title %}SignIn{% endblock title %}
+{% block title %}{% trans 'SignIn' %}{% endblock title %}
 
 {% block sub_content %}
-<form id="sign-in-form" name="sign_in-form" class="nobottommargin"
-      action="{% url 'signin' %}" method="post">
-  <h3>{% trans 'SignIn' %}</h3>
+<form id="sign-in-form" name="sign_in-form" class="nobottommargin" action="{% url 'signin' %}" method="post">
+  <h3>{% trans 'Sign In' %}</h3>
+
+  <input type="hidden" name="next" value="{{ next }}" />
 
   {% crispy form form.helper %}
 
-  <div class="col_full nobottommargin1">
+  <div class="col_half nobottommargin">
     <div class="clear"></div>
-    <button class="button button-3d button-green nomargin"
-            id="login-form-submit" name="login-form-submit"
-            value="signIn">{% trans 'SignIn' %}
-    </button>
-    <a href="{% url 'password_reset' %}" class="fright" style="margin-top:8px;">{% trans 'Forgot Password?' %}</a>
+    <button class="button button-blue nomargin" formnovalidate id="sign-in-form-submit" name="sign-in-form-submit">{% trans 'SignIn' %}</button>
+    <a href="{% url 'password_reset' %}" class="leftmargin-sm">{% trans 'Forgot Password?' %}</a>
   </div>
+
+  <div class="col_half col_last nobottommargin">
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+        <div style="float: right;">
+            <span class="float-left" style="margin-top: 10px;">{% trans 'SignIn with' %}</span>
+            {% for provider in socialaccount_providers %}
+                <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider.id}}"
+                   href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
+                    <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
+                    <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+    <div class="clearfix"></div>
+    <div class="line line-sm nobottommargin" ></div>
+    <div class="nomargin" >
+        {% trans 'New to MemoDir? ' %}
+        <a href="{% url 'signup' %}">
+            <span class='font-weight-bold'>{% trans 'Sign Up Now >>' %}</span>
+        </a>
+    </div>
+
 </form>
 
-<div>
-{% get_providers as socialaccount_providers %}
-{% if socialaccount_providers %}
-  <div>{% trans 'Sign In with third party accounts:' %}</div>
-  <div class="line line-sm" style="margin:2px 0 1px 0;"> </div>
-  <div>
-    {% for provider in socialaccount_providers %}
-      <a title="{{provider.name}}" class="social-icon si-borderless si-text-color si-{{provider.id}}"
-         href="{% provider_login_url provider.id process='login' scope=scope auth_params=auth_params %}">
-        <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
-        <i class="icon-{{provider.id}}{% if provider.id == 'github' %}-circled{% endif %}"></i>
-      </a>
-    {% endfor %}
-  </div>
 
-  <div class="clearfix"></div>
-</div>
-{% endif %}
-
-
-<div style="padding-top: 30px;">
-  <a href="{% url 'signup' %}">
-    {% blocktrans %}
-    Don't have an account? <span class='font-weight-bold'>Sign Up Now!</span>
-    {% endblocktrans %}
-  </a>
-</div>
 
 {% endblock sub_content %}
 
