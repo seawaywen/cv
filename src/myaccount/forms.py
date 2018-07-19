@@ -9,8 +9,10 @@ from django.contrib.auth import (
     password_validation,
     forms as adminForms
 )
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.forms import PasswordChangeForm as BasePasswordChangeForm
+from django.contrib.auth.forms import (
+    PasswordResetForm,
+    PasswordChangeForm as BasePasswordChangeForm
+)
 from django.utils.translation import gettext_lazy as _
 
 
@@ -26,15 +28,6 @@ UserModel = get_user_model()
 
 
 class SignInForm(forms.Form):
-    email = forms.CharField(label=_('Email'),
-                            widget=forms.EmailInput(attrs={
-                                'class': 'form-control not-dark',
-                            }))
-
-    password = forms.CharField(label=_('Password'),
-                               widget=forms.PasswordInput(attrs={
-                                   'class': 'form-control not-dark'
-                               }))
 
     error_messages = {
         'invalid_login': _("Please enter a correct %(username)s and password. "
@@ -42,7 +35,23 @@ class SignInForm(forms.Form):
         'inactive': _("This account is inactive."),
     }
 
+    email = forms.CharField(
+        label=_(''), max_length=254,
+        widget=forms.EmailInput(attrs={
+            'placeholder': _('Email'),
+            'autofocus': True
+        }))
+
+    password = forms.CharField(
+        label=_(''),
+        widget=forms.PasswordInput(attrs={
+            #'class': 'form-control not-dark bottommargin-sm',
+            'placeholder': _('Password'),
+        }))
+
     def clean(self):
+        super().clean()
+
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
 
@@ -76,8 +85,6 @@ class SignInForm(forms.Form):
         return self.user_cache
 
     def __init__(self, request=None, *args, **kwargs):
-        self.prefix = 'sign_in'
-
         self.request = request
         self.user_cache = None
         super().__init__(*args, **kwargs)
@@ -87,7 +94,7 @@ class SignInForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.form_id = 'id-signin-form'
+        self.helper.form_id = 'sign-in-form'
         self.helper.form_class = 'nobottommargin'
         self.helper.form_method = 'post'
 
@@ -99,14 +106,16 @@ class SignUpForm(forms.ModelForm):
     }
 
     email = forms.EmailField(
-        label=_('Email'),
+        label=_(''),
         widget=forms.EmailInput(attrs={
             'class': 'form-control not-dark',
+            'placeholder': _('Email'),
         }))
     password2 = forms.CharField(
-        label=_('Re-enter password'),
+        label=_(''),
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control not-dark'
+            'class': 'form-control not-dark',
+            'placeholder': _('Re-enter password'),
         }))
 
     class Meta:
@@ -115,16 +124,12 @@ class SignUpForm(forms.ModelForm):
             'email', 'password'
         ]
         labels = {
-        }
-        help_texts = {
-            'username': ''
+            'password': _('')
         }
         widgets = {
-            "username": forms.TextInput(attrs={
-                'class': 'form-control not-dark'
-            }),
             "password": forms.PasswordInput(attrs={
-                'class': 'form-control not-dark'
+                'class': 'form-control not-dark',
+                'placeholder': _('Password'),
             })
         }
 
@@ -133,13 +138,9 @@ class SignUpForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.form_id = 'signup-form-submit'
-        self.helper.add_input(Submit(
-            'sign-up', _('SignUp Now'),
-            css_class='button button-3d button-green nomargin'))
+        self.helper.form_id = 'sign-up-form'
 
     def clean_email(self):
-
         existing = UserModel.objects.filter(
             email__iexact=self.cleaned_data['email'])
 
@@ -184,11 +185,12 @@ class SignUpForm(forms.ModelForm):
 
 
 class ResetPasswordForm(PasswordResetForm):
-    email = forms.EmailField(label=_("Email Address"),
-                             max_length=254,
-                             widget=forms.EmailInput(attrs={
-                                 'class': 'form-control not-dark',
-                             }))
+    email = forms.EmailField(
+        label=_(''), max_length=254,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control not-dark',
+            'placeholder': _("You email address"),
+        }))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -197,21 +199,33 @@ class ResetPasswordForm(PasswordResetForm):
         self.helper.form_tag = False
         self.helper.add_input(Submit(
             'reset-my-password', _('Reset My Password'),
-            css_class='button button-3d button-green nomargin'))
-
-    def clean_email(self):
-
-        existing = UserModel.objects.filter(
-            email__iexact=self.cleaned_data['email'])
-
-        if not existing.exists():
-            raise forms.ValidationError(
-                _("We don't have user with this email in our database."))
-        else:
-            return self.cleaned_data['email']
+            css_class='button button-green nomargin'))
 
 
 class PasswordChangeForm(BasePasswordChangeForm):
+    old_password = forms.CharField(
+        label=_(''), strip=False,
+        widget=forms.PasswordInput(attrs={
+            'autofocus': True,
+            'class': 'form-control not-dark',
+            'placeholder': _('Old password')
+        }),
+    )
+    new_password1 = forms.CharField(
+        label=_(''),
+        widget=forms.PasswordInput(attrs={
+            'placeholder': _("New password"),
+        }),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        label=_(''),
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            'placeholder': _("New password confirmation")
+        }),
+    )
 
     def __init__(self, user, *args, **kwargs):
 
@@ -225,7 +239,7 @@ class PasswordChangeForm(BasePasswordChangeForm):
         super().__init__(user, *args, **kwargs)
 
 
-### For Admin
+# For Admin
 class UserChangeForm(adminForms.UserChangeForm):
     class Meta:
         model = UserModel
