@@ -3,7 +3,20 @@
 {% load render_bundle from webpack_loader %}
 
 {% block page_css %}
-  {% render_bundle 'portfolio' 'css' %}
+{% render_bundle 'portfolio' 'css' %}
+
+<style>
+    ul {
+        margin: 0;
+    }
+    li {
+        list-style-type:none
+    }
+
+    .form-group {
+        margin-bottom: 1.6rem;
+    }
+</style>
 {% endblock %}
 
 
@@ -12,7 +25,6 @@
 {% block nav-menu %}{% endblock nav-menu %}
 {% block nav-utils %}{% endblock nav-utils %}
 {% block footer-info %} {% endblock footer-info %}
-
 
 
 {% block content %}
