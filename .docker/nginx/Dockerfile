@@ -1,5 +1,5 @@
 FROM nginx
-MAINTAINER Kelvin Li
+MAINTAINER Kelvin Li <kelvin.li@memodir.com>
 EXPOSE 80
 
 RUN rm /etc/nginx/conf.d/default.conf; \
