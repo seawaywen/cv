@@ -167,5 +167,13 @@ destroy-db: stop-db
 	docker rm $(PG_DB_NAME)
 	sudo rm -rf $(PG_DATA_DIR) $(PG_VAR_RUN_DIR)
 
+build-docker-prod:
+	@echo 'build product docker images...'
+	docker-compose -f docker-compose-prod.yml build
+
+build-docker:
+	@echo 'build DEV docker images...'
+	docker-compose -f docker-compose.yml build
+
 
 .PHONY: collectstatic makemessages compilemessages setup-db

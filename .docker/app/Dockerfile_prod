@@ -13,14 +13,20 @@ RUN mkdir $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH
 
-COPY . $INSTALL_PATH/
+#COPY . $INSTALL_PATH/
+COPY django_project locale logs src staticfiles/templates \
+    staticfiles/dist/webpack-stats.json requirements* \
+    .docker/app/docker-entrypoint.sh  $INSTALL_PATH/
 
+#RUN rm -rf $INSTALL_PATH/staticfiles/images && \
+#    rm -rf $INSTALL_PATH/static/images && \
 RUN apk update && \
-    apk add postgresql-libs bash \
+    apk add postgresql-libs \
+        bash \
         # Pillow dependencies
         jpeg-dev zlib-dev && \
     apk add --virtual .build-deps gcc musl-dev postgresql-dev && \
     python3 -m pip install -r requirements.txt --no-cache-dir && \
     apk --purge del .build-deps
 
-ENTRYPOINT ["/code/.docker/app/docker-entrypoint.sh"]
+ENTRYPOINT ["/code/docker-entrypoint.sh"]

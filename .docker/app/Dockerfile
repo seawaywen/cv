@@ -1,6 +1,5 @@
-#FROM python:3-slim
-FROM python:3.5-alpine
-MAINTAINER Kelvin Lii <kelvin.li@memodir.com>
+FROM python:3-slim
+MAINTAINER Kelvin Li <kelvin.li@memodir.com>
 EXPOSE 9000
 
 ENV PYTHONUNBUFFERED=1 \
@@ -15,12 +14,6 @@ WORKDIR $INSTALL_PATH
 
 COPY . $INSTALL_PATH/
 
-RUN apk update && \
-    apk add postgresql-libs bash \
-        # Pillow dependencies
-        jpeg-dev zlib-dev && \
-    apk add --virtual .build-deps gcc musl-dev postgresql-dev && \
-    python3 -m pip install -r requirements.txt -r requirements-devel.txt --no-cache-dir && \
-    apk --purge del .build-deps
+RUN python3 -m pip install -r requirements.txt -r requirements-devel.txt --no-cache-dir
 
 ENTRYPOINT ["/code/.docker/app/docker-entrypoint.sh"]
