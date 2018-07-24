@@ -18,9 +18,12 @@ spec:
       labels:
         app: memodir-nginx-container
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: memodir-nginx
-        image: memodir.azurecr.io/cv_nginx:0.1
+        #image: memodir.azurecr.io/cv_nginx:0.1
+        image: seawaywen/nginx:0.1
         ports:
         - containerPort: 80
         imagePullPolicy: Always

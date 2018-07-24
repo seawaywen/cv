@@ -14,12 +14,14 @@ RUN mkdir $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
 #COPY . $INSTALL_PATH/
-COPY django_project locale logs src staticfiles/templates \
-    staticfiles/dist/webpack-stats.json requirements* \
-    .docker/app/docker-entrypoint.sh  $INSTALL_PATH/
+COPY requirements* .docker/app/docker-entrypoint.sh  $INSTALL_PATH/
+ADD staticfiles/templates $INSTALL_PATH/static/templates
+ADD staticfiles/dist/webpack-stats.json $INSTALL_PATH/staticfiles/dist/
+ADD django_project $INSTALL_PATH/django_project
+ADD locale $INSTALL_PATH/locale
+ADD logs $INSTALL_PATH/logs
+ADD src $INSTALL_PATH/src
 
-#RUN rm -rf $INSTALL_PATH/staticfiles/images && \
-#    rm -rf $INSTALL_PATH/static/images && \
 RUN apk update && \
     apk add postgresql-libs \
         bash \
