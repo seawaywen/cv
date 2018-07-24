@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: ./.docker/app/Dockerfile_prod
     env_file: ./.docker/app/.env
-    volumes:
-      - .:/code
+    #volumes:
+    #  - .:/code
     ports:
       - "9000:9000"
     depends_on:

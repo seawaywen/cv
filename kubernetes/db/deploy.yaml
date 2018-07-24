@@ -17,7 +17,7 @@ spec:
       volumes:
       - name: memodir-db-volume-mount
         persistentVolumeClaim:
-          claimName: memodir-disk-volume-claim
+          claimName: memodir-file-volume-claim
       containers:
       - name: memodir-db
         image: postgres:10.4
