@@ -28,7 +28,7 @@ install-wheels: $(ENV)
 install-wheels-dev: $(ENV) install-wheels 
 	$(MAKE) install-wheels ARGS="-r requirements-devel.txt --pre"
 
-collectstatic.deps.mk collectstatic:
+collectstatic.deps.mk collectstatic: static-assets.deps.mk
 # The ouput is verbose but displayed only on errors.  The log file (from a
 # working branch) can be used as a reference to diagnose the issues. Comment
 # out the redirection to debug.
@@ -51,6 +51,13 @@ endif
 
 
 ### assets ###
+npm-deps-installed: static_src/package.json
+	(cd $(STATIC_SRC_DIR) && yarn) && touch $@
+
+static-assets.deps.mk: npm-deps-installed
+	cd $(STATIC_SRC_DIR) && yarn build
+	echo $@: '\0044(shell find static_src/src)' > $@
+
 
 ### local config ###
 $(LOCAL_SETTINGS_PATH):
