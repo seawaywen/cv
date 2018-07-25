@@ -1,14 +1,15 @@
 .git
-Dockerfile
-.DS_Store
 .gitignore
-.tox
-README.md
-env
-htmlcov
-tmp
+.DS_Store
 
-geckodriver.log
 env
+tmp
+htmlcov
+kubernetes
 static_src
 #staticfiles
+Dockerfile
+geckodriver.log
+docker-compose.yml
+docker-compose-prod.yml
+docker-build.sh

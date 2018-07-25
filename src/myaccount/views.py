@@ -41,8 +41,8 @@ SIGNUP_SALT = getattr(settings, 'SIGNUP_SALT', 'user_signup_salt')
 class SignInView(LoginView):
     template_name = 'signin.html'
     form_class = SignInForm
+    # if user is already authenticated, don't redirect to signIn page again
     redirect_authenticated_user = True
-    success_url = '/profile/1'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

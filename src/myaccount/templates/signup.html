@@ -5,18 +5,22 @@
 
 {% block sub_content %}
 
-<form id="signup-form" name="signup-form"
-      class="nobottommargin" action="{% url 'signup' %}" method="post">
-
-  <h3>{% trans 'SignUp' %}</h3>
+<form id="signup-form" name="signup-form" class="nobottommargin" action="{% url 'signup' %}" method="post">
+  <h3>{% trans 'Sign Up' %}</h3>
 
   {% crispy form form.helper %}
-
+  <div class="form-group topmargin-sm">
+    <div class="col_half">
+        <button class="button button-blue nomargin" formnovalidate id="sign-up-form-submit">{% trans 'Sign Up Now' %}</button>
+    </div>
+    <div class="col_half col_last">
+        <div class='fright' style="margin-top: 8px;">
+        {% trans 'Already have an account?' %}
+        <a href="{% url 'signin' %}"><span class='font-weight-bold'>{% trans 'Sign In here >>' %}</span></a>
+        </div>
+    </div>
+  </div>
 </form>
-
-<div style="padding-top: 20px;">
-  <a href="{% url 'signin' %}">{% trans 'Already have an account? Sign In here' %}</a>
-</div>
 
 
 {% endblock sub_content %}
