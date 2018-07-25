@@ -2,14 +2,16 @@
 from unittest import mock
 
 from django.contrib.auth import user_login_failed
+from django.core import mail
 from django.forms import Field
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.utils.translation import gettext as _
 
 from ..models import User
 from ..forms import (
     SignUpForm,
     SignInForm,
-)
+    ResetPasswordForm, PasswordChangeForm)
 
 
 class TestDataMixin:
@@ -30,7 +32,7 @@ class TestDataMixin:
             email='unknown_password@example.com', password='foo$bar')
 
 
-class UserTestCase(TestDataMixin, TestCase):
+class SignUpTestCase(TestDataMixin, TestCase):
 
     def test_signup_user_already_exists(self):
         data = {
@@ -142,6 +144,20 @@ class SignInFormTest(TestDataMixin, TestCase):
         self.assertFalse(form.is_valid())
         self._check_invalid_login(form)
 
+    @override_settings(AUTHENTICATION_BACKENDS=[
+        'django.contrib.auth.backends.AllowAllUsersModelBackend'])
+    def test_sign_in_with_inactive_user_by_using_allow_all_user_backend(self):
+        data = {
+            'email': 'inactive@example.com',
+            'password': 'password'
+        }
+        form = SignInForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.non_field_errors(), [str(form.error_messages['inactive'])])
+
+
+
     def test_sign_in_with_invalid_email(self):
         data = {
             'email': 'invalid-email-address',
@@ -164,6 +180,7 @@ class SignInFormTest(TestDataMixin, TestCase):
             'email': 'test@example.com',
             'password': 'wrong-password'
         }
+
         try:
             form = SignInForm(fake_request, data=data)
             self.assertFalse(form.is_valid())
@@ -172,16 +189,103 @@ class SignInFormTest(TestDataMixin, TestCase):
         finally:
             user_login_failed.disconnect(signal_handler)
 
+    def test_sign_in_failed_with_empty_password(self):
+        data = {
+            'email': 'test@example.com',
+            'password': ''
+        }
+        form = SignInForm(data=data)
+        required_error = [str(Field.default_error_messages['required'])]
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form['password'].errors, required_error)
+
 
 class ResetPasswordFormTest(TestDataMixin, TestCase):
     """Since the ResetPassword is the subclass of the PasswordResetForm and it
     doesn't have much customization, Django already have pretty good testcase
-    for it"""
-    pass
+    for it, only test the basic behaviours"""
+    def test_invalid_email(self):
+        form = ResetPasswordForm(data={'email': 'invalid-email'})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form['email'].errors, [_('Enter a valid email address.')])
+
+    def test_nonexistent_email(self):
+        """
+        Test nonexistent email address. This should not fail because it would
+        expose information about registered users. and it won't send the email
+        """
+        data = {'email': 'foo@bar.com'}
+        form = ResetPasswordForm(data)
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_reset_ok_with_valid_email(self):
+        form = ResetPasswordForm(data={'email': 'test@example.com'})
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(len(mail.outbox), 1)
 
 
 class PasswordChangeFormTest(TestDataMixin, TestCase):
     """PasswordChangeForm is the subclass of the django auth PasswordChangeForm
     with only a bit UI customization, no form function related change,
-    Django already have pretty good testcases for it"""
-    pass
+    Django already have pretty good testcases for it, only test basic cases"""
+
+    @mock.patch('django.contrib.auth.password_validation.password_changed')
+    def test_change_password_success(self, password_changed):
+        user = User.objects.get(email='test@example.com')
+        data = {
+            'old_password': 'password@abc123',
+            'new_password1': '1tsAnewPassw0rd',
+            'new_password2': '1tsAnewPassw0rd',
+        }
+        form = PasswordChangeForm(user, data)
+        form.is_valid()
+        self.assertTrue(form.is_valid())
+        form.save(commit=False)
+        self.assertEqual(password_changed.call_count, 0)
+        form.save()
+        self.assertEqual(password_changed.call_count, 1)
+
+    def test_change_with_unmatched_new_passwords(self):
+        user = User.objects.get(email='test@example.com')
+        data = {
+            'old_password': 'password@abc123',
+            'new_password1': '1tsAnewPassw0rd_1',
+            'new_password2': '1tsAnewPassw0rd_2',
+        }
+        form = PasswordChangeForm(user, data)
+        form.is_valid()
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors['new_password2'],
+            [form.error_messages['password_mismatch']]
+        )
+
+    def test_missing_passwords(self):
+        user = User.objects.get(email='test@example.com')
+        data = {
+            'old_password': 'password@abc123',
+            'new_password1': '',
+            'new_password2': '',
+        }
+        required_error = [str(Field.default_error_messages['required'])]
+        form = PasswordChangeForm(user, data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['new_password1'], required_error)
+        self.assertEqual(form.errors['new_password2'], required_error)
+
+    def test_failed_with_incorrect_old_password(self):
+        user = User.objects.get(email='test@example.com')
+        data = {
+            'old_password': 'AnOldPaswordIsWrong',
+            'new_password1': '1tsANewPassw@rd',
+            'new_password2': '1tsANewPassw@rd',
+        }
+        form = PasswordChangeForm(user, data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors['old_password'],
+            [form.error_messages['password_incorrect']])

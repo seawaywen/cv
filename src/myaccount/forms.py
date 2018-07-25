@@ -45,7 +45,6 @@ class SignInForm(forms.Form):
     password = forms.CharField(
         label=_(''),
         widget=forms.PasswordInput(attrs={
-            #'class': 'form-control not-dark bottommargin-sm',
             'placeholder': _('Password'),
         }))
 
@@ -75,14 +74,6 @@ class SignInForm(forms.Form):
                 self.error_messages['inactive'],
                 code='inactive',
             )
-
-    def get_user_id(self):
-        if self.user_cache:
-            return self.user_cache.id
-        return None
-
-    def get_user(self):
-        return self.user_cache
 
     def __init__(self, request=None, *args, **kwargs):
         self.request = request
