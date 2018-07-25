@@ -28,7 +28,7 @@ urlpatterns += ([
     path('', RedirectView.as_view(url='main/'), name='home'),
     path('signin', sign_in, name='signin'),
     path('signout', sign_out, name='signout'),
-    path('signup', sign_up, name='signup'),
+    path('signup/', sign_up, name='signup'),
     path('signup/complete/', sign_up_complete, name='signup_complete'),
     path('activate/<activation_key>/', activate,  name='signup_activate'),
     path('activate/complete/', activate_complete,

@@ -70,7 +70,6 @@ class ResetPasswordView(PasswordResetView):
     template_name = 'password_reset_form.html'
     form_class = ResetPasswordForm
     title = _('Password reset')
-    # todo: we should check the email availability in the form first
 
 
 reset_password = ResetPasswordView.as_view()

@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import datetime
 
-from django.test import TestCase, Client, override_settings
+from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from ..models import WorkExperience, WorkExperienceTranslation
+from ..models import WorkExperience
 
 from testings.factory import Factory
 

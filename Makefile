@@ -116,17 +116,17 @@ lint:
 
 
 clean-coverage:
-		@rm -f .coverage
+	@rm -f .coverage
 
 coverage: clean-coverage
-		@$(COVERAGE) run --branch --source=$(shell echo $(ARGS) | sed -e 's/ /,/g') django_project/manage.py test $(ARGS)
-		$(MAKE) coverage-report
+	@$(COVERAGE) run --branch --source=$(shell echo $(ARGS) | sed -e 's/ /,/g') django_project/manage.py test $(ARGS)
+	$(MAKE) coverage-report
 
 coverage-report:
-		@$(COVERAGE) report -m --omit '**/migrations/*'
+	@$(COVERAGE) report -m --omit '**/migrations/*'
 
 coverage-report-html:
-		@$(COVERAGE) html --omit '**/migrations/*'
+	@$(COVERAGE) html --omit '**/migrations/*'
 
 
 test: collectstatic.deps.mk  ## Run unit tests
