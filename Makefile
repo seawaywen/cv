@@ -52,11 +52,11 @@ endif
 
 ### assets ###
 npm-deps-installed: static_src/package.json
-	(cd $(STATIC_SRC_DIR) && yarn) && touch $@
+        (cd $(STATIC_SRC_DIR) && yarn && touch $@
 
 static-assets.deps.mk: npm-deps-installed
-	cd $(STATIC_SRC_DIR) && yarn build
-	echo $@: '\0044(shell find static_src/src)' > $@
+        cd $(STATIC_SRC_DIR) && yarn build
+        echo $@: '\0044(shell find static_src/src)' > $@
 
 
 ### local config ###
@@ -116,17 +116,17 @@ lint:
 
 
 clean-coverage:
-	@rm -f .coverage
+		@rm -f .coverage
 
 coverage: clean-coverage
-	@$(COVERAGE) run --branch --source=$(shell echo $(ARGS) | sed -e 's/ /,/g') django_project/manage.py test $(ARGS)
-	$(MAKE) coverage-report
+		@$(COVERAGE) run --branch --source=$(shell echo $(ARGS) | sed -e 's/ /,/g') django_project/manage.py test $(ARGS)
+		$(MAKE) coverage-report
 
 coverage-report:
-	@$(COVERAGE) report -m --omit '**/migrations/*'
+		@$(COVERAGE) report -m --omit '**/migrations/*'
 
 coverage-report-html:
-	@$(COVERAGE) html --omit '**/migrations/*'
+		@$(COVERAGE) html --omit '**/migrations/*'
 
 
 test: collectstatic.deps.mk  ## Run unit tests
