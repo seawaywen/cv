@@ -1,0 +1,16 @@
+{% extends "password_reset_base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans 'MemoDir sign up Close' %}{% endblock title %}
+
+{% block form_content %}
+<h2>{% trans "User sign-up closed" %}</h2>
+
+<div>
+{% url 'contact' as contact_url %}
+{% blocktrans %}
+Sorry, but signup on the site is disabled for the moment. You can <a href="{{ contact_url }}">contact us</a> for more details.
+{% endblocktrans %}
+</div>
+{% endblock form_content %}
+

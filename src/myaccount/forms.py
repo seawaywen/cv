@@ -45,7 +45,6 @@ class SignInForm(forms.Form):
     password = forms.CharField(
         label=_(''),
         widget=forms.PasswordInput(attrs={
-            #'class': 'form-control not-dark bottommargin-sm',
             'placeholder': _('Password'),
         }))
 
