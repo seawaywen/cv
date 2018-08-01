@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging 
+import logging
 
 from django import forms
 from django.contrib.auth import (
@@ -45,7 +45,6 @@ class SignInForm(forms.Form):
     password = forms.CharField(
         label=_(''),
         widget=forms.PasswordInput(attrs={
-            #'class': 'form-control not-dark bottommargin-sm',
             'placeholder': _('Password'),
         }))
 
@@ -256,4 +255,3 @@ class UserCreationForm(adminForms.UserCreationForm):
 
 class AdminPasswordChangeForm(adminForms.AdminPasswordChangeForm):
     pass
-

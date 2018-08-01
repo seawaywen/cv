@@ -1,0 +1,19 @@
+{% extends 'password_reset_base.html' %}
+{% load i18n static %}
+
+{% block form_content %}
+<h2>{% trans "Activation successful" %}</h2>
+
+{% url 'signin' as signin_url %}
+<div>
+  {% if activation_error %}
+  {% blocktrans %}It occurs some issues when activating your account:{% endblocktrans %}
+  Error code: {{ activation_error.error_code }}
+  Error message: {{ activation_error.message }}
+    {% if activation_error.params %}
+    Error params: {{ activation_error.params  }}
+    {% endif %}}
+  {% endif %}
+
+</div>
+{% endblock form_content %}

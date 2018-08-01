@@ -22,7 +22,7 @@ from django.utils.translation import ugettext_lazy as _  # noqa
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
-
+from myaccount.exceptions import ActivationError
 from myaccount.forms import (
     SignInForm,
     SignUpForm,
@@ -70,7 +70,6 @@ class ResetPasswordView(PasswordResetView):
     template_name = 'password_reset_form.html'
     form_class = ResetPasswordForm
     title = _('Password reset')
-    # todo: we should check the email availability in the form first
 
 
 reset_password = ResetPasswordView.as_view()
@@ -193,7 +192,7 @@ sign_up_complete = SignUpCompleteView.as_view()
 
 
 class ActivationCompleteView(TemplateView):
-    template_name = 'activate_complete.html'
+    template_name = 'activation_complete.html'
 
 
 activate_complete = ActivationCompleteView.as_view()
@@ -201,30 +200,40 @@ activate_complete = ActivationCompleteView.as_view()
 
 class ActivationView(TemplateView):
 
-    template_name = 'activation_complete.html'
-    success_url = 'signup_activate_complete'
+    template_name = 'activate.html'
+    success_url = 'signup_activation_complete'
+
+    ALREADY_ACTIVATED_MESSAGE = _(
+        u'The account you tried to activate has already been activated.'
+    )
+    BAD_EMAIL_MESSAGE = _(
+        u'The account you attempted to activate is invalid.'
+    )
+    EXPIRED_MESSAGE = _(u'This account has expired.')
+    INVALID_KEY_MESSAGE = _(
+        u'The activation key you provided is invalid.'
+    )
 
     def get(self, *args, **kwargs):
-        activated_user = self.activate(*args, **kwargs)
+        context_data = self.get_context_data()
 
-        if activated_user:
+        try:
+            activated_user = self.activate(*args, **kwargs)
+
+        except ActivationError as e:
+            context_data['activation_error'] = {
+                'message': e.message,
+                'code': e.code,
+                'params': e.params
+            }
+        else:
             signals.user_activated.send(sender=self.__class__,
                                         user=activated_user,
                                         request=self.request)
 
-            if hasattr(self, 'get_success_url') and \
-                    callable(self.get_success_url):
-                success_url = self.get_success_url(activated_user)
-            else:
-                success_url = self.success_url
+            return redirect(self.success_url)
 
-            try:
-                to, args, kwargs = success_url
-                return redirect(to, *args, **kwargs)
-            except ValueError:
-                return redirect(success_url)
-
-        return super().get(*args, **kwargs)
+        return self.render_to_response(context_data)
 
     def activate(self, *args, **kwargs):
         activation_key = kwargs.get('activation_key')
@@ -237,19 +246,52 @@ class ActivationView(TemplateView):
 
             user = User.objects.get(**{
                 User.USERNAME_FIELD: username,
-                'is_active': False
             })
+
+            if user.is_active:
+                raise ActivationError(
+                    self.ALREADY_ACTIVATED_MESSAGE,
+                    code='already_activated'
+                )
 
             user.is_active = True
             user.save()
+
             return user
+        except signing.SignatureExpired:
+            raise ActivationError(
+                self.EXPIRED_MESSAGE,
+                code='expired'
+            )
         except signing.BadSignature:
-            return False
+            raise ActivationError(
+                self.INVALID_KEY_MESSAGE,
+                code='invalid_key',
+                params={'activation_key': activation_key}
+            )
         except User.DoesNotExist:
-            return False
+            raise ActivationError(
+                self.BAD_EMAIL_MESSAGE,
+                code='bad_email'
+            )
 
 
 activate = ActivationView.as_view()
+
+
+class SignUpClosedView(TemplateView):
+    template_name = 'signup_closed.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'contact': getattr(
+                settings, 'EMAIL_DEFAULT_FROM',  'support@memodir.com')
+        })
+        return context
+
+
+sign_up_closed = SignUpClosedView.as_view()
 
 
 def post_signup_handler(sender, **kwargs):

@@ -52,9 +52,8 @@ class WorkExperienceTestCase(TestCase):
 
         self.assertSetEqual(
             work_experience.get_filled_languages(), expected_langs)
-
-        self.assertListEqual(
-            work_experience.get_filled_language_list(), list(expected_langs))
+        self.assertSetEqual(
+            set(work_experience.get_filled_language_list()), expected_langs)
 
         self.assertListEqual(work_experience.get_unfilled_languages(), ['fr'])
 
