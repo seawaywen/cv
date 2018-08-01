@@ -343,7 +343,6 @@ LOGGING = {
     }
 }
 
-
 SITE_ID = 1
 
 TINYMCE_DEFAULT_CONFIG = {
@@ -361,5 +360,4 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '100%',
     'height': 300
 }
-
 
