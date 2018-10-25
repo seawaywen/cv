@@ -1,14 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleTracker = require('webpack-bundle-tracker');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const settings = require('./settings');
 const utils = require('./utils');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const sourceMapEnabled = isProduction ? settings.prod.sourceMap
-  : settings.dev.sourceMap;
+const sourceMapEnabled = isProduction ? settings.prod.sourceMap : settings.dev.sourceMap;
+
 
 //console.log(process.env)
 function resolve (dir) {
@@ -46,7 +48,10 @@ module.exports = {
       {
         test: /(\.js)$/,
         loader: "babel-loader",
-        exclude: /node_modules/
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        )
       },
       {
         test: /\.vue$/,
@@ -67,51 +72,51 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use:
-          ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: {
-                  sourceMap: sourceMapEnabled
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            //loader: isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+          },
+          {
+            loader: "css-loader",
+            options: {
+                sourceMap: sourceMapEnabled
                 }
-              },
-              {
-                loader: "postcss-loader",
-                options: {
-                  sourceMap: 'inline'
-                }
-              }
-            ]
-          }))
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+                sourceMap: 'inline'
+            }
+          }
+         ]
       },
       {
         test: /\.less$/,
-        use:
-          ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: {
-                  sourceMap: sourceMapEnabled
-                }
-              }, {
-                loader: "postcss-loader",
-                options: {
-                  sourceMap: 'inline'
-                }
-              }, {
-                loader: "less-loader",
-                options: {
-                  sourceMap: sourceMapEnabled,
-                  precision: 8,
-                  data: "$ENV: " + "PRODUCTION" + ";"
-                }
-              }
-            ]
-          }))
+        use: [
+          {
+            //loader: isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: sourceMapEnabled
+            }
+          }, {
+            loader: "postcss-loader",
+            options: {
+              sourceMap: 'inline'
+            }
+          }, {
+            loader: "less-loader",
+            options: {
+              sourceMap: sourceMapEnabled,
+              precision: 8,
+              data: "$ENV: " + "PRODUCTION" + ";"
+            }
+          }
+        ]
       },
       {
         test: /\.(png|svg|gif|jpe?g)(\?.*)?$/,
@@ -151,13 +156,20 @@ module.exports = {
 
   plugins: [
 
-    new webpack.BannerPlugin('memodir.com Copyright reserves@2018'),
+    new webpack.BannerPlugin('memodir.com copyright reserves@2018'),
+
+    new VueLoaderPlugin(),
 
     new BundleTracker({filename: './dist/webpack-stats.json'}) ,
 
+    new MiniCssExtractPlugin({
+        filename: isProduction ? '[name].[hash].css' : '[name].css',
+        chunkFilename: isProduction ? '[id].[hash].css' : '[id].css',
+    }),
+
     new ExtractTextPlugin({
-      filename: isProduction
-        ? settings.prod.cssFilename : settings.dev.cssFilename
+      filename: isProduction ? settings.prod.cssFilename : settings.dev.cssFilename
     })
+
   ]
 };

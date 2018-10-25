@@ -11,6 +11,8 @@ const settings = require('./settings');
 
 
 const prodWebpackConfig = merge(baseWebpackConfig, {
+  mode: 'production',
+  
   devtool: false,
 
   plugins: [

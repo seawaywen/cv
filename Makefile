@@ -52,12 +52,13 @@ endif
 
 ### assets ###
 npm-deps-installed: static_src/package.json
-        (cd $(STATIC_SRC_DIR) && yarn && touch $@
+	cd $(STATIC_SRC_DIR) && yarn && touch $@
 
 static-assets.deps.mk: npm-deps-installed
-        cd $(STATIC_SRC_DIR) && yarn build
-        echo $@: '\0044(shell find static_src/src)' > $@
+	echo $@: '\0044(shell find static_src/src)' > $@
 
+build-asset: static-assets.deps.mk
+	cd $(STATIC_SRC_DIR) && yarn build
 
 ### local config ###
 $(LOCAL_SETTINGS_PATH):
