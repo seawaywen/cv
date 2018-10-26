@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block page_css %}
-  {% render_bundle 'portfolio' 'css' %}
+  {% render_bundle 'profile' 'css' %}
 {% endblock page_css %}
 
 
@@ -34,7 +34,7 @@
 
 
 {% block page_js %}
-  {% render_bundle 'portfolio' 'js' %}
+  {% render_bundle 'profile' 'js' %}
   {{ block.super }}
 {% endblock page_js %}
 

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "node_modules/.bin/webpack --config config/webpack.dev.config.js",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --progress --config config/webpack.dev.config.js --mode=development",
-    "prod-build": "NODE_ENV=production webpack --config config/webpack.prod.config.js --mode=production",
+    "dev": "webpack-dev-server --progress --config config/webpack.dev.config.js --mode=production",
+    "prod-build": "NODE_ENV=production node_modules/.bin/webpack --config config/webpack.prod.config.js --mode=production",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -26,7 +26,6 @@
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",

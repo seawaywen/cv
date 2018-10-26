@@ -22,21 +22,22 @@
   </style>
 {% endblock page_css %}
 
-{% block title %}Profile{% endblock title %}
+{% block title %}{% trans 'Profile' %}{% endblock title %}
 
 {% block slider %}{% endblock slider %}
 
 {% block content %}
 
   <section id="page-title" class="page-title-parallax page-title-dark page-title-right"
-           style="padding: 250px 0; background: rgba(20, 20, 20, 0.70)  top center; background-size: cover;"
+           style="padding: 80px 0; background: rgba(20, 20, 20, 0.70)  top center;
+           background-size: cover;"
            data-bottom-top="background-position:0px 440px;" data-top-bottom="background-position:0px -500px;">
 
     <div class="container clearfix">
       <div class="slider-caption dark slider-caption-right">
         <h1 class="font-primary ls1" data-animate="fadeIn" style="text-transform: capitalize">
           {% if object.full_user_name %}
-          {{ object.full_user_name }}
+            {{ object.full_user_name }}
           {% else %}
           &nbsp;
           {% endif %}
@@ -58,6 +59,7 @@
         {% endcomment %}
         {% if object.user == user %}
           <div class="fright">
+          </div>
         {% endif %}
       </div>
     </div>
@@ -113,7 +115,9 @@
         </div>
       </div>
 
-      <div id="section-skills" class="section page-section nomargin dark clearfix" style="background: rgba(50, 50, 50, 0.9) url({% static "images/about/me-parallax1.jpg" %}) no-repeat top center; background-size: cover; padding: 40px 0">
+      <div id="section-skills" class="section page-section nomargin dark clearfix"
+           style="background: rgba(50, 50, 50, 0.9) url({% static "images/about/me-parallax1.jpg" %}) no-repeat top center;
+           background-size: cover; padding: 40px 0">
         <div class="container clearfix">
           <div class="heading-block noborder">
             <h3 class="font-primary center">Tech stack & Skills</h3>

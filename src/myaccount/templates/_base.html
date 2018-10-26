@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block page_css %}
-{% render_bundle 'portfolio' 'css' %}
+{% render_bundle 'base' 'css' %}
 
 <style>
     ul {
@@ -32,7 +32,7 @@
 
     <div class="section nopadding nomargin"
          style="width: 100%; height: 100%; position: absolute; left: 0; top: 0;
-             background: url({% static 'images/parallax/home/6.jpg' %}) center center no-repeat;
+             background: url({% static 'images/parallax/blur1.jpg' %}) center center no-repeat;
              background-size: cover;"></div>
 
     <div class="nobg full-screen clearfix">
@@ -54,8 +54,6 @@
 
 
 {% block page_js %}
-
-  {% render_bundle 'portfolio' 'js' %}
   {{ block.super }}
 {% endblock page_js %}
 

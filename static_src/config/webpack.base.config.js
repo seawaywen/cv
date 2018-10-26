@@ -22,6 +22,7 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
 
   entry: {
+    base: './src/js/base.js',
     portfolio: './src/js/portfolio.js',
     profile: './src/js/profile.js',
     blog: './src/js/blog.js'
