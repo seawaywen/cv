@@ -172,3 +172,6 @@ Production build
 
     $ yarn prod-build  
 
+# work version: "vue-loader": "^14.2.2",
+"extract-text-webpack-plugin": "^4.0.0-beta.0",
+

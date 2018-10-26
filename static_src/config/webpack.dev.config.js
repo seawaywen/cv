@@ -6,7 +6,8 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 
 const devWebpackConfig = merge(baseWebpackConfig, {
-
+  mode: 'development',
+  
   devtool: 'eval-source-map',
 
   devServer: {
@@ -34,6 +35,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
 
   plugins: [
+
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
