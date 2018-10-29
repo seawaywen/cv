@@ -1,5 +1,5 @@
 FROM python:3-slim
-MAINTAINER Kelvin Li <kelvin.li@memodir.com>
+LABEL maintainer="Kelvin Li<kelvin.li@memodir.com>"
 EXPOSE 9000
 
 ENV PYTHONUNBUFFERED=1 \
