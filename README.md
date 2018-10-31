@@ -1,9 +1,10 @@
-# CV development and deployment guideline 
+# CV project guideline
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fd24ee6f1fae4927ae7530dbe4578eb3)](https://app.codacy.com/app/seawaywen/cv?utm_source=github.com&utm_medium=referral&utm_content=memodir/cv&utm_campaign=Badge_Grade_Settings)
 
+##Development
 
-## Dev on Mac OSX
+### Dev on Mac OSX
 #### 1. pre-install packages
 
 Install the postgresql client  
@@ -67,8 +68,8 @@ this command will pull the postgres docker image and create a docker container, 
 
 
 
-
-## Deploy with Kubernetes  
+##Deployment
+### Deploy with Kubernetes
 #### database setup
     1. Persistent volume with file type
     $ kubectl apply -f kubernetes/db/persistent-volume-file.yaml
@@ -173,7 +174,3 @@ A task is defined to run the build with the running server
 Production build   
 
     $ yarn prod-build  
-
-# work version: "vue-loader": "^14.2.2",
-"extract-text-webpack-plugin": "^4.0.0-beta.0",
-

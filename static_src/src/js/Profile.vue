@@ -1,18 +1,12 @@
 <template>
-  <div>
-  </div>
+  <div></div>
 </template>
 
 <script>
-import Hello from '../components/Hello.vue'
 import MediumEditor from '../components/MediumEditor.vue'
-//import MediumEditor from 'medium-editor'
-
-//var editor = new MediumEditor('.cool-editor');
 
 export default {
   components: {
-    //Hello,
     MediumEditor
   },
   data () {
@@ -23,7 +17,5 @@ export default {
 }
 </script>
 
-<!--style lang="css">
-@import "~medium-editor/dist/css/medium-editor.css";
-@import "~medium-editor/dist/css/themes/default.min.css";
-</style-->
+<style lang="css">
+</style>

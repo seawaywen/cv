@@ -142,8 +142,14 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
-      }
-    ]
+      },
+
+      {
+        test: require.resolve("blueimp-file-upload"),
+        loader: "imports-loader?define=>false"
+      },
+    ],
+
   },
 
   resolve: {

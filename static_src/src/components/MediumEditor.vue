@@ -2,9 +2,16 @@
 </template>
 
 <script>
-  import MediumEditor from 'medium-editor'
+  require('imports-loader?define=>false&exports=>false!blueimp-file-upload/js/jquery.fileupload.js');
 
-  var editor = new MediumEditor('.cool-editor', {
+  import MediumEditor from 'medium-editor'
+  import MediumInsert from 'medium-editor-insert-plugin'
+
+  // A workaround for the console error:
+  // TypeError: undefined is not an object (evaluating 'window.MediumInsert.Templates')
+  window.MediumInsert = MediumInsert.MediumInsert;
+
+  let editor = new MediumEditor('.cool-editor', {
     placeholder: {
         text: 'Start your writing...',
         hideOnClick: true
@@ -44,9 +51,13 @@
     }
   });
 
+  $('.cool-editor').mediumInsert({
+    editor: editor
+  });
 </script>
 
 <style lang="css">
-  @import "~medium-editor/dist/css/medium-editor.css";
-  @import "~medium-editor/dist/css/themes/default.min.css";
+@import "~medium-editor/dist/css/medium-editor.min.css";
+@import "~medium-editor/dist/css/themes/default.min.css";
+@import "~medium-editor-insert-plugin/dist/css/medium-editor-insert-plugin.min.css";
 </style>
