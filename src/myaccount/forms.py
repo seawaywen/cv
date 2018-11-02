@@ -36,14 +36,14 @@ class SignInForm(forms.Form):
     }
 
     email = forms.CharField(
-        label=_(''), max_length=254,
+        label=_('Email'), max_length=254,
         widget=forms.EmailInput(attrs={
             'placeholder': _('Email'),
             'autofocus': True
         }))
 
     password = forms.CharField(
-        label=_(''),
+        label=_('Password'),
         widget=forms.PasswordInput(attrs={
             'placeholder': _('Password'),
         }))
@@ -105,13 +105,13 @@ class SignUpForm(forms.ModelForm):
     }
 
     email = forms.EmailField(
-        label=_(''),
+        label=_('Email'),
         widget=forms.EmailInput(attrs={
             'class': 'form-control not-dark',
             'placeholder': _('Email'),
         }))
     password2 = forms.CharField(
-        label=_(''),
+        label=_('Confirm password'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control not-dark',
             'placeholder': _('Re-enter password'),
@@ -123,7 +123,7 @@ class SignUpForm(forms.ModelForm):
             'email', 'password'
         ]
         labels = {
-            'password': _('')
+            'password': _('Password')
         }
         widgets = {
             "password": forms.PasswordInput(attrs={
@@ -185,7 +185,7 @@ class SignUpForm(forms.ModelForm):
 
 class ResetPasswordForm(PasswordResetForm):
     email = forms.EmailField(
-        label=_(''), max_length=254,
+        label=_('Email'), max_length=254,
         widget=forms.EmailInput(attrs={
             'class': 'form-control not-dark',
             'placeholder': _("You email address"),
@@ -203,7 +203,7 @@ class ResetPasswordForm(PasswordResetForm):
 
 class PasswordChangeForm(BasePasswordChangeForm):
     old_password = forms.CharField(
-        label=_(''), strip=False,
+        label=_('Password'), strip=False,
         widget=forms.PasswordInput(attrs={
             'autofocus': True,
             'class': 'form-control not-dark',
@@ -211,7 +211,7 @@ class PasswordChangeForm(BasePasswordChangeForm):
         }),
     )
     new_password1 = forms.CharField(
-        label=_(''),
+        label=_('New password'),
         widget=forms.PasswordInput(attrs={
             'placeholder': _("New password"),
         }),
@@ -219,7 +219,7 @@ class PasswordChangeForm(BasePasswordChangeForm):
         help_text=password_validation.password_validators_help_text_html(),
     )
     new_password2 = forms.CharField(
-        label=_(''),
+        label=_('Confirm new password'),
         strip=False,
         widget=forms.PasswordInput(attrs={
             'placeholder': _("New password confirmation")

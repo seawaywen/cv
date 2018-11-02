@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-22 03:06+0000\n"
+"POT-Creation-Date: 2018-11-02 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,71 +18,153 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: forms.py:26 forms.py:92
-msgid "Email"
+#: admin.py:20
+msgid "Personal info"
 msgstr ""
 
-#: forms.py:31
-msgid "Password"
+#: admin.py:21
+msgid "Permissions"
 msgstr ""
 
-#: forms.py:37
+#: admin.py:23
+msgid "Important dates"
+msgstr ""
+
+#: apps.py:11
+msgid "MyAccount"
+msgstr ""
+
+#: forms.py:33
 #, python-format
 msgid ""
 "Please enter a correct %(username)s and password. Note that both fields may "
 "be case-sensitive."
 msgstr ""
 
-#: forms.py:39
+#: forms.py:35
 msgid "This account is inactive."
 msgstr "此帐户处于未激活状态."
 
-#: forms.py:96
-msgid "Re-enter password"
-msgstr "再输一遍密码"
-
-#: forms.py:127
-msgid "SignUp Now"
-msgstr "立即注册"
-
-#: forms.py:146
-msgid "The username already exists."
-msgstr "用户名已存在。"
-
-#: forms.py:151
-msgid "The username cannot be None value."
+#: forms.py:39 forms.py:41 forms.py:108 forms.py:111 forms.py:188
+msgid "Email"
 msgstr ""
 
-#: forms.py:160
-msgid "A user with this email already exists."
-msgstr "使用该邮箱的用户已经存在。"
+#: forms.py:46 forms.py:48 forms.py:126 forms.py:131 forms.py:206
+msgid "Password"
+msgstr ""
 
-#: forms.py:186
+#: forms.py:104
 msgid "The two password fields didn't match."
 msgstr "两次密码输入不同。"
 
-#: forms.py:199
-msgid "Email Address"
+#: forms.py:114
+#, fuzzy
+#| msgid "Re-enter password"
+msgid "Confirm password"
+msgstr "再输一遍密码"
+
+#: forms.py:117
+msgid "Re-enter password"
+msgstr "再输一遍密码"
+
+#: forms.py:148
+msgid "A user with this email already exists."
+msgstr "使用该邮箱的用户已经存在。"
+
+#: forms.py:191
+msgid "You email address"
 msgstr ""
 
-#: forms.py:211
+#: forms.py:200
 #, fuzzy
 #| msgid "Re-enter password"
 msgid "Reset My Password"
 msgstr "再输一遍密码"
 
-#: forms.py:221
+#: forms.py:210
 #, fuzzy
-#| msgid "A user with this email already exists."
-msgid "We don't have user with this email in our database."
-msgstr "使用该邮箱的用户已经存在。"
+#| msgid "Re-enter password"
+msgid "Old password"
+msgstr "再输一遍密码"
 
-#: forms.py:234
+#: forms.py:214 forms.py:216
+#, fuzzy
+#| msgid "Re-enter password"
+msgid "New password"
+msgstr "再输一遍密码"
+
+#: forms.py:222
+#, fuzzy
+#| msgid "Re-enter password"
+msgid "Confirm new password"
+msgstr "再输一遍密码"
+
+#: forms.py:225
+msgid "New password confirmation"
+msgstr ""
+
+#: forms.py:235
 msgid "Change my password"
 msgstr ""
 
-#: templates/activation_complete.html:5
+#: models.py:29
+msgid "email"
+msgstr ""
+
+#: models.py:31
+msgid "mobile"
+msgstr ""
+
+#: models.py:34
+msgid "namespace"
+msgstr ""
+
+#: models.py:36
+msgid ""
+"Required before creating any related operation.\n"
+"Lower-case letters, numbers, dots or hyphens allowed only."
+msgstr ""
+
+#: models.py:40
+msgid "full name"
+msgstr ""
+
+#: models.py:43
+msgid "staff status"
+msgstr ""
+
+#: models.py:45
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: models.py:48
+msgid "active"
+msgstr ""
+
+#: models.py:51
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: models.py:55
+msgid "date joined"
+msgstr ""
+
+#: models.py:64
+msgid "user"
+msgstr ""
+
+#: models.py:65
+msgid "users"
+msgstr ""
+
+#: templates/activate.html:5 templates/activation_complete.html:5
 msgid "Activation successful"
+msgstr ""
+
+#: templates/activate.html:10
+msgid "It occurs some issues when activating your account:"
 msgstr ""
 
 #: templates/activation_complete.html:9
@@ -101,7 +183,7 @@ msgid ""
 "http://%(site_domain)s%(activate_url)s\n"
 "\n"
 "Please do take note that if your activation does not succeed\n"
-"within %(expiration_days)s days, you will have to restart\n"
+"within %(expiration_hours)s hours, you will have to restart\n"
 "the activation process.\n"
 "\n"
 "Kind regards,\n"
@@ -119,8 +201,8 @@ msgstr ""
 msgid "Your password has been reset.  You can go ahead and signIn now."
 msgstr ""
 
-#: templates/password_reset_complete.html:10 templates/signin.html:11
-#: templates/signin.html:19
+#: templates/password_reset_complete.html:10 templates/signin.html:6
+#: templates/signin.html:18
 msgid "SignIn"
 msgstr "登录"
 
@@ -159,15 +241,11 @@ msgstr ""
 msgid "Please go to the following page and choose a new password:"
 msgstr ""
 
-#: templates/password_reset_email.html:8
-msgid "Your username, in case you've forgotten:"
-msgstr ""
-
-#: templates/password_reset_email.html:10
+#: templates/password_reset_email.html:9
 msgid "Thanks for using our site!"
 msgstr ""
 
-#: templates/password_reset_email.html:12
+#: templates/password_reset_email.html:11
 #, python-format
 msgid "The %(site_name)s team"
 msgstr ""
@@ -183,21 +261,31 @@ msgstr ""
 msgid "Password reset on %(site_name)s"
 msgstr ""
 
-#: templates/signin.html:21
+#: templates/signin.html:10
+#, fuzzy
+#| msgid "SignIn"
+msgid "Sign In"
+msgstr "登录"
+
+#: templates/signin.html:19
 msgid "Forgot Password?"
 msgstr "忘记密码？"
 
-#: templates/signin.html:28
-msgid "Sign In with third party accounts:"
+#: templates/signin.html:26
+#, fuzzy
+#| msgid "SignIn"
+msgid "SignIn with"
+msgstr "登录"
+
+#: templates/signin.html:40
+msgid "New to MemoDir? "
 msgstr ""
 
-#: templates/signin.html:47
-msgid ""
-"\n"
-"    Don't have an account? <span class='font-weight-bold'>Sign Up Now!</"
-"span>\n"
-"    "
-msgstr ""
+#: templates/signin.html:42
+#, fuzzy
+#| msgid "SignUp Now"
+msgid "Sign Up Now >>"
+msgstr "立即注册"
 
 #: templates/signout.html:6
 msgid "Thanks for spending some quality time with the Web site today."
@@ -209,15 +297,43 @@ msgstr ""
 msgid "SignIn again"
 msgstr "登录"
 
-#: templates/signup.html:11
-msgid "SignUp"
+#: templates/signup.html:9
+#, fuzzy
+#| msgid "SignUp"
+msgid "Sign Up"
 msgstr "注册"
+
+#: templates/signup.html:14
+#, fuzzy
+#| msgid "SignUp Now"
+msgid "Sign Up Now"
+msgstr "立即注册"
 
 #: templates/signup.html:18
 #, fuzzy
 #| msgid "Already have an account? SignUp HERE"
-msgid "Already have an account? Sign In here"
+msgid "Already have an account?"
 msgstr "已经有一个账户了？从这儿登录"
+
+#: templates/signup.html:19
+msgid "Sign In here >>"
+msgstr ""
+
+#: templates/signup_closed.html:4
+msgid "MemoDir sign up Close"
+msgstr ""
+
+#: templates/signup_closed.html:7
+msgid "User sign-up closed"
+msgstr ""
+
+#: templates/signup_closed.html:11
+#, python-format
+msgid ""
+"\n"
+"Sorry, but signup on the site is disabled for the moment. You can <a href="
+"\"%(contact_url)s\">contact us</a> for more details.\n"
+msgstr ""
 
 #: templates/signup_complete.html:6
 msgid "User registration successful"
@@ -229,47 +345,92 @@ msgid ""
 "address you submitted. You should be receiving it shortly."
 msgstr ""
 
-#: validators.py:14
+#: templates/signup_complete.html:14
+#, python-format
+msgid "<a href=\"%(signin_url)s\">back to Sign In now</a>"
+msgstr ""
+
+#: tests/test_forms.py:211
+msgid "Enter a valid email address."
+msgstr ""
+
+#: validators.py:18
 msgid "This name cannot be registered. Please choose a different name."
 msgstr ""
 
-#: validators.py:16
+#: validators.py:20
 msgid ""
 "This email address cannot be registered. Please supply a different email "
 "address."
 msgstr ""
 
-#: validators.py:18
+#: validators.py:22
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
 msgstr ""
 
-#: validators.py:20
+#: validators.py:24
 msgid ""
 "Registration using free email addresses is prohibited. Please supply a "
 "different email address."
 msgstr ""
 
-#: validators.py:22
+#: validators.py:26
 msgid "This name is reserved and cannot be registered."
 msgstr ""
 
-#: validators.py:23
+#: validators.py:27
 msgid "You must agree to the terms to register"
 msgstr ""
 
-#: views.py:61
+#: validators.py:238
+msgid ""
+"Enter a value consisting of lower-case letters, numbers or hyphens. Hyphens "
+"can not occur at the start or end of the chosen value."
+msgstr ""
+
+#: validators.py:246
+msgid "You cannot use this reserved namespace."
+msgstr ""
+
+#: views.py:60
 msgid "Signed Out"
 msgstr ""
 
-#: views.py:73
+#: views.py:72
 msgid "Password reset"
 msgstr "重置密码"
 
-#: views.py:82
+#: views.py:80
 msgid "Password reset sent"
 msgstr "重置的密码已经发送"
+
+#: views.py:207
+msgid "The account you tried to activate has already been activated."
+msgstr ""
+
+#: views.py:210
+msgid "The account you attempted to activate is invalid."
+msgstr ""
+
+#: views.py:212
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "This account has expired."
+msgstr "此帐户处于未激活状态."
+
+#: views.py:214
+msgid "The activation key you provided is invalid."
+msgstr ""
+
+#~ msgid "The username already exists."
+#~ msgstr "用户名已存在。"
+
+#, fuzzy
+#~| msgid "A user with this email already exists."
+#~ msgid "We don't have user with this email in our database."
+#~ msgstr "使用该邮箱的用户已经存在。"
 
 #~ msgid "Don't have an account? Signup one now!"
 #~ msgstr "还没有账户？现在就注册一个"

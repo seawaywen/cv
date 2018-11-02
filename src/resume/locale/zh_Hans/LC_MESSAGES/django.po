@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-22 03:06+0000\n"
+"POT-Creation-Date: 2018-11-02 11:58+0000\n"
 "PO-Revision-Date: 2018-04-09 11:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,109 +22,109 @@ msgstr ""
 msgid "User Info"
 msgstr "用户信息"
 
-#: admin.py:38 views.py:38
+#: admin.py:38 views.py:41
 msgid "Job Position"
 msgstr "工作职位"
 
-#: admin.py:42 models.py:72 views.py:38
+#: admin.py:42 models.py:82 views.py:41
 msgid "Location"
 msgstr "位置"
 
-#: forms.py:50 forms.py:74
+#: apps.py:12
+msgid "Resume"
+msgstr ""
+
+#: forms.py:51 forms.py:76
 msgid "*Start date"
 msgstr "*开始时间"
 
-#: forms.py:54 forms.py:80 models.py:110
+#: forms.py:55 forms.py:82 models.py:122
 msgid "End date"
 msgstr "结束时间"
 
-#: forms.py:96
+#: forms.py:98
 msgid "*Company name"
 msgstr "*公司"
 
-#: forms.py:99
+#: forms.py:101
 msgid "*Job position"
 msgstr "*工作职位"
 
-#: forms.py:102
+#: forms.py:104
 msgid "*Location"
 msgstr "*位置"
 
-#: forms.py:122
-msgid "Your selected language currently is not supported in the system!"
-msgstr ""
+#: forms.py:128 models.py:153
+msgid "End date should not be earlier than start date!"
+msgstr "结束日期不能比开始时间早!"
 
-#: models.py:63
+#: models.py:73
 msgid "*--- select language ---"
 msgstr "*--- 请选择语言 ---"
 
-#: models.py:68 views.py:37
+#: models.py:78 views.py:40
 msgid "Language"
 msgstr "语言"
 
-#: models.py:70
+#: models.py:80
 msgid "Job position"
 msgstr "工作职位"
 
-#: models.py:71 views.py:37
+#: models.py:81 views.py:40
 msgid "Company"
 msgstr "公司"
 
-#: models.py:75
+#: models.py:85
 msgid "Highlighted contribution"
 msgstr "突出贡献"
 
-#: models.py:77 views.py:41
+#: models.py:87 views.py:44
 msgid "Keywords"
 msgstr "关键词"
 
-#: models.py:78
+#: models.py:88
 msgid "The words that might search for when looking"
 msgstr "可能的搜索词"
 
-#: models.py:107
+#: models.py:120
 msgid "Is this experience public?"
 msgstr "是否公开此经验?"
 
-#: models.py:108
+#: models.py:121
 #, fuzzy
 #| msgid "Start Date"
 msgid "Start date"
 msgstr "开始时间"
 
-#: models.py:142
-msgid "End date should not be earlier than start date!"
-msgstr "结束日期不能比开始时间早!"
-
-#: models.py:156 views.py:55 views.py:80
+#: models.py:183 views.py:58 views.py:83
 msgid "Title"
 msgstr "标题"
 
-#: models.py:158 views.py:55 views.py:80
+#: models.py:185 views.py:58 views.py:83
 msgid "Download Link"
 msgstr "下载链接"
 
-#: models.py:159 views.py:56 views.py:81
+#: models.py:186 views.py:59 views.py:84
 msgid "Live Link"
 msgstr "在线展示链接"
 
-#: models.py:160 views.py:56 views.py:81
+#: models.py:187 views.py:59 views.py:84
 msgid "Github"
 msgstr ""
 
-#: models.py:161
+#: models.py:188
 msgid "Summary"
 msgstr "摘要"
 
-#: models.py:164
+#: models.py:191
 msgid "Project Image"
 msgstr "项目图片"
 
-#: models.py:165
+#: models.py:192
 msgid "A 300x300 image for the project"
 msgstr "一张300x300大小的项目图片"
 
-#: models.py:167
+#: models.py:194
 msgid "Is this project public?"
 msgstr "是否公开此经验?"
 
@@ -132,7 +132,7 @@ msgstr "是否公开此经验?"
 msgid "Deletion confirmation"
 msgstr "删除确认"
 
-#: templates/confirm_delete.html:34
+#: templates/confirm_delete.html:45
 msgid "Confirm deletion"
 msgstr "确认删除"
 
@@ -148,101 +148,122 @@ msgstr "项目"
 msgid "Create new work experience"
 msgstr "创建新的工作经验"
 
-#: templates/work_experience_list.html:43
+#: templates/work_experience_list.html:76
 msgid "Work experience list"
 msgstr "工作经验"
 
-#: templates/work_experience_list.html:45 views.py:203
+#: templates/work_experience_list.html:80
+msgid "Batch delete"
+msgstr ""
+
+#: templates/work_experience_list.html:82 views.py:207
 msgid "Create new experience"
 msgstr "创建新的工作经验"
 
-#: templates/work_experience_list.html:50
+#: templates/work_experience_list.html:87
 msgid "preview in public mode"
 msgstr "公开模式预览"
 
-#: templates/work_experience_list.html:52
+#: templates/work_experience_list.html:89
 msgid "show all"
 msgstr ""
 
-#: templates/work_experience_list.html:66
-msgid "N/A"
-msgstr "不可用"
-
-#: templates/work_experience_list.html:70
-#: templates/work_experience_translation-list.html:58
-msgid "Edit"
-msgstr "编辑"
-
-#: templates/work_experience_list.html:71
-#: templates/work_experience_translation-list.html:59
-msgid "Delete"
-msgstr "删除"
-
-#: templates/work_experience_list.html:91
-#: templates/work_experience_translation-list.html:35
+#: templates/work_experience_list.html:106
+#: templates/work_experience_list.html:157
+#: templates/work_experience_translation-list.html:40
 msgid "Now"
 msgstr "现在"
 
-#: templates/work_experience_translation-list.html:22
+#: templates/work_experience_list.html:122
+msgid "N/A"
+msgstr "不可用"
+
+#: templates/work_experience_list.html:132
+#: templates/work_experience_translation-list.html:74
+msgid "Edit"
+msgstr "编辑"
+
+#: templates/work_experience_list.html:133
+#: templates/work_experience_translation-list.html:75
+msgid "Delete"
+msgstr "删除"
+
+#: templates/work_experience_list.html:138
+#: templates/work_experience_translation-list.html:51
+msgid "Public"
+msgstr ""
+
+#: templates/work_experience_list.html:140
+#: templates/work_experience_translation-list.html:53
+msgid "Un-Public"
+msgstr ""
+
+#: templates/work_experience_translation-list.html:27
 #: templates/work_experience_translation.html:12
 msgid "my experience list"
 msgstr "我的工作经验列表"
 
-#: templates/work_experience_translation-list.html:38
+#: templates/work_experience_translation-list.html:45
 msgid "Add translation"
 msgstr "添加翻译"
 
-#: validators.py:18
-msgid ""
-"Enter a value consisting of lower-case letters, numbers or hyphens. Hyphens "
-"can not occur at the start or end of the chosen value."
+#: tests/test_forms.py:35
+msgid "Select a valid choice. INVALID is not one of the available choices."
 msgstr ""
-"输入一个包含小写字母，数字或者短横线(-)的值。选择的值不能以短横线(-)开始或者"
-"结束。"
 
-#: validators.py:26
-msgid "You cannot use this reserved namespace."
-msgstr "您无法使用这个预留的命名空间。"
+#: tests/test_forms.py:52
+msgid "English"
+msgstr ""
 
-#: views.py:39
+#: views.py:42
 msgid "Start Date"
 msgstr "开始时间"
 
-#: views.py:39
+#: views.py:42
 msgid "End Date"
 msgstr "结束时间"
 
-#: views.py:40
+#: views.py:43
 msgid "Contribution"
 msgstr "贡献"
 
-#: views.py:57 views.py:82
+#: views.py:60 views.py:85
 msgid "Description"
 msgstr "描述"
 
-#: views.py:246
+#: views.py:264 views.py:286
 msgid ""
 "The work experience with following translations will be deleted. Are you "
 "sure?"
 msgstr "以下带有翻译的工作经验将要被删除,是否确认该操作?"
 
-#: views.py:286
+#: views.py:377
 msgid "Work experience translations"
 msgstr "工作经验"
 
-#: views.py:304
+#: views.py:396
 msgid "Create new work experience translation"
 msgstr "创建新的工作经验"
 
-#: views.py:357
+#: views.py:454
 msgid "Update work experience translation"
 msgstr "更新工作经验"
 
-#: views.py:403
+#: views.py:500
 msgid ""
 "The following translation for the related work experience will be deleted. "
 "Are you sure?"
 msgstr ""
+
+#~ msgid ""
+#~ "Enter a value consisting of lower-case letters, numbers or hyphens. "
+#~ "Hyphens can not occur at the start or end of the chosen value."
+#~ msgstr ""
+#~ "输入一个包含小写字母，数字或者短横线(-)的值。选择的值不能以短横线(-)开始或"
+#~ "者结束。"
+
+#~ msgid "You cannot use this reserved namespace."
+#~ msgstr "您无法使用这个预留的命名空间。"
 
 #~ msgid "Chinese"
 #~ msgstr "中文"

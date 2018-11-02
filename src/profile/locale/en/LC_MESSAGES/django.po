@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-22 03:06+0000\n"
+"POT-Creation-Date: 2018-11-02 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,69 +18,71 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:23
-msgid "First Name"
+#: apps.py:12 templates/profile_detail.html:25 templates/profile_edit.html:27
+msgid "Profile"
 msgstr ""
 
-#: forms.py:28
-msgid "Last Name"
+#: forms.py:22
+msgid "Full Name"
+msgstr ""
+
+#: forms.py:27
+msgid "Mobile"
 msgstr ""
 
 #: forms.py:41
 msgid "Public this profile?"
 msgstr ""
 
-#: models.py:34
+#: models.py:38
 msgid "Male"
 msgstr ""
 
-#: models.py:35
+#: models.py:39
 msgid "Female"
 msgstr ""
 
-#: models.py:36
+#: models.py:40
 msgid "Unknown"
 msgstr ""
 
-#: models.py:38
+#: models.py:43
 msgid "Gender"
 msgstr ""
 
-#: models.py:41
+#: models.py:44
 msgid "Birthday"
 msgstr ""
 
-#: models.py:45
+#: models.py:47
+msgid "Avatar"
+msgstr ""
+
+#: models.py:49
 msgid "A 256x256 image for your profile."
 msgstr ""
 
-#: models.py:52
+#: models.py:55
 msgid "Original photo name"
 msgstr ""
 
-#: models.py:55
-msgid "Phone"
+#: models.py:58
+msgid "Cover image"
 msgstr ""
 
-#: models.py:56
+#: models.py:60
+msgid "An image for your public showing site."
+msgstr ""
+
+#: models.py:66
 msgid "Country/Region"
 msgstr ""
 
-#: models.py:58
+#: models.py:68
 msgid "City"
 msgstr ""
 
-#: models.py:63
-msgid "namespace"
-msgstr ""
-
-#: models.py:64
-msgid ""
-"Required before creating any related operation.\n"
-"Lower-case letters, numbers, dots or hyphens allowed only."
-msgstr ""
-
-#: models.py:69
+#: models.py:70
 msgid "LinkedIn"
 msgstr ""
 
@@ -88,30 +90,26 @@ msgstr ""
 msgid "Wechat"
 msgstr ""
 
-#: models.py:73
+#: models.py:72
 msgid "Facebook"
 msgstr ""
 
-#: models.py:75
+#: models.py:73
 msgid "Github"
 msgstr ""
 
-#: models.py:77
+#: models.py:75
 msgid "Personal Site"
 msgstr ""
 
-#: models.py:78
+#: models.py:76
 msgid "Description"
 msgstr ""
 
-#: models.py:80
+#: models.py:78
 msgid "Public it?"
 msgstr ""
 
-#: models.py:90
+#: models.py:88
 msgid "{}'s profile"
-msgstr ""
-
-#: templates/profile_edit.html:27
-msgid "Profile"
 msgstr ""
