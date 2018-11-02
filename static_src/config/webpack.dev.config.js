@@ -7,7 +7,7 @@ const baseWebpackConfig = require('./webpack.base.config');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
-  
+
   devtool: 'eval-source-map',
 
   devServer: {
