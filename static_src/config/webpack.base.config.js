@@ -11,7 +11,6 @@ const utils = require('./utils');
 const isProduction = process.env.NODE_ENV === 'production';
 const sourceMapEnabled = isProduction ? settings.prod.sourceMap : settings.dev.sourceMap;
 
-
 //console.log(process.env)
 function resolve (dir) {
   return path.join(__dirname, '..', dir)

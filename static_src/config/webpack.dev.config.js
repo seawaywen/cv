@@ -4,6 +4,33 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const baseWebpackConfig = require('./webpack.base.config');
 
+const os = require('os');
+const ifaces = os.networkInterfaces();
+var interface_name = 'wlp2s0';
+var get_ip_address = function(interface_name) {
+    var ip = '0.0.0.0';
+    if (interface_name != null) {
+        Object.keys(ifaces).forEach(function(ifname) {
+            ifaces[ifname].forEach(function(iface) {
+                if ('IPv4' !== iface.family || iface.internal !== false) {
+                    // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+                    return;
+                }
+
+                // this interface has only one ipv4 adress
+                if (ifname == interface_name) {
+                    ip = iface.address;
+                }
+            });
+        });
+    };
+
+    return ip
+}
+
+var ip_address = get_ip_address(interface_name);
+console.log(ip_address)
+
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
@@ -15,7 +42,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       historyApiFallback: true,
       inline: true,
       hot: true,
-      host: process.env.HOST || 'localhost',
+      host: process.env.HOST || ip_address,
       port: process.env.PORT || '8080' ,
       open: false,
       clientLogLevel: 'warning',
@@ -67,7 +94,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
 let buildEntryPoint = (entryPoint) =>{
   return [
-    'webpack-dev-server/client?http://localhost:8080/',
+    'webpack-dev-server/client?http://'+ip_address+':8080/',
     entryPoint
   ]
 };
